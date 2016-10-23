@@ -5,6 +5,11 @@ div(class:"row"){
             		include unescaped: 'googleTracking.txt'
                 }
             }
+
+div(class:"row"){
+		yieldUnescaped '<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a> All posts published in this blog are licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons by-nc-sa 4.0 International License</a>.'
+	}
+
 div(class:"row"){
     div(class:"small-12 small-text-center"){
         p(class:"muted credit"){
