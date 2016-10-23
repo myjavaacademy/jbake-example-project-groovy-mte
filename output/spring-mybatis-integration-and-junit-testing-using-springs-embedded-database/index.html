@@ -1,0 +1,370 @@
+<!DOCTYPE html><html lang="en">
+    <head>
+<meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>My {Java} Academy</title>
+        <link rel="shortcut" href="/icons/myJ.png"/>
+        <link rel="shortcut icon" href="/icons/myJ.png"/>
+        <meta property="og:locale" content="en_US"/>
+        <meta property="og:type" content="website"/>
+        <meta property="og:title" content="My {Java} Academy - Learn java and related technologies"/>
+        <meta property="og:description" content="[Learn Java, Advanced Java, Spring, Mule ESB and other languages through examples.]"/>
+        <meta property="og:url" content="/"/>
+        <meta property="og:site_name" content="My {Java} Academy"/>
+        <meta name="twitter:card" content="summary"/>
+        <meta name="twitter:description" content="[Learn Java, Advanced Java, Spring, Mule ESB and other languages through examples.]"/>
+        <meta name="twitter:title" content="My {Java} Academy - Learn java and related technologies"/>
+        <link rel="stylesheet" href="/css/asciidoctor.css"/>
+        <link rel="stylesheet" href="/css/foundation.css"/>
+        <link rel="stylesheet" href="/css/social_foundicons.css"/>
+        <link rel="stylesheet" href="/css/prettify.css"/>
+        <link rel="stylesheet" href="/css/desert.css"/>
+        <link rel="stylesheet" href="/css/app.css"/>
+        
+        <script src="/js/vendor/modernizr.js"></script>
+        <script src="/js/app.js"></script>
+        
+    </head><body class="antialiased" onload="prettyPrint();">
+<div class="row">
+            <div class="small-12 large-12 middle-12 small-text-center large-text-center middle-text-center columns">
+                <div class="title-box">
+                    <div class="title-content">
+                        <h1>My {Java} Academy</h1>
+                        <p>Learn java and related technologies</p>
+                        <p class="title-contact">
+                            <a href="https://twitter.com/myjavaacademy">
+                                <i class="foundicon-twitter"></i>
+                            </a><a href="https://github.com/myjavaacademy">
+                                <i class="foundicon-github"></i>
+                            </a>
+                        </p>
+                    </div>
+                </div><div class="sticky contain-to-grid">
+                    <nav class="top-bar" data-topbar="" role="navigation">
+                        <ul class="title-area">
+                            <li class="name"></li><!--Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone--><li class="toggle-topbar menu-icon">
+                                <a href="#">
+                                    <span>Menu</span>
+                                </a>
+                            </li>
+                        </ul><section class="top-bar-section">
+                            <ul class="left">
+                                <li>
+                                    <a href="/">Home</a>
+                                </li><li>
+                                    <a href="/archive.html">Archive</a>
+                                </li><li>
+                                    <a href="https://manik.magar.me" target="_blank">About</a>
+                                </li><li>
+                                    <a href="/feed.xml">RSS Subscribe</a>
+                                </li>
+                            </ul>
+                        </section>
+                    </nav>
+                </div>
+            </div>
+        </div>        <main>
+<div class="row">
+                <div class="small-12 middle-12 large-12 columns">
+                    <article class="wrap">
+                        <header>
+                            <div class="row">
+                                <div class="small-3 medium-1 large-1 columns">
+<div class="termin">
+                                        <div class="month">Jan</div>
+                                        <div class="date">01</div>
+                                        <div class="year">2013</div>
+                                    </div>                                    
+                                </div><div class="small-9 medium-11 large-11 columns">
+                                    <div>
+                                        <h2>
+                                            <a href="/spring-mybatis-integration-and-junit-testing-using-springs-embedded-database/">Spring MyBatis Integration and JUnit Testing using Spring’s embedded database</a>
+                                        </h2><p>
+                                            <span>
+                                                <a href="/tags/JUnit.html" class="label">JUnit</a>
+                                            </span><span>
+                                                <a href="/tags/MyBatis.html" class="label">MyBatis</a>
+                                            </span><span>
+                                                <a href="/tags/Spring-Framework.html" class="label">Spring Framework</a>
+                                            </span><a href="/spring-mybatis-integration-and-junit-testing-using-springs-embedded-database/#disqus_thread" class="label">Post comments</a>
+                                        </p><hr/>
+                                    </div>
+                                </div>
+                            </div>
+                        </header><div class="row">
+                            <div class="small-9 small-offset-3 medium-11 medium-offset-1 large-11 large-offset-1 columns">
+                                <p>Let’s look at a simple example to see how we can integrate MyBatis in Spring Application.</p>
+<p>Maven POM for the demo &#8211;</p>
+<pre class="xml">&lt;project xmlns=<span class="str">"http://maven.apache.org/POM/4.0.0"</span> 
+xmlns:xsi=<span class="str">"http://www.w3.org/2001/XMLSchema-instance"</span> 
+xsi:schemaLocation=<span class="str">"http://maven.apache.org/POM/4.0.0 
+http://maven.apache.org/xsd/maven-4.0.0.xsd"</span>&gt;
+  &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+  &lt;groupId&gt;com.mms.blogs&lt;/groupId&gt;
+  &lt;artifactId&gt;MyBatisSpringDemo&lt;/artifactId&gt;
+  &lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt;
+  &lt;packaging&gt;war&lt;/packaging&gt;
+  &lt;name&gt;MyBatisSpringDemo&lt;/name&gt;
+      &lt;dependencies&gt;
+      &lt;dependency&gt;
+          &lt;groupId&gt;org.mybatis&lt;/groupId&gt;
+          &lt;artifact    Id&gt;mybatis-spring&lt;/artifactId&gt;
+          &lt;version&gt;1.1.1&lt;/version&gt;
+      &lt;/dependency&gt;
+      &lt;dependency&gt;
+          &lt;groupId&gt;junit&lt;/groupId&gt;
+          &lt;artifactId&gt;junit&lt;/artifactId&gt;
+          &lt;version&gt;4.10&lt;/version&gt;
+      &lt;/dependency&gt;
+      &lt;dependency&gt;
+          &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+          &lt;artifactId&gt;spring-test&lt;/artifactId&gt;
+          &lt;version&gt;3.2.0.RELEASE&lt;/version&gt;
+      &lt;/dependency&gt;
+      &lt;dependency&gt;
+          &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+          &lt;artifactId&gt;spring-tx&lt;/artifactId&gt;
+          &lt;version&gt;3.2.0.RELEASE&lt;/version&gt;
+      &lt;/dependency&gt;
+      &lt;dependency&gt;
+          &lt;groupId&gt;org.hsqldb&lt;/groupId&gt;
+          &lt;artifactId&gt;hsqldb&lt;/artifactId&gt;
+          &lt;version&gt;2.2.9&lt;/version&gt;
+      &lt;/dependency&gt;
+      &lt;dependency&gt;
+          &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+          &lt;artifactId&gt;spring-core&lt;/artifactId&gt;
+          &lt;version&gt;3.2.0.RELEASE&lt;/version&gt;
+      &lt;/dependency&gt;
+      &lt;dependency&gt;
+          &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+          &lt;artifactId&gt;spring-context&lt;/artifactId&gt;
+          &lt;version&gt;3.2.0.RELEASE&lt;/version&gt;
+      &lt;/dependency&gt;
+  &lt;/dependencies&gt;
+&lt;/project&gt;</pre>
+<h2>MyBatis Mapper &#8211;</h2>
+<p>MyBatis is driven by a Mapper Interface that defines the methods to interact against database. SQL mapping code is defined in a xml file defined by the same name of the Mapper Interface.</p>
+<p>Mapping to work correctly, below three things should match for each mapper &#8211;</p>
+<ol>
+  <li>Interface file name and package</li>
+  <li>Xml file name and its location should be same as Interface.</li>
+  <li>namespace in xml file.</li>
+</ol>
+<p>EmployeeMapper.java &#8211;</p>
+<pre class="csharpcode">package com.mms.blogs.demo.mybatisspring.mapper;
+
+import com.mms.blogs.demo.mybatisspring.vo.Employee;
+
+<span class="kwrd">public</span> <span class="kwrd">interface</span> EmployeeMapper {
+
+    <span class="kwrd">public</span> Employee getEmployeeName(<span class="kwrd">long</span> empId);
+
+    <span class="kwrd">public</span> <span class="kwrd">void</span> insertEmployee(Employee employee);
+
+}</pre>
+<p>EmployeeMapper.xml &#8211;</p>
+<pre class="csharpcode">&lt;?xml version=<span class="str">"1.0"</span> encoding=<span class="str">"UTF-8"</span>?&gt;
+&lt;!DOCTYPE mapper PUBLIC <span class="str">"-//mybatis.org//DTD Mapper 3.0//EN"</span> 
+<span class="str">"http://mybatis.org/dtd/mybatis-3-mapper.dtd"</span>&gt;
+
+&lt;mapper <span class="kwrd">namespace</span>=<span class="str">"com.mms.blogs.demo.mybatisspring.mapper.EmployeeMapper"</span>&gt;
+
+    &lt;select id=<span class="str">"getEmployeeName"</span> parameterType=<span class="str">"long"</span>
+        resultType=<span class="str">"com.mms.blogs.demo.mybatisspring.vo.Employee"</span>&gt;
+        SELECT empid, first_name firstName,last_name lastName from employee <span class="kwrd">where</span>
+        empid=#{empid}
+    &lt;/select&gt;
+
+    &lt;insert id=<span class="str">"insertEmployee"</span> parameterType=<span class="str">"com.mms.blogs.demo.mybatisspring.vo.Employee"</span>&gt;
+        insert into employee (empid,first_name,last_name) values
+        (#{empid},#{firstName},#{lastName})
+    &lt;/insert&gt;
+
+&lt;/mapper&gt;</pre>
+<p>Employee.java – VO Object</p>
+<pre class="csharpcode">package com.mms.blogs.demo.mybatisspring.vo;
+
+import org.springframework.stereotype.Component;
+
+@Component
+<span class="kwrd">public</span> <span class="kwrd">class</span> Employee {
+    <span class="kwrd">private</span> <span class="kwrd">long</span> empid;
+    <span class="kwrd">private</span> String firstName;
+    <span class="kwrd">private</span> String lastName;
+    <span class="kwrd">public</span> <span class="kwrd">long</span> getEmpid() {
+        <span class="kwrd">return</span> empid;
+    }
+    <span class="kwrd">public</span> <span class="kwrd">void</span> setEmpid(<span class="kwrd">long</span> empid) {
+        <span class="kwrd">this</span>.empid = empid;
+    }
+    <span class="kwrd">public</span> String getFirstName() {
+        <span class="kwrd">return</span> firstName;
+    }
+    <span class="kwrd">public</span> <span class="kwrd">void</span> setFirstName(String firstName) {
+        <span class="kwrd">this</span>.firstName = firstName;
+    }
+    <span class="kwrd">public</span> String getLastName() {
+        <span class="kwrd">return</span> lastName;
+    }
+    <span class="kwrd">public</span> <span class="kwrd">void</span> setLastName(String lastName) {
+        <span class="kwrd">this</span>.lastName = lastName;
+    }
+
+}</pre>
+<h2>Spring Application Context &#8211;</h2>
+<p>Following is the application context for this demo &#8211;</p>
+<pre class="csharpcode">&lt;?xml version=<span class="str">"1.0"</span> encoding=<span class="str">"UTF-8"</span>?&gt;
+&lt;beans xmlns=<span class="str">"http://www.springframework.org/schema/beans"</span>
+        xmlns:context=<span class="str">"http://www.springframework.org/schema/context"</span>
+        xmlns:jdbc=<span class="str">"http://www.springframework.org/schema/jdbc"</span>
+    xmlns:xsi=<span class="str">"http://www.w3.org/2001/XMLSchema-instance"</span>
+    xsi:schemaLocation=<span class="str">"http://www.springframework.org/schema/beans
+                     http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+                     http://www.springframework.org/schema/context
+                     http://www.springframework.org/schema/context/spring-context-3.2.xsd
+                     http://www.springframework.org/schema/jdbc
+                     http://www.springframework.org/schema/jdbc/spring-jdbc-3.2.xsd"</span>&gt;
+
+    &lt;context:annotation-config/&gt;
+
+    &lt;context:component-scan <span class="kwrd">base</span>-package=<span class="str">"com.mms.blogs.demo.mybatisspring"</span>&gt;&lt;/context:component-scan&gt;
+
+    &lt;jdbc:embedded-database id=<span class="str">"dataSource"</span>&gt;
+        &lt;jdbc:script location=<span class="str">"classpath:schema.sql"</span>/&gt;
+    &lt;/jdbc:embedded-database&gt;
+
+    &lt;bean id=<span class="str">"transactionManager"</span> <span class="kwrd">class</span>=<span class="str">"org.springframework.jdbc.datasource.DataSourceTransactionManager"</span>&gt;
+        &lt;property name=<span class="str">"dataSource"</span> <span class="kwrd">ref</span>=<span class="str">"dataSource"</span>/&gt;
+    &lt;/bean&gt;
+
+    &lt;bean <span class="kwrd">class</span>=<span class="str">"org.mybatis.spring.SqlSessionFactoryBean"</span> id=<span class="str">"sqlSessionFactory"</span>&gt;
+        &lt;property name=<span class="str">"dataSource"</span> <span class="kwrd">ref</span>=<span class="str">"dataSource"</span>/&gt;
+    &lt;/bean&gt;
+
+    &lt;bean <span class="kwrd">class</span>=<span class="str">"org.mybatis.spring.mapper.MapperScannerConfigurer"</span>&gt;
+        &lt;property name=<span class="str">"sqlSessionFactoryBeanName"</span> <span class="kwrd">value</span>=<span class="str">"sqlSessionFactory"</span>/&gt;
+        &lt;property name=<span class="str">"basePackage"</span> <span class="kwrd">value</span>=<span class="str">"com.mms.blogs.demo.mybatisspring.mapper"</span>/&gt;
+     &lt;/bean&gt;
+
+&lt;/beans&gt;</pre>
+<ol>
+  <li>Enable annotation config to Autowire our Spring configuration and also Autowire MyBatis mappers where ever needed.</li>
+  <li>component-scan provides base package to look for components.</li>
+  <li>TransactionManager to handle transactions</li>
+  <li>Spring’s embedded database instance. This loads the sample teable Employee into embedded database using sql defined in compile.sql script.</li>
+  <li>Bean for org.mybatis.spring.SqlSessionFactoryBean to configure the datasource.</li>
+  <li>MapperScannerConfigurer – This class initializes a bean for each of the mapper interface defined in basePackage and injects sqlSessionFactory instance in it. This enables Autowiring of the mapper interfaces in code.</li>
+</ol>
+<p>Schema.sql &#8211;</p>
+<pre class="csharpcode">create table employee(
+    empid BIGINT,
+    first_name varchar(50),
+    last_name varchar(50)
+    );</pre>
+<p>So with all above configuration MyBatis is now integrated with Spring. Let’s write a simple JUnit to test our integration &#8211;</p>
+<pre class="csharpcode">package com.mms.blogs.demo.mybatisspring.mapper;
+
+import junit.framework.Assert;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import com.mms.blogs.demo.mybatisspring.vo.Employee;
+
+@RunWith(SpringJUnit4ClassRunner.<span class="kwrd">class</span>)
+@ContextConfiguration(<span class="kwrd">value</span>={<span class="str">"classpath:applicationContext.xml"</span>})
+<span class="kwrd">public</span> <span class="kwrd">class</span> EmployeeTest extends AbstractTransactionalJUnit4SpringContextTests {
+
+    @Autowired
+    <span class="kwrd">private</span> EmployeeMapper employeeMapper;
+
+    @Before
+    <span class="kwrd">public</span> <span class="kwrd">void</span> insertEmployee(){
+        Employee emp = <span class="kwrd">new</span> Employee();
+        emp.setEmpid(1);
+        emp.setFirstName(<span class="str">"Manik"</span>);
+        emp.setLastName(<span class="str">"Magar"</span>);
+        employeeMapper.insertEmployee(emp);
+    }
+
+    @Test
+    <span class="kwrd">public</span> <span class="kwrd">void</span> testEmployee(){
+        System.<span class="kwrd">out</span>.println(<span class="str">"testEmployee"</span>);
+        Employee emp = employeeMapper.getEmployeeName(1);
+        Assert.assertNotNull(emp);
+    }
+
+}</pre>
+<p>Cheers!</p>
+<p><strong>Where is the source? &#8230; It&#8217;s</strong> <a title="MyBatisSpingDemo" href="https://github.com/manikmagar/mms_repo/tree/master/MyBatisSpringDemo" target="_blank">here</a></p>
+<p>&nbsp;</p>
+<p>References</p>
+<p><a href="http://www.mybatis.org/spring/" title="http://www.mybatis.org/spring/">http://www.mybatis.org/spring/</a></p>
+                            </div>
+                        </div><div class="row">
+                            <div class="small-9 small-offset-3 medium-11 medium-offset-1 large-11 large-offset-1 columns">
+                                <hr/>
+<div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = '//myjavaacademy.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>            
+        </main>
+<yieldUnesacped><script id="dsq-count-scr" src="//myjavaacademy.disqus.com/count.js" async></script></yieldUnesacped><div class="row">
+            <div class="small-9 small-offset-3 medium-11 medium-offset-1 large-11 large-offset-1 columns">
+                <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-75535410-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+            </div>
+        </div><div class="row">
+            <div class="small-12 small-text-center">
+                <p class="muted credit">
+                    2014 - 2016 | Mixed with <a href="http://foundation.zurb.com/">Foundation v5.5.1</a> | Baked with <a href="http://jbake.org">JBake v2.5.0</a> | <a href="/sitemap.xml">Sitemap</a> | <a href="/terms-and-usage">Terms and Usage Policy</a>
+                </p>
+            </div>
+        </div>        <script src="/js/vendor/jquery.js"></script>
+        <script src="/js/foundation.min.js"></script>
+        <script src="/js/vendor/prettify.js"></script>
+        <script>
+            $(document).foundation();
+            $(function() {
+               hljs.tabReplace = "  ";
+               hljs.initHighlighting();
+            });
+        </script>
+        
+    </body>
+</html>

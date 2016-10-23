@@ -7,4 +7,5 @@ p {
             a(href:"${contextPath}tags/${tag.replace(' ','-')}.html", class:"label","${tag}")
         }
     }
+    a(href:"${config.site_contextPath}${post.noExtensionUri}#disqus_thread","Post comments", class:"label")
 }

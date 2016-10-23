@@ -49,7 +49,7 @@ layout 'layout/main.tpl', true,
                                         }
                                         li{
                                             yield "${post.date.format("dd")} - "
-                                            a(href:"${config.site_contextPath}${post.uri}"){
+                                            a(href:"${config.site_contextPath}${post.noExtensionUri}"){
                                                 yield post.title
                                             }
                                         }

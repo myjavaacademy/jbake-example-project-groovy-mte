@@ -1,0 +1,284 @@
+<!DOCTYPE html><html lang="en">
+    <head>
+<meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>My {Java} Academy</title>
+        <link rel="shortcut" href="/icons/myJ.png"/>
+        <link rel="shortcut icon" href="/icons/myJ.png"/>
+        <meta property="og:locale" content="en_US"/>
+        <meta property="og:type" content="website"/>
+        <meta property="og:title" content="My {Java} Academy - Learn java and related technologies"/>
+        <meta property="og:description" content="[Learn Java, Advanced Java, Spring, Mule ESB and other languages through examples.]"/>
+        <meta property="og:url" content="/"/>
+        <meta property="og:site_name" content="My {Java} Academy"/>
+        <meta name="twitter:card" content="summary"/>
+        <meta name="twitter:description" content="[Learn Java, Advanced Java, Spring, Mule ESB and other languages through examples.]"/>
+        <meta name="twitter:title" content="My {Java} Academy - Learn java and related technologies"/>
+        <link rel="stylesheet" href="/css/asciidoctor.css"/>
+        <link rel="stylesheet" href="/css/foundation.css"/>
+        <link rel="stylesheet" href="/css/social_foundicons.css"/>
+        <link rel="stylesheet" href="/css/prettify.css"/>
+        <link rel="stylesheet" href="/css/desert.css"/>
+        <link rel="stylesheet" href="/css/app.css"/>
+        
+        <script src="/js/vendor/modernizr.js"></script>
+        <script src="/js/app.js"></script>
+        
+    </head><body class="antialiased" onload="prettyPrint();">
+<div class="row">
+            <div class="small-12 large-12 middle-12 small-text-center large-text-center middle-text-center columns">
+                <div class="title-box">
+                    <div class="title-content">
+                        <h1>My {Java} Academy</h1>
+                        <p>Learn java and related technologies</p>
+                        <p class="title-contact">
+                            <a href="https://twitter.com/myjavaacademy">
+                                <i class="foundicon-twitter"></i>
+                            </a><a href="https://github.com/myjavaacademy">
+                                <i class="foundicon-github"></i>
+                            </a>
+                        </p>
+                    </div>
+                </div><div class="sticky contain-to-grid">
+                    <nav class="top-bar" data-topbar="" role="navigation">
+                        <ul class="title-area">
+                            <li class="name"></li><!--Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone--><li class="toggle-topbar menu-icon">
+                                <a href="#">
+                                    <span>Menu</span>
+                                </a>
+                            </li>
+                        </ul><section class="top-bar-section">
+                            <ul class="left">
+                                <li>
+                                    <a href="/">Home</a>
+                                </li><li>
+                                    <a href="/archive.html">Archive</a>
+                                </li><li>
+                                    <a href="https://manik.magar.me" target="_blank">About</a>
+                                </li><li>
+                                    <a href="/feed.xml">RSS Subscribe</a>
+                                </li>
+                            </ul>
+                        </section>
+                    </nav>
+                </div>
+            </div>
+        </div>        <main>
+<div class="row">
+                <div class="small-12 middle-12 large-12 columns">
+                    <article class="wrap">
+                        <header>
+                            <div class="row">
+                                <div class="small-3 medium-1 large-1 columns">
+<div class="termin">
+                                        <div class="month">Apr</div>
+                                        <div class="date">18</div>
+                                        <div class="year">2016</div>
+                                    </div>                                    
+                                </div><div class="small-9 medium-11 large-11 columns">
+                                    <div>
+                                        <h2>
+                                            <a href="/create-fixed-width-file-dataweave-mule-3-7/">Create Fixed width file with DataWeave in Mule 3.7</a>
+                                        </h2><p>
+                                            <span>
+                                                <a href="/tags/DataWeave.html" class="label">DataWeave</a>
+                                            </span><span>
+                                                <a href="/tags/Mule-ESB.html" class="label">Mule ESB</a>
+                                            </span><a href="/create-fixed-width-file-dataweave-mule-3-7/#disqus_thread" class="label">Post comments</a>
+                                        </p><hr/>
+                                    </div>
+                                </div>
+                            </div>
+                        </header><div class="row">
+                            <div class="small-9 small-offset-3 medium-11 medium-offset-1 large-11 large-offset-1 columns">
+                                <p>In <a href="http://www.myjavaacademy.com/parse-fixed-width-text-file-dataweave-mule-esb/" target="_blank">previous post</a>,&nbsp;we saw how to consume and process fixed width file using&nbsp;DataWeave in Mule ESB 3.7. In this post we will see how we can generate fixed width file using&nbsp;DataWeave in Mule 3.7. As I mentioned in previous post, DataWeave support for fixed width files has been introduced in Mule ESB 3.8 but&nbsp;It may not be always possible to upgrade our ESB version just for this purpose. That is why we will see how to achieve this transformation in 3.7.</p>
+<p>There are third party java libraries that can be used with Mule to process fixed width files. But what if we don&#8217;t want to use any other libraries? Well, there is a way to generate fixed width files with just DataWeave.</p>
+<p>Let&#8217;s refer to our <a href="http://www.myjavaacademy.com/parse-fixed-width-text-file-dataweave-mule-esb/" target="_blank">previous example</a>&nbsp;and we will use the output of that flow to regenerate our original-like fixed width file.</p>
+<h6>Input:</h6>
+<p>Here is the JSON that we generated in previous example, we will use that as Input in this example and then we will convert it into fixed width.</p>
+<pre>
+[
+  {
+    "Id": "001",
+    "Day": "MON",
+    "Shout": "STARTWORK"
+  },
+  {
+    "Id": "001",
+    "Day": "TUE",
+    "Shout": "PROGRESSWORK"
+  },
+  {
+    "Id": "001",
+    "Day": "WED",
+    "Shout": "TAKEABREAK"
+  },
+  {
+    "Id": "001",
+    "Day": "THU",
+    "Shout": "RESUMEWORK"
+  },
+  {
+    "Id": "001",
+    "Day": "FRI",
+    "Shout": "FINISHWORK"
+  },
+  {
+    "Id": "001",
+    "Day": "SAT",
+    "Shout": "CHILLDOWN"
+  },
+  {
+    "Id": "001",
+    "Day": "SUN",
+    "Shout": "GRABABEER"
+  }
+]
+</pre>
+<h6>DataWeave Processing:</h6>
+<p>Here is a DataWeave code that would transform this JSON into fixed width text file &#8211;</p>
+<pre>
+%dw 1.0
+%output application/csv header=false
+---
+ (payload map {
+         Id: rightPad($.Id,3,' '),
+         Day: rightPad($.Day,4,' '),
+         Shout: rightPad($.Shout,20,' ')
+     }) map {
+     	row: ($ pluck $ joinBy "")
+     }
+</pre>
+<p>&nbsp;</p>
+<p>Let&#8217;s understand how this code works &#8211;</p>
+<ol>
+  <li>Output directive defines output to be application/csv and we have turned off header in output.</li>
+  <li>First we will map the payload to format the values as we require in our output.&nbsp;There is no in-built rightPad function in DataWeave so we will have to write a <a href="https://docs.mulesoft.com/mule-user-guide/v/3.7/dataweave-reference-documentation#global-mel-functions">MEL global function</a> in our mule-config.xml. Add below code to your mule config &#8211;</li>
+</ol>
+<pre>
+&lt;configuration doc:name="Configuration"&gt;
+	&lt;expression-language&gt;
+		&lt;global-functions&gt;
+			def rightPad(value,length,padChar) {
+				return org.apache.commons.lang3.StringUtils.rightPad(value,length,padChar);
+			}
+		&lt;/global-functions&gt;
+	&lt;/expression-language&gt;
+&lt;/configuration&gt;
+
+</pre>
+<p>Now this MEL function can be used in our DataWeave. What it does is, for given string value, it appends the padChar to make value of given length. Eg. Shout field should be of length 20 characters in output and if required pad input with &#8216; &#8216; to make it 20 characters i.e. fixed length 🙂</li> </p>
+<ul>
+  <li>Then we apply second map to iterate over object collection we prepared in step 2. For every object, we will create a object with single property of key &#8216;row&#8217; and value would be constructed by joining all the values of every&nbsp;property in object. If we don&#8217;t turn off headers in output, very first line in our output will contain &#8216;row&#8217;.</ol></li>
+</ul>
+<p>###### Output:</p>
+<p>Here is the output of above transformation &#8211;</p>
+<pre>
+001MON STARTWORK 
+001TUE PROGRESSWORK
+001WED TAKEABREAK
+001THU RESUMEWORK
+001FRI FINISHWORK
+001SAT CHILLDOWN
+001SUN GRABABEER
+
+</pre>
+<p>Record Structure we generated is &#8211;</p>
+<pre>
+Id - Start Position: 0, length: 3
+Day - Start Position: 3, length: 4
+Shout - Start Position:7, length: 20
+</pre>
+<p>If you want to add a prefix or suffix to every column, then it can be done by adding mapObject function before pluck. For example, if we change mapObject to include two fields, prefix and suffix, then our output will look like shown below. Remember, you can also do it in your first map where we make each property of fixed length.</p>
+<p>mapObject Code:</p>
+<pre>
+%dw 1.0
+%output application/csv header=false
+---
+ (payload map {
+         Id: rightPad($.Id,3,' '),
+         Day: rightPad($.Day,4,' '),
+         Shout: rightPad($.Shout,20,' ')
+     }) map {
+     	row: ($ mapObject {
+             Suffix:'Suffix',
+             '$$':$,
+             Post:'Prefix'
+         } pluck $ joinBy "")
+     }
+</pre>
+<p>Here is the output of above change in DataWeave code, Note the static strings are around each column &#8211;</p>
+<pre>
+Suffix001PrefixSuffixMON PrefixSuffixSTARTWORK           Prefix
+Suffix001PrefixSuffixTUE PrefixSuffixPROGRESSWORK        Prefix
+Suffix001PrefixSuffixWED PrefixSuffixTAKEABREAK          Prefix
+Suffix001PrefixSuffixTHU PrefixSuffixRESUMEWORK          Prefix
+Suffix001PrefixSuffixFRI PrefixSuffixFINISHWORK          Prefix
+Suffix001PrefixSuffixSAT PrefixSuffixCHILLDOWN           Prefix
+Suffix001PrefixSuffixSUN PrefixSuffixGRABABEER           Prefix
+
+</pre>
+<p>That&#8217;s all Folks! Here we saw, how we can use DataWeave code in Mule 3.7 to convert any file format into a fixed width text format and also how to apply formatting on each column.</p>
+<p>Feel free to let me know what you think or any questions, I will be happy to help.</p>
+                            </div>
+                        </div><div class="row">
+                            <div class="small-9 small-offset-3 medium-11 medium-offset-1 large-11 large-offset-1 columns">
+                                <hr/>
+<div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = '//myjavaacademy.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>            
+        </main>
+<yieldUnesacped><script id="dsq-count-scr" src="//myjavaacademy.disqus.com/count.js" async></script></yieldUnesacped><div class="row">
+            <div class="small-9 small-offset-3 medium-11 medium-offset-1 large-11 large-offset-1 columns">
+                <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-75535410-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+            </div>
+        </div><div class="row">
+            <div class="small-12 small-text-center">
+                <p class="muted credit">
+                    2014 - 2016 | Mixed with <a href="http://foundation.zurb.com/">Foundation v5.5.1</a> | Baked with <a href="http://jbake.org">JBake v2.5.0</a> | <a href="/sitemap.xml">Sitemap</a> | <a href="/terms-and-usage">Terms and Usage Policy</a>
+                </p>
+            </div>
+        </div>        <script src="/js/vendor/jquery.js"></script>
+        <script src="/js/foundation.min.js"></script>
+        <script src="/js/vendor/prettify.js"></script>
+        <script>
+            $(document).foundation();
+            $(function() {
+               hljs.tabReplace = "  ";
+               hljs.initHighlighting();
+            });
+        </script>
+        
+    </body>
+</html>

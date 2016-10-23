@@ -21,11 +21,11 @@ feed(xmlns:"http://www.w3.org/2005/Atom"){
               name("${post.author}")
           }
           newLine()
-          link(href:"${config.site_host}${config.site_contextPath}${post.uri}")
+          link(href:"${config.site_host}${config.site_contextPath}${post.noExtensionUri}")
           newLine()
           updated("${post.date.format('yyyy-MM-dd\'T\'HH:mm:ss\'Z\'')}")
           newLine()
-          id("${config.site_host}${config.site_contextPath}${post.uri}")
+          id("${config.site_host}${config.site_contextPath}${post.noExtensionUri}")
           newLine()
           post.tags.each { tag ->
             category(term:"${tag}")

@@ -11,7 +11,7 @@ div(class:"row"){
 
                         div{
                             h2{
-                                a(href:"${config.site_contextPath}${post.uri}","${post.title}")
+                                a(href:"${config.site_contextPath}${post.noExtensionUri}","${post.title}")
                             }
                             include template: 'tags-brick.tpl'
                             hr()
@@ -23,6 +23,12 @@ div(class:"row"){
             div(class:"row"){
                 div(class:"small-9 small-offset-3 medium-11 medium-offset-1 large-11 large-offset-1 columns"){
                     yieldUnescaped post.body
+                }
+            }
+
+            div(class:"row"){
+            	div(class:"small-9 small-offset-3 medium-11 medium-offset-1 large-11 large-offset-1 columns"){
+            		include unescaped: 'disqus.txt'
                 }
             }
         }

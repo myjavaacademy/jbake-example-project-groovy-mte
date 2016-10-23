@@ -23,7 +23,7 @@ layout 'layout/main.tpl', true,
 
                             li{
                                 yield "${post.date.format("dd")} - "
-                                a(href:"${config.site_contextPath}${post.uri}","${post.title}")
+                                a(href:"${config.site_contextPath}${post.noExtensionUri}","${post.title}")
                             }
                             last_month = post.date.format("MMMM yyyy")
                         }

@@ -1,0 +1,2003 @@
+<?xml version="1.0"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title>My {Java} Academy</title>
+    <link href="https://myjavaacademy.com/"/>
+    <link rel="self" type="application/atom+xml" href="https://myjavaacademy.com/feed.xml"/>
+    <subtitle>Learn java and related technologies</subtitle>
+    <updated>2016-10-22T23:26:08Z</updated>
+    <id>tag:MyJavaAcademy,2016:10</id>
+    <entry>
+        <title>File outbound endpoint and inline transformers-refs to write flow variables to file</title>
+        <author>
+            <name>Manik Magar</name>
+        </author>
+        <link href="https://myjavaacademy.com/file-outbound-endpoint-inline-transformers-refs-write-flow-variables-file/"/>
+        <updated>2016-06-02T00:00:00Z</updated>
+        <id>https://myjavaacademy.com/file-outbound-endpoint-inline-transformers-refs-write-flow-variables-file/</id>
+        <category term="DataWeave"/>
+        <category term="Endpoints"/>
+        <category term="Mule ESB"/>
+        <content type="html">
+            &lt;p&gt;In this post, we will see how we can use inline transformers for writing flow variable content to file. At the end of this post, you will know how to achieve below things in Mule &amp;#8211;&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;Generate multiple transformation outputs with DataWeave&lt;/li&gt;
+  &lt;li&gt;Write flow variable content to file in Mule&lt;/li&gt;
+  &lt;li&gt;Use inline transformer-ref&amp;#8217;s to pre-process payload for file:outbound-endpoint&lt;/li&gt;
+&lt;/ol&gt;
+&lt;!--more--&gt;
+&lt;h3&gt;Sample Flow &amp;#8211;&lt;/h3&gt;
+&lt;p&gt;Here is our flow that achieve&amp;#8217;s all of the above objectives &amp;#8211;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt;
+
+&amp;lt;mule xmlns:file=&amp;quot;http://www.mulesoft.org/schema/mule/file&amp;quot;
+	xmlns:dw=&amp;quot;http://www.mulesoft.org/schema/mule/ee/dw&amp;quot; xmlns:json=&amp;quot;http://www.mulesoft.org/schema/mule/json&amp;quot;
+	xmlns=&amp;quot;http://www.mulesoft.org/schema/mule/core&amp;quot; xmlns:doc=&amp;quot;http://www.mulesoft.org/schema/mule/documentation&amp;quot;
+	xmlns:spring=&amp;quot;http://www.springframework.org/schema/beans&amp;quot; xmlns:xsi=&amp;quot;http://www.w3.org/2001/XMLSchema-instance&amp;quot;
+	xsi:schemaLocation=&amp;quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
+http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd
+http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd&amp;quot;&amp;gt;
+	&amp;lt;expression-transformer expression=&amp;quot;#[return flowVars.file2content]&amp;quot;
+		name=&amp;quot;ExpressionForFile2&amp;quot; doc:name=&amp;quot;Expression&amp;quot; /&amp;gt;
+	&amp;lt;expression-transformer expression=&amp;quot;#[return flowVars.file3content]&amp;quot;
+		name=&amp;quot;Expression&amp;quot; doc:name=&amp;quot;Expression&amp;quot; /&amp;gt;
+	&amp;lt;json:json-to-xml-transformer name=&amp;quot;JSON_to_XML&amp;quot;
+		doc:name=&amp;quot;JSON to XML&amp;quot; /&amp;gt;
+	&amp;lt;flow name=&amp;quot;mule1Flow&amp;quot;&amp;gt;
+		&amp;lt;file:inbound-endpoint path=&amp;quot;input&amp;quot;
+			responseTimeout=&amp;quot;10000&amp;quot; doc:name=&amp;quot;File&amp;quot; /&amp;gt;
+		&amp;lt;dw:transform-message doc:name=&amp;quot;Transform Message&amp;quot;&amp;gt;
+			&amp;lt;dw:input-payload doc:sample=&amp;quot;json.json&amp;quot; /&amp;gt;
+			&amp;lt;dw:set-payload&amp;gt;&amp;lt;![CDATA[%dw 1.0
+%output application/json
+---
+{
+	(payload.file1)
+	
+}]]&amp;gt;&amp;lt;/dw:set-payload&amp;gt;
+			&amp;lt;dw:set-variable variableName=&amp;quot;file2content&amp;quot;&amp;gt;&amp;lt;![CDATA[%dw 1.0
+%output application/json
+---
+{
+	(payload.file2)
+}]]&amp;gt;&amp;lt;/dw:set-variable&amp;gt;
+			&amp;lt;dw:set-variable variableName=&amp;quot;file3content&amp;quot;&amp;gt;&amp;lt;![CDATA[%dw 1.0
+%output application/json
+---
+{
+	(payload.file3)
+}]]&amp;gt;&amp;lt;/dw:set-variable&amp;gt;
+		&amp;lt;/dw:transform-message&amp;gt;
+		&amp;lt;file:outbound-endpoint path=&amp;quot;output&amp;quot;
+			outputPattern=&amp;quot;file1.json&amp;quot; responseTimeout=&amp;quot;10000&amp;quot; doc:name=&amp;quot;File&amp;quot; /&amp;gt;
+		&amp;lt;file:outbound-endpoint path=&amp;quot;output&amp;quot;
+			outputPattern=&amp;quot;file2.json&amp;quot; responseTimeout=&amp;quot;10000&amp;quot; transformer-refs=&amp;quot;ExpressionForFile2&amp;quot;
+			doc:name=&amp;quot;File&amp;quot; /&amp;gt;
+		&amp;lt;file:outbound-endpoint path=&amp;quot;output&amp;quot;
+			outputPattern=&amp;quot;file3.xml&amp;quot; responseTimeout=&amp;quot;10000&amp;quot; transformer-refs=&amp;quot;Expression JSON_to_XML&amp;quot;
+			doc:name=&amp;quot;File&amp;quot; /&amp;gt;
+	&amp;lt;/flow&amp;gt;
+&amp;lt;/mule&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;### &lt;/p&gt;
+&lt;h3&gt;DataWeave&lt;/h3&gt;
+&lt;p&gt;In our flow, we have three &amp;lt;dw:set-* tags.&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;&lt;strong&gt;&amp;lt;dw:set-payload&amp;gt;:&lt;/strong&gt; The output of this transformation will be set as a payload to next transformer in flow.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;&amp;lt;dw:set-variable&amp;gt; :&lt;/strong&gt; We have 2 of such tags. Each tag specifies an unique variableName attribute. The output of this transformation will be set as a flowVariable with key specified in variableName attribute. &lt;em&gt;&lt;span style=&quot;text-decoration: underline;&quot;&gt;So, now we know how to set DataWeave output to flow variable and generate multiple transformations with single DataWeave.&lt;/span&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;h3&gt;File Outbound Endpoint&lt;/h3&gt;
+&lt;p&gt;We have three file outbound endpoints in our flow. Let&amp;#8217;s look at each of them &amp;#8211;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Write file1.json: &lt;/strong&gt;This is a normal file outbound endpoint that writes the flow payload to file1.json. If we look back to our DataWeave, first transformation sets the payload content for this endpoint.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class=&quot;lang:xhtml decode:true&quot;&gt;&amp;lt;file:outbound-endpoint path=&quot;output&quot;
+			outputPattern=&quot;file1.json&quot; responseTimeout=&quot;10000&quot; doc:name=&quot;File&quot; /&amp;gt;
+&lt;/pre&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Write file2.json:&lt;/strong&gt; Now this is the file outbound endpoint that writes content of a flow variable to file2.json. First snippet below, shows a file outbound endpoint defined with additional attribute &lt;span class=&quot;lang:default highlight:0 decode:true crayon-inline&quot;&gt;transformer-refs=&amp;#8221;ExpressionForFile2&amp;#8243;&lt;/span&gt; . ExpressionForFile2 is a global &lt;span class=&quot;lang:default decode:true crayon-inline &quot;&gt;expression-transformer&lt;/span&gt;  as shown in second snippet. The expression of this transformer is a Mule Expression that returns a flow variable content that we want to write to file. I have added a simple form here, but you can write any complex expression that resolves to some content. Output of this expression will be the payload for this file outbound endpoint. &lt;em&gt;Important thing to note here is&lt;/em&gt;, this payload scope is local to this endpoint i.e. it will &lt;span style=&quot;text-decoration: underline;&quot;&gt;NOT&lt;/span&gt; override your flow&amp;#8217;s current payload. &lt;em&gt;&lt;span style=&quot;text-decoration: underline;&quot;&gt;So, now we know how to write flow variable, in fact any content like session variable, properties etc to file using file outbound endpoint.&lt;/span&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class=&quot;toolbar-overlay:false lang:default decode:true&quot; title=&quot;file:outbound-endpoint&quot;&gt;&amp;lt;file:outbound-endpoint path=&quot;output&quot;
+			outputPattern=&quot;file2.json&quot; responseTimeout=&quot;10000&quot; &lt;strong&gt;transformer-refs=&quot;ExpressionForFile2&quot;&lt;/strong&gt;
+			doc:name=&quot;File&quot; /&amp;gt;&lt;/pre&gt;
+&lt;pre class=&quot;toolbar-overlay:false lang:default decode:true &quot; title=&quot;Expression for file2&quot;&gt;&amp;lt;expression-transformer expression=&quot;#[return flowVars.file2content]&quot;
+		name=&quot;ExpressionForFile2&quot; doc:name=&quot;Expression&quot; /&amp;gt;&lt;/pre&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Write file3.xml:&lt;/strong&gt; To further demonstrate the inline transformers, let&amp;#8217;s look at the third file outbound endpoint. This endpoint uses two inline transformers as shown in below two snippets. When we specify more than one transformers then Mule will always apply them in the sequence as specified in declaration. First, endpoint&amp;#8217;s payload will be set as file3content flow variable which is a JSON generated by DataWeave. Then we apply, JSON_to_XML transformer to convert that JSON into XML. At the end, this XML will be written to file3.xml. &lt;span style=&quot;text-decoration: underline;&quot;&gt;&lt;em&gt;So, now we know how we can use multiple transformers to pre-process the input of an endpoint.&lt;/em&gt;&lt;/span&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class=&quot;toolbar-overlay:false lang:default decode:true&quot;&gt;&amp;lt;file:outbound-endpoint path=&quot;output&quot;
+			outputPattern=&quot;file3.xml&quot; responseTimeout=&quot;10000&quot; &lt;strong&gt;transformer-refs=&quot;Expression JSON_to_XML&quot;&lt;/strong&gt;
+			doc:name=&quot;File&quot; /&amp;gt;&lt;/pre&gt;
+&lt;pre class=&quot;toolbar-overlay:false lang:default decode:true&quot;&gt;&amp;lt;expression-transformer expression=&quot;#[return flowVars.file3content]&quot;
+		name=&quot;Expression&quot; doc:name=&quot;Expression&quot; /&amp;gt;
+&amp;lt;json:json-to-xml-transformer name=&quot;JSON_to_XML&quot;
+		doc:name=&quot;JSON to XML&quot; /&amp;gt;&lt;/pre&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;span style=&quot;text-decoration: underline;&quot;&gt;&lt;em&gt;&lt;strong&gt;Note:&lt;/strong&gt; This example uses file:outbound-endpoint but transformer-refs attribute is available on other endpoints too and this post may be extended to apply similar concept on other endpoints.&lt;/em&gt;&lt;/span&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;p&gt;Finally, let&amp;#8217;s see our input and files generated by this flow &amp;#8211;&lt;/p&gt;
+&lt;p&gt;Input JSON &amp;#8211;&lt;/p&gt;
+&lt;pre class=&quot;toolbar-overlay:false lang:default decode:true&quot;&gt;{
+	&quot;file1&quot;: {
+		&quot;text&quot;: &quot;This content is for file 1&quot;
+	},
+	&quot;file2&quot;: {
+		&quot;text&quot;: &quot;This content is for file 2&quot;
+	},
+	&quot;file3&quot;: {
+		&quot;text&quot;: &quot;This content is for file 3&quot;
+	}
+
+}&lt;/pre&gt;
+&lt;p&gt;file1.json &amp;#8211;&lt;/p&gt;
+&lt;pre class=&quot;toolbar-overlay:false lang:default decode:true &quot;&gt;{
+  &quot;text&quot;: &quot;This content is for file 1&quot;
+}&lt;/pre&gt;
+&lt;p&gt;file2.json &amp;#8211;&lt;/p&gt;
+&lt;pre class=&quot;toolbar-overlay:false lang:default decode:true&quot;&gt;{
+  &quot;text&quot;: &quot;This content is for file 2&quot;
+}&lt;/pre&gt;
+&lt;p&gt;file3.xml &amp;#8211;&lt;/p&gt;
+&lt;pre class=&quot;toolbar-overlay:false lang:default decode:true &quot;&gt;&amp;lt;?xml version=&apos;1.0&apos;?&amp;gt;
+&amp;lt;text&amp;gt;This content is for file 3&amp;lt;/text&amp;gt;&lt;/pre&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;p&gt;Hope This Helps! Let me know your thoughts about this.&lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>Create Fixed width file with DataWeave in Mule 3.7</title>
+        <author>
+            <name>Manik Magar</name>
+        </author>
+        <link href="https://myjavaacademy.com/create-fixed-width-file-dataweave-mule-3-7/"/>
+        <updated>2016-04-18T00:00:00Z</updated>
+        <id>https://myjavaacademy.com/create-fixed-width-file-dataweave-mule-3-7/</id>
+        <category term="DataWeave"/>
+        <category term="Mule ESB"/>
+        <content type="html">
+            &lt;p&gt;In &lt;a href=&quot;http://www.myjavaacademy.com/parse-fixed-width-text-file-dataweave-mule-esb/&quot; target=&quot;_blank&quot;&gt;previous post&lt;/a&gt;,&amp;nbsp;we saw how to consume and process fixed width file using&amp;nbsp;DataWeave in Mule ESB 3.7. In this post we will see how we can generate fixed width file using&amp;nbsp;DataWeave in Mule 3.7. As I mentioned in previous post, DataWeave support for fixed width files has been introduced in Mule ESB 3.8 but&amp;nbsp;It may not be always possible to upgrade our ESB version just for this purpose. That is why we will see how to achieve this transformation in 3.7.&lt;/p&gt;
+&lt;p&gt;There are third party java libraries that can be used with Mule to process fixed width files. But what if we don&amp;#8217;t want to use any other libraries? Well, there is a way to generate fixed width files with just DataWeave.&lt;/p&gt;
+&lt;p&gt;Let&amp;#8217;s refer to our &lt;a href=&quot;http://www.myjavaacademy.com/parse-fixed-width-text-file-dataweave-mule-esb/&quot; target=&quot;_blank&quot;&gt;previous example&lt;/a&gt;&amp;nbsp;and we will use the output of that flow to regenerate our original-like fixed width file.&lt;/p&gt;
+&lt;h6&gt;Input:&lt;/h6&gt;
+&lt;p&gt;Here is the JSON that we generated in previous example, we will use that as Input in this example and then we will convert it into fixed width.&lt;/p&gt;
+&lt;pre&gt;
+[
+  {
+    &quot;Id&quot;: &quot;001&quot;,
+    &quot;Day&quot;: &quot;MON&quot;,
+    &quot;Shout&quot;: &quot;STARTWORK&quot;
+  },
+  {
+    &quot;Id&quot;: &quot;001&quot;,
+    &quot;Day&quot;: &quot;TUE&quot;,
+    &quot;Shout&quot;: &quot;PROGRESSWORK&quot;
+  },
+  {
+    &quot;Id&quot;: &quot;001&quot;,
+    &quot;Day&quot;: &quot;WED&quot;,
+    &quot;Shout&quot;: &quot;TAKEABREAK&quot;
+  },
+  {
+    &quot;Id&quot;: &quot;001&quot;,
+    &quot;Day&quot;: &quot;THU&quot;,
+    &quot;Shout&quot;: &quot;RESUMEWORK&quot;
+  },
+  {
+    &quot;Id&quot;: &quot;001&quot;,
+    &quot;Day&quot;: &quot;FRI&quot;,
+    &quot;Shout&quot;: &quot;FINISHWORK&quot;
+  },
+  {
+    &quot;Id&quot;: &quot;001&quot;,
+    &quot;Day&quot;: &quot;SAT&quot;,
+    &quot;Shout&quot;: &quot;CHILLDOWN&quot;
+  },
+  {
+    &quot;Id&quot;: &quot;001&quot;,
+    &quot;Day&quot;: &quot;SUN&quot;,
+    &quot;Shout&quot;: &quot;GRABABEER&quot;
+  }
+]
+&lt;/pre&gt;
+&lt;h6&gt;DataWeave Processing:&lt;/h6&gt;
+&lt;p&gt;Here is a DataWeave code that would transform this JSON into fixed width text file &amp;#8211;&lt;/p&gt;
+&lt;pre&gt;
+%dw 1.0
+%output application/csv header=false
+---
+ (payload map {
+         Id: rightPad($.Id,3,&apos; &apos;),
+         Day: rightPad($.Day,4,&apos; &apos;),
+         Shout: rightPad($.Shout,20,&apos; &apos;)
+     }) map {
+     	row: ($ pluck $ joinBy &quot;&quot;)
+     }
+&lt;/pre&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;p&gt;Let&amp;#8217;s understand how this code works &amp;#8211;&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;Output directive defines output to be application/csv and we have turned off header in output.&lt;/li&gt;
+  &lt;li&gt;First we will map the payload to format the values as we require in our output.&amp;nbsp;There is no in-built rightPad function in DataWeave so we will have to write a &lt;a href=&quot;https://docs.mulesoft.com/mule-user-guide/v/3.7/dataweave-reference-documentation#global-mel-functions&quot;&gt;MEL global function&lt;/a&gt; in our mule-config.xml. Add below code to your mule config &amp;#8211;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;
+&amp;lt;configuration doc:name=&quot;Configuration&quot;&amp;gt;
+	&amp;lt;expression-language&amp;gt;
+		&amp;lt;global-functions&amp;gt;
+			def rightPad(value,length,padChar) {
+				return org.apache.commons.lang3.StringUtils.rightPad(value,length,padChar);
+			}
+		&amp;lt;/global-functions&amp;gt;
+	&amp;lt;/expression-language&amp;gt;
+&amp;lt;/configuration&amp;gt;
+
+&lt;/pre&gt;
+&lt;p&gt;Now this MEL function can be used in our DataWeave. What it does is, for given string value, it appends the padChar to make value of given length. Eg. Shout field should be of length 20 characters in output and if required pad input with &amp;#8216; &amp;#8216; to make it 20 characters i.e. fixed length 🙂&lt;/li&gt; &lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Then we apply second map to iterate over object collection we prepared in step 2. For every object, we will create a object with single property of key &amp;#8216;row&amp;#8217; and value would be constructed by joining all the values of every&amp;nbsp;property in object. If we don&amp;#8217;t turn off headers in output, very first line in our output will contain &amp;#8216;row&amp;#8217;.&lt;/ol&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;###### Output:&lt;/p&gt;
+&lt;p&gt;Here is the output of above transformation &amp;#8211;&lt;/p&gt;
+&lt;pre&gt;
+001MON STARTWORK 
+001TUE PROGRESSWORK
+001WED TAKEABREAK
+001THU RESUMEWORK
+001FRI FINISHWORK
+001SAT CHILLDOWN
+001SUN GRABABEER
+
+&lt;/pre&gt;
+&lt;p&gt;Record Structure we generated is &amp;#8211;&lt;/p&gt;
+&lt;pre&gt;
+Id - Start Position: 0, length: 3
+Day - Start Position: 3, length: 4
+Shout - Start Position:7, length: 20
+&lt;/pre&gt;
+&lt;p&gt;If you want to add a prefix or suffix to every column, then it can be done by adding mapObject function before pluck. For example, if we change mapObject to include two fields, prefix and suffix, then our output will look like shown below. Remember, you can also do it in your first map where we make each property of fixed length.&lt;/p&gt;
+&lt;p&gt;mapObject Code:&lt;/p&gt;
+&lt;pre&gt;
+%dw 1.0
+%output application/csv header=false
+---
+ (payload map {
+         Id: rightPad($.Id,3,&apos; &apos;),
+         Day: rightPad($.Day,4,&apos; &apos;),
+         Shout: rightPad($.Shout,20,&apos; &apos;)
+     }) map {
+     	row: ($ mapObject {
+             Suffix:&apos;Suffix&apos;,
+             &apos;$$&apos;:$,
+             Post:&apos;Prefix&apos;
+         } pluck $ joinBy &quot;&quot;)
+     }
+&lt;/pre&gt;
+&lt;p&gt;Here is the output of above change in DataWeave code, Note the static strings are around each column &amp;#8211;&lt;/p&gt;
+&lt;pre&gt;
+Suffix001PrefixSuffixMON PrefixSuffixSTARTWORK           Prefix
+Suffix001PrefixSuffixTUE PrefixSuffixPROGRESSWORK        Prefix
+Suffix001PrefixSuffixWED PrefixSuffixTAKEABREAK          Prefix
+Suffix001PrefixSuffixTHU PrefixSuffixRESUMEWORK          Prefix
+Suffix001PrefixSuffixFRI PrefixSuffixFINISHWORK          Prefix
+Suffix001PrefixSuffixSAT PrefixSuffixCHILLDOWN           Prefix
+Suffix001PrefixSuffixSUN PrefixSuffixGRABABEER           Prefix
+
+&lt;/pre&gt;
+&lt;p&gt;That&amp;#8217;s all Folks! Here we saw, how we can use DataWeave code in Mule 3.7 to convert any file format into a fixed width text format and also how to apply formatting on each column.&lt;/p&gt;
+&lt;p&gt;Feel free to let me know what you think or any questions, I will be happy to help.&lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>Parse Fixed width text file with DataWeave in Mule ESB</title>
+        <author>
+            <name>Manik Magar</name>
+        </author>
+        <link href="https://myjavaacademy.com/parse-fixed-width-text-file-dataweave-mule-esb/"/>
+        <updated>2016-04-15T00:00:00Z</updated>
+        <id>https://myjavaacademy.com/parse-fixed-width-text-file-dataweave-mule-esb/</id>
+        <category term="DataWeave"/>
+        <category term="Mule ESB"/>
+        <content type="html">
+            &lt;p&gt;With Mule 3.7.0, a new modeling and transformation language was introduced, DataWeave. This is more powerful than its predecessor DataMapper which is marked as deprecated in Mule 3.7&lt;/p&gt;
+&lt;p&gt;DataWeave component appears as &amp;#8220;Transform Message&amp;#8221; in Mule Anypoint Studio under Mule Palette. DataWeave in Mule 3.7 supports processing of JSON, Java, CSV, EDI, XML, Pojo etc. One format that was missing in DataWeave support was Fixed Width text format. As per the &lt;a href=&quot;http://blogs.mulesoft.com/biz/mule/new-mule-3-8-studio-6-0-beta-releases/&quot; target=&quot;_blank&quot;&gt;beta release notes of Mule 3.8&lt;/a&gt;, DataWeave in Mule 3.8 is going to support fixed width text files. But for many of us, it may not be possible to upgrade Mule server for this.&lt;/p&gt;
+&lt;h2&gt;So How to Process fixed width text file with DataWeave in Mule 3.7?&lt;/h2&gt;
+&lt;p&gt;So for those who use Mule 3.7 with DataWeave and still want to process fixed width text files, here is the workaround for it.&lt;/p&gt;
+&lt;p&gt;Let&amp;#8217;s consider below fixed with sample text file &amp;#8211;&lt;/p&gt;
+&lt;pre class=&quot;brush: plain; title=; notranslate&quot; title=&quot;&quot;&gt;001MONSTARTWORK
+001TUEPROGRESSWORK
+001WEDTAKEABREAK
+001THURESUMEWORK
+001FRIFINISHWORK
+001SATCHILLDOWN
+001SUNGRABABEER
+&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;Record definition is &amp;#8211;&lt;/strong&gt;&lt;/p&gt;
+&lt;pre&gt;Id - Start Position: 0, length: 3
+Day - Start Position: 3, length: 3
+Shout - Start Position:6, length: 13&lt;/pre&gt;
+&lt;p&gt;Here is our sample flow that reads the file from input directory, applies dataweave transformation and writes the generated file to output directory.&lt;/p&gt;
+&lt;div id=&quot;attachment_135&quot; style=&quot;width: 322px&quot; class=&quot;wp-caption aligncenter&quot;&gt;
+  &lt;img class=&quot;wp-image-135 size-full&quot; src=&quot;https://i2.wp.com/www.myjavaacademy.com/wp-content/uploads/2016/04/Mule_DW_FixedWidth_Flow-1.png?resize=312%2C130&quot; alt=&quot;Mule_DW_FixedWidth_Flow&quot; srcset=&quot;https://i1.wp.com/myjavaacademy.com/wp-content/uploads/2016/04/Mule_DW_FixedWidth_Flow-1.png?w=312&amp;ssl=1 312w, https://i1.wp.com/myjavaacademy.com/wp-content/uploads/2016/04/Mule_DW_FixedWidth_Flow-1.png?resize=300%2C125&amp;ssl=1 300w&quot; sizes=&quot;(max-width: 312px) 100vw, 312px&quot; data-recalc-dims=&quot;1&quot; /&gt;
+  
+  &lt;p class=&quot;wp-caption-text&quot;&gt;
+    Mule flow to convert fixed width text file to JSON
+  &lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;XML Flow &amp;#8211;&lt;/p&gt;
+&lt;pre class=&quot;brush: xml; title=; notranslate&quot; title=&quot;&quot;&gt;&amp;lt;flow name=&quot;DW-FixedWidth-Processing&quot;&amp;gt;
+        &amp;lt;file:inbound-endpoint responseTimeout=&quot;10000&quot; doc:name=&quot;File&quot; moveToDirectory=&quot;output&quot; path=&quot;input&quot;/&amp;gt;
+        &amp;lt;dw:transform-message doc:name=&quot;Transform Message&quot; metadata:id=&quot;44c29528-4f2b-4aa6-a454-bf2fe7b8de57&quot;&amp;gt;
+            &amp;lt;dw:input-payload doc:sample=&quot;string_1.dwl&quot;/&amp;gt;
+            &amp;lt;dw:set-payload&amp;gt;&amp;lt;![CDATA[%dw 1.0 %output application/json --- (payload splitBy &quot;\n&quot;) map { Id:$[0..2], Day:$[3..5], Shout:trim $[6..18] } ]]&amp;gt;&amp;lt;/dw:set-payload&amp;gt;
+        &amp;lt;/dw:transform-message&amp;gt;
+        &amp;lt;file:outbound-endpoint path=&quot;output&quot; outputPattern=&quot;output.txt&quot; responseTimeout=&quot;10000&quot; doc:name=&quot;File&quot;/&amp;gt;
+    &amp;lt;/flow&amp;gt;
+
+&lt;/pre&gt;
+&lt;p&gt;Let&amp;#8217;s look at the DataWeave code now &amp;#8211;&lt;/p&gt;
+&lt;pre class=&quot;brush: plain; title=; notranslate&quot; title=&quot;&quot;&gt;%dw 1.0
+%output application/json
+---
+(payload splitBy &quot;\n&quot;) map {
+	Id:$[0..2],
+	Day:$[3..5],
+	Shout:$[6..18]
+}
+&lt;/pre&gt;
+&lt;p&gt;As our payload is going to be file content i.e. String, we will split the content with new line char &amp;#8220;\n&amp;#8221;. Note the parenthesis used for `payload splitBy &amp;#8220;\n&amp;#8221;` which makes the output of that expression, input for map. Now, we have split our payload by newline so inside map we will be reading each line from our file and can be accessed with default alias $.&lt;/p&gt;
+&lt;p&gt;As per our record definition, Id field starts at 0 and is of 3 character long. So we map our Id by using &lt;a href=&quot;https://docs.mulesoft.com/mule-user-guide/v/3.7/dataweave-reference-documentation#range-selector&quot; target=&quot;_blank&quot;&gt;Range Selector on String&lt;/a&gt; $[0..2] which is $[startIndex..endIndex]. Similarly we can select Day and Shout also.&lt;/p&gt;
+&lt;p&gt;We have intentionally used &amp;#8220;\n&amp;#8221; instead of &amp;#8220;\r\n&amp;#8221; to make sure our code works on windows as well as UNIX. Note that, for the last field our actual file content ends at 18th position but on windows formatted files, there should be &amp;#8220;\r&amp;#8221; at 19th position. As we will only map until last fixed position, &amp;#8220;\r&amp;#8221; should not be a problem. In case you see carriage returns in output then most probably you have included this last character in your output too.&lt;/p&gt;
+&lt;p&gt;Now, we have seen how we can split the fields in dataweave. You can actually write any logic on the fields. For example, to avoid any empty spaces in shout field we can use trim function.&lt;/p&gt;
+&lt;pre class=&quot;brush: plain; title=; notranslate&quot; title=&quot;&quot;&gt;shout: trim $[6:18]
+
+&lt;/pre&gt;
+&lt;p&gt;Here is our output from above transformation &amp;#8211;&lt;/p&gt;
+&lt;pre&gt;[
+  {
+    &quot;Id&quot;: &quot;001&quot;,
+    &quot;Day&quot;: &quot;MON&quot;,
+    &quot;Shout&quot;: &quot;STARTWORK&quot;
+  },
+  {
+    &quot;Id&quot;: &quot;001&quot;,
+    &quot;Day&quot;: &quot;TUE&quot;,
+    &quot;Shout&quot;: &quot;PROGRESSWORK&quot;
+  },
+  {
+    &quot;Id&quot;: &quot;001&quot;,
+    &quot;Day&quot;: &quot;WED&quot;,
+    &quot;Shout&quot;: &quot;TAKEABREAK&quot;
+  },
+  {
+    &quot;Id&quot;: &quot;001&quot;,
+    &quot;Day&quot;: &quot;THU&quot;,
+    &quot;Shout&quot;: &quot;RESUMEWORK&quot;
+  },
+  {
+    &quot;Id&quot;: &quot;001&quot;,
+    &quot;Day&quot;: &quot;FRI&quot;,
+    &quot;Shout&quot;: &quot;FINISHWORK&quot;
+  },
+  {
+    &quot;Id&quot;: &quot;001&quot;,
+    &quot;Day&quot;: &quot;SAT&quot;,
+    &quot;Shout&quot;: &quot;CHILLDOWN&quot;
+  },
+  {
+    &quot;Id&quot;: &quot;001&quot;,
+    &quot;Day&quot;: &quot;SUN&quot;,
+    &quot;Shout&quot;: &quot;GRABABEER&quot;
+  }
+]
+
+&lt;/pre&gt;
+&lt;p&gt;With this example, we learned how to consume fixed width text file with DataWeave in Mule 3.7.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Next see how to&lt;/strong&gt; &lt;a href=&quot;http://www.myjavaacademy.com/create-fixed-width-file-dataweave-mule-3-7/&quot;&gt;create fixed width flat file using DataWeave in Mule 3.7&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Feel free to let me know what you think or any questions, I will be happy to help.&lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>How to deploy wordpress on tomcat</title>
+        <author>
+            <name>Manik Magar</name>
+        </author>
+        <link href="https://myjavaacademy.com/deploy-wordpress-tomcat/"/>
+        <updated>2016-04-12T00:00:00Z</updated>
+        <id>https://myjavaacademy.com/deploy-wordpress-tomcat/</id>
+        <category term="Wordpress"/>
+        <content type="html">
+            &lt;p&gt;&lt;a href=&quot;http://wordpress.org&quot; target=&quot;_blank&quot;&gt;WordPress&lt;/a&gt; is a very popular content management system to create Blogs and websites.&lt;/p&gt;
+&lt;p&gt;If you have existing java application hosted on tomcat server then adding wordpress to same tomcat might save in terms of memory and resource utilization.&lt;/p&gt;
+&lt;p&gt;Now you can deploy wordpress on any java based application server like tomcat, thanks to &lt;a href=&quot;http://quercus.caucho.com/&quot; target=&quot;_blank&quot;&gt;Quercus&lt;/a&gt;.&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;Quercus is Caucho Technology&amp;#8217;s 100% Java implementation of PHP 5 released under the Open Source GPL license. Quercus comes with many PHP modules and extensions like PDF, PDO, MySQL, and JSON. Quercus allows for tight integration of Java services with PHP scripts, so using PHP with JMS or Grails is a quick and painless endeavor.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;It has been more simplified by &lt;a href=&quot;http://bonfab.io/2016/01/jwordpress-4-4-1/&quot; target=&quot;_blank&quot;&gt;bonfab.io&lt;/a&gt; which created a maven based WAR project that includes Quercus and wordpress.&lt;/p&gt;
+&lt;p&gt;For more updates, you can follow &amp;#8211; &lt;a href=&quot;http://bonfab.io/2016/01/jwordpress-4-4-1/&quot; target=&quot;_blank&quot;&gt;bonfab.io blog&lt;/a&gt; but here are steps for quick reference &amp;#8211;&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;Download JWordpress war from &lt;a href=&quot;https://bitbucket.org/bfx/jwordpress&quot; target=&quot;_blank&quot;&gt;here&lt;/a&gt;.&lt;/li&gt;
+  &lt;li&gt;Download mysql java connector jar from &lt;a href=&quot;https://dev.mysql.com/downloads/connector/j/&quot; target=&quot;_blank&quot;&gt;here&lt;/a&gt; and add it in WEB-INF/lib.&lt;/li&gt;
+  &lt;li&gt;If you are using &lt;a href=&quot;https://mariadb.com&quot; target=&quot;_blank&quot;&gt;MariaDB&lt;/a&gt;, then get the mariadb java connector from &lt;a href=&quot;https://mariadb.com/kb/en/mariadb/about-mariadb-connector-j/&quot; target=&quot;_blank&quot;&gt;here&lt;/a&gt;.&lt;/li&gt;
+  &lt;li&gt;Deploy this WAR to tomcat and start the tomcat.&lt;/li&gt;
+  &lt;li&gt;Make sure you create one database user in mysql/mariadb with one empty database for our new wordpress.&lt;/li&gt;
+  &lt;li&gt;Access &lt;a href=&quot;http://localhost:8080/JWordpress&quot;&gt;http://localhost:8080/JWordpress&lt;/a&gt; and you should see the famous 5 minute setup of wordpress. Configure the database and you should be all set.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;You can even create this war with Maven as described on &lt;a href=&quot;https://bitbucket.org/bfx/jwordpress&quot; target=&quot;_blank&quot;&gt;JWordpress repository&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Hope that helps!&lt;/p&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>How to configure Mule SMTP connector using iCloud on Mac?</title>
+        <author>
+            <name>Manik Magar</name>
+        </author>
+        <link href="https://myjavaacademy.com/how-to-configure-mule-smtp-connector-on-mac-os-x/"/>
+        <updated>2015-10-11T00:00:00Z</updated>
+        <id>https://myjavaacademy.com/how-to-configure-mule-smtp-connector-on-mac-os-x/</id>
+        <category term="Mule ESB"/>
+        <content type="html">
+            &lt;p&gt;If you are working on Mule ESB and wondering how to configure SMTP connector in Mule flow to send emails then below are steps that might help you to do it.&lt;/p&gt;
+&lt;p&gt;Few Points before we start &amp;#8211;&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;I am on MAC OS X El Capitan (Latest version as of 10/10/2015)&lt;/li&gt;
+  &lt;li&gt;I am using Mule Anypoint Studio 5.3.1 and Mule Enterprise Runtime 3.7 (current latest)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;In my demo application, I have one flow which uses DataWeave to convert XML file into JASON format. I wanted to email thisJASON data using Mule. I have two flows here &amp;#8211;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Flow 1: Generate JASON file&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;Read the XML file using File inbound connector.&lt;/li&gt;
+  &lt;li&gt;Convert it into JASON using DataWeave.&lt;/li&gt;
+  &lt;li&gt;Write JASON file to file system using File Outbound connector.&lt;/li&gt;
+  &lt;li&gt;Write converted JASON string to VM endpoint&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;a href=&quot;https://i2.wp.com/www.myjavaacademy.com/wp-content/uploads/2015/10/mule-demo-flow1.png&quot;&gt;&lt;img class=&quot;alignnone size-medium wp-image-103&quot; src=&quot;https://i2.wp.com/www.myjavaacademy.com/wp-content/uploads/2015/10/mule-demo-flow1.png?resize=300%2C100&quot; alt=&quot;mule-demo-flow1&quot; data-recalc-dims=&quot;1&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Flow 2: Send content via email&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://i0.wp.com/www.myjavaacademy.com/wp-content/uploads/2015/10/mule-demo-flow2.png&quot;&gt;&lt;img class=&quot;alignnone size-medium wp-image-104&quot; src=&quot;https://i0.wp.com/www.myjavaacademy.com/wp-content/uploads/2015/10/mule-demo-flow2.png?resize=300%2C133&quot; alt=&quot;mule-demo-flow2&quot; data-recalc-dims=&quot;1&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;Listen to the content on same VM endpoint where it is being written in Flow 1&lt;/li&gt;
+  &lt;li&gt;Configure SMTP to send out email using iCloud SMTP server. Below are the configuration properties&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;a href=&quot;https://i1.wp.com/www.myjavaacademy.com/wp-content/uploads/2015/10/smtp_properties.png&quot;&gt;&lt;img class=&quot;alignnone size-medium wp-image-105&quot; src=&quot;https://i1.wp.com/www.myjavaacademy.com/wp-content/uploads/2015/10/smtp_properties.png?resize=300%2C134&quot; alt=&quot;SMTP_Properties&quot; data-recalc-dims=&quot;1&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;iCloud SMTP servers as per &amp;#8211; https://support.apple.com/en-us/HT202304&lt;/p&gt;
+&lt;p&gt;Host: smtp.mail.me.com&lt;/p&gt;
+&lt;p&gt;Port:587&lt;/p&gt;
+&lt;p&gt;User: This should be your icloud id without @icloud.com. I tried with @icloud.com and it fails to start.&lt;/p&gt;
+&lt;p&gt;Password: your iCloud password&lt;/p&gt;
+&lt;p&gt;To: Recipient&amp;#8217;s email id&lt;/p&gt;
+&lt;p&gt;From: This has to be your complete iCloud email id. Using any other email id not associated with your iCloud account would result in error &amp;#8211; &amp;#8220;&lt;span class=&quot;s1&quot;&gt;com.sun.mail.smtp.SMTPSendFailedException&lt;/span&gt;: 550 5.7.0 From address is not one of your addresses.&amp;#8221;&lt;/p&gt;
+&lt;p&gt;After all these settings, If I now start my Mule Server and provide the input file, Flow 1 converts the file to JASON and Flow 2 sends out that data to target recipient using my iCloud account.&lt;/p&gt;
+&lt;p&gt;Hope this helps!&lt;/p&gt;
+&lt;p&gt;Happy Coding!&lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>Using HTTP Session information in Spring MVC Testing</title>
+        <author>
+            <name>Manik Magar</name>
+        </author>
+        <link href="https://myjavaacademy.com/using-http-session-information-in-spring-mvc-testing/"/>
+        <updated>2013-01-21T00:00:00Z</updated>
+        <id>https://myjavaacademy.com/using-http-session-information-in-spring-mvc-testing/</id>
+        <category term="JUnit"/>
+        <category term="Spring MVC"/>
+        <content type="html">
+            &lt;p&gt;With Spring 3.2, MVC testing is now integrated in the framework itself as Spring-test project. These are simple and easy ways to test your MVC. A simple introduction can be read &lt;a href=&quot;http://blog.springsource.org/2012/11/12/spring-framework-3-2-rc1-spring-mvc-test-framework/&quot; target=&quot;_blank&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;A very common scenario in any web application is dependency on User Authenticated Sessions in-between multiple requests.&lt;/p&gt;
+&lt;p&gt;For a usual MVC testing we can write a test case to test functionality. We will see here how we can use applications Authentication service to authenticate user and use its session across multiple requests.&lt;/p&gt;
+&lt;p&gt;Here is a pom.xml &amp;#8211;&lt;/p&gt;
+&lt;pre class=&quot;csharpcode&quot;&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;project&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;xmlns&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;http://maven.apache.org/POM/4.0.0&quot;&lt;/span&gt; 
+&lt;span class=&quot;attr&quot;&gt;xmlns:xsi&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&lt;/span&gt; 
+&lt;span class=&quot;attr&quot;&gt;xsi:schemaLocation&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;http://maven.apache.org/POM/4.0.0 
+http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;modelVersion&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;4.0.0&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;modelVersion&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;artifactId&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;SpringMVC&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;artifactId&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;packaging&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;war&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;packaging&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;SpringMVC&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;dependencies&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;dependency&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+          &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;groupId&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;org.springframework&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;groupId&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+          &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;artifactId&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;spring-webmvc&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;artifactId&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+          &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;3.2.0.RELEASE&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;dependency&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;dependency&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+          &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;groupId&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;org.springframework&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;groupId&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+          &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;artifactId&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;spring-test&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;artifactId&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+          &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;3.2.0.RELEASE&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;dependency&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;dependency&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+          &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;groupId&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;junit&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;groupId&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+          &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;artifactId&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;junit&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;artifactId&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+          &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;4.10&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;dependency&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;dependency&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+          &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;groupId&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;javax.servlet&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;groupId&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+          &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;artifactId&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;servlet-api&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;artifactId&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+          &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;3.0-alpha-1&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+          &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;scope&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;provided&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;scope&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;dependency&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+     &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;dependency&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;groupId&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;com.jayway.jsonpath&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;groupId&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;artifactId&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;json-path&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;artifactId&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;0.8.1&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;scope&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;compile&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;scope&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;optional&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;true&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;optional&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;dependency&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;dependency&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+          &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;groupId&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;org.codehaus.jackson&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;groupId&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+          &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;artifactId&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;jackson-mapper-asl&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;artifactId&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+          &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;1.9.11&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;dependency&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+
+      &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;dependency&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+          &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;groupId&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;org.springframework&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;groupId&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+          &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;artifactId&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;spring-core&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;artifactId&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+          &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;3.2.0.RELEASE&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;dependency&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;dependency&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+          &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;groupId&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;org.codehaus.jackson&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;groupId&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+          &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;artifactId&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;jackson-core-asl&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;artifactId&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+          &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;1.9.11&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;dependency&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;dependencies&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;1.0.0&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;groupId&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;com.mms.blogs&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;groupId&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;project&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/pre&gt;
+&lt;p&gt;&amp;#160;&lt;/p&gt;
+&lt;p&gt;Let’s configure Spring MVC. Here is SpringMVC-context.xml &amp;#8211;&lt;/p&gt;
+&lt;pre class=&quot;csharpcode&quot;&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;?&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;xml&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;1.0&quot;&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;encoding&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;UTF-8&quot;&lt;/span&gt;?&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;beans&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;xmlns&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;http://www.springframework.org/schema/beans&quot;&lt;/span&gt;
+        &lt;span class=&quot;attr&quot;&gt;xmlns:context&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;http://www.springframework.org/schema/context&quot;&lt;/span&gt;
+        &lt;span class=&quot;attr&quot;&gt;xmlns:mvc&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;http://www.springframework.org/schema/mvc&quot;&lt;/span&gt;
+    &lt;span class=&quot;attr&quot;&gt;xmlns:xsi&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&lt;/span&gt;
+    &lt;span class=&quot;attr&quot;&gt;xsi:schemaLocation&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;http://www.springframework.org/schema/beans
+                     http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+                     http://www.springframework.org/schema/mvc
+                     http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+                     http://www.springframework.org/schema/context
+                     http://www.springframework.org/schema/context/spring-context-3.2.xsd&quot;&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+                     
+    
+    &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;mvc:annotation-driven&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;/&amp;gt;&lt;/span&gt;
+    
+    
+    &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;context:component-scan&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;base-package&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;com.mms.blogs.demo.SpringMVC&quot;&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;/&amp;gt;&lt;/span&gt;
+
+    &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;bean&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;org.springframework.web.servlet.view.InternalResourceViewResolver&quot;&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;property&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;prefix&quot;&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;/WEB-INF/jsp/&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;property&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;property&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;suffix&quot;&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;.jsp&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;property&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;bean&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+
+&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;beans&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/pre&gt;
+&lt;p&gt;&amp;#160;&lt;/p&gt;
+&lt;p&gt;web.ml&lt;/p&gt;
+&lt;pre class=&quot;csharpcode&quot;&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;?&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;xml&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;1.0&quot;&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;encoding&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;UTF-8&quot;&lt;/span&gt;?&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;web-app&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;xmlns:xsi&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&lt;/span&gt; 
+&lt;span class=&quot;attr&quot;&gt;xmlns&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;http://java.sun.com/xml/ns/javaee&quot;&lt;/span&gt; 
+&lt;span class=&quot;attr&quot;&gt;xmlns:web&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd&quot;&lt;/span&gt; 
+&lt;span class=&quot;attr&quot;&gt;xsi:schemaLocation&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;http://java.sun.com/xml/ns/javaee 
+http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd&quot;&lt;/span&gt; 
+&lt;span class=&quot;attr&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;WebApp_ID&quot;&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;3.0&quot;&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;display-name&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;SpringMVC&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;display-name&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+  
+  &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;context-param&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;param-name&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;contextConfigLocation&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;param-name&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;param-value&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;/WEB-INF/classes/SpringMVC-context.xml&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;param-value&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;context-param&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+  
+  &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;listener&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;listener-class&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;org.springframework.web.context.ContextLoaderListener&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;listener-class&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;listener&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+  
+  &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;servlet&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;servlet-name&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;SpringMVC&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;servlet-name&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;servlet-class&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;org.springframework.web.servlet.DispatcherServlet&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;servlet-class&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;servlet&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;servlet-mapping&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;servlet-name&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;SpringMVC&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;servlet-name&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;url-pattern&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;/*&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;url-pattern&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;servlet-mapping&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+  
+  &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;welcome-file-list&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;welcome-file&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;index.html&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;welcome-file&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;welcome-file&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;index.htm&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;welcome-file&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;welcome-file&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;index.jsp&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;welcome-file&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;welcome-file&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;default.html&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;welcome-file&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;welcome-file&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;default.htm&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;welcome-file&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;welcome-file&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;default.jsp&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;welcome-file&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;welcome-file-list&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;web-app&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/pre&gt;
+&lt;p&gt;&amp;#160;&lt;/p&gt;
+&lt;p&gt;Until here was all configuration part of the application. Now let’s see the java classes involved in our testing.&lt;/p&gt;
+&lt;p&gt;User, a value object that will hold the user information and will reside in session object once user passes authentication.&lt;/p&gt;
+&lt;pre class=&quot;csharpcode&quot;&gt;package com.mms.blogs.demo.SpringMVC.vo;
+
+&lt;span class=&quot;kwrd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kwrd&quot;&gt;class&lt;/span&gt; User {
+
+    &lt;span class=&quot;kwrd&quot;&gt;private&lt;/span&gt; String userid;
+    &lt;span class=&quot;kwrd&quot;&gt;private&lt;/span&gt; String firstName;
+    &lt;span class=&quot;kwrd&quot;&gt;private&lt;/span&gt; String lastName;
+    &lt;span class=&quot;kwrd&quot;&gt;public&lt;/span&gt; String getUserid() {
+        &lt;span class=&quot;kwrd&quot;&gt;return&lt;/span&gt; userid;
+    }
+    &lt;span class=&quot;kwrd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kwrd&quot;&gt;void&lt;/span&gt; setUserid(String userid) {
+        &lt;span class=&quot;kwrd&quot;&gt;this&lt;/span&gt;.userid = userid;
+    }
+    &lt;span class=&quot;kwrd&quot;&gt;public&lt;/span&gt; String getFirstName() {
+        &lt;span class=&quot;kwrd&quot;&gt;return&lt;/span&gt; firstName;
+    }
+    &lt;span class=&quot;kwrd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kwrd&quot;&gt;void&lt;/span&gt; setFirstName(String firstName) {
+        &lt;span class=&quot;kwrd&quot;&gt;this&lt;/span&gt;.firstName = firstName;
+    }
+    &lt;span class=&quot;kwrd&quot;&gt;public&lt;/span&gt; String getLastName() {
+        &lt;span class=&quot;kwrd&quot;&gt;return&lt;/span&gt; lastName;
+    }
+    &lt;span class=&quot;kwrd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kwrd&quot;&gt;void&lt;/span&gt; setLastName(String lastName) {
+        &lt;span class=&quot;kwrd&quot;&gt;this&lt;/span&gt;.lastName = lastName;
+    }
+}&lt;/pre&gt;
+&lt;p&gt;Let’s take a look at LoginController. This will be an entry point to our application where User will be authenticated and a session object will be set for the user. Subsequent requests from this user will expect a User object in session with his information. More info on Session Attributes can be read on &lt;a href=&quot;http://vard-lokkur.blogspot.com/2011/01/spring-mvc-session-attributes-handling.html&quot; title=&quot;http://vard-lokkur.blogspot.com/2011/01/spring-mvc-session-attributes-handling.html&quot;&gt;http://vard-lokkur.blogspot.com/2011/01/spring-mvc-session-attributes-handling.html&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Note a declaration of @SessionAttribute with key as “user” and type as “User”. This means, when we create a User object and put it in return model with key “user”, framework will synchronize this object with Session and put it in session.&lt;/p&gt;
+&lt;p&gt;&amp;#160;&lt;/p&gt;
+&lt;pre class=&quot;csharpcode&quot;&gt;package com.mms.blogs.demo.SpringMVC.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
+
+import com.mms.blogs.demo.SpringMVC.vo.User;
+
+@Controller
+@RequestMapping(&lt;span class=&quot;kwrd&quot;&gt;value&lt;/span&gt;=&lt;span class=&quot;str&quot;&gt;&quot;/login&quot;&lt;/span&gt;,method=RequestMethod.POST)
+@SessionAttributes(&lt;span class=&quot;kwrd&quot;&gt;value&lt;/span&gt;=&lt;span class=&quot;str&quot;&gt;&quot;user&quot;&lt;/span&gt;,types=User.&lt;span class=&quot;kwrd&quot;&gt;class&lt;/span&gt;)
+&lt;span class=&quot;kwrd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kwrd&quot;&gt;class&lt;/span&gt; LoginController {
+
+    @RequestMapping(&lt;span class=&quot;kwrd&quot;&gt;value&lt;/span&gt;=&lt;span class=&quot;str&quot;&gt;&quot;/authenticate&quot;&lt;/span&gt;,method=RequestMethod.POST)
+    &lt;span class=&quot;kwrd&quot;&gt;public&lt;/span&gt; String authenticate(@RequestParam String userid, Model model){
+        &lt;span class=&quot;rem&quot;&gt;// effectively you can put your any LoginService here to authenticate user&lt;/span&gt;
+        User user = &lt;span class=&quot;kwrd&quot;&gt;new&lt;/span&gt; User();
+        user.setUserid(userid);
+        user.setFirstName(&lt;span class=&quot;str&quot;&gt;&quot;Manik&quot;&lt;/span&gt;);
+        user.setLastName(&lt;span class=&quot;str&quot;&gt;&quot;M&quot;&lt;/span&gt;);
+        &lt;span class=&quot;rem&quot;&gt;// Since we have defined SessionAttribute user, this object will be stored at SessionLevel&lt;/span&gt;
+        model.addAttribute(&lt;span class=&quot;str&quot;&gt;&quot;user&quot;&lt;/span&gt;, user);
+        
+        &lt;span class=&quot;kwrd&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;str&quot;&gt;&quot;Home&quot;&lt;/span&gt;;
+    }
+    
+}&lt;/pre&gt;
+&lt;p&gt;&amp;#160;&lt;/p&gt;
+&lt;p&gt;&amp;#160;&lt;/p&gt;
+&lt;p&gt;Now as we have LoginController ready, lets see another controller that will consume this User session to print user name. Here is a simple EchoUserController that gets the User object from session and returns to caller. something to note here &amp;#8211;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;This declares a SessionAttribute user, so will expect one pre-set in session.&lt;/li&gt;
+  &lt;li&gt;getUser method has a argument with @ModelAttribute(“user”). This means when this method is called, framework will expect a session attribute with key “user” and type “User”. If this exists, framework will pass it to the method else it will throw an exception for missing session attribute and call to invoke this method will fail.&lt;/li&gt;
+  &lt;li&gt;For some reason, if session attribute with key “user” exists but value is null then we can implement our own check.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&amp;#160;&lt;/p&gt;
+&lt;p&gt;&amp;#160;&lt;/p&gt;
+&lt;pre class=&quot;csharpcode&quot;&gt;package com.mms.blogs.demo.SpringMVC.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
+
+import com.mms.blogs.demo.SpringMVC.vo.User;
+
+@Controller
+@SessionAttributes(&lt;span class=&quot;kwrd&quot;&gt;value&lt;/span&gt;=&lt;span class=&quot;str&quot;&gt;&quot;user&quot;&lt;/span&gt;,types=User.&lt;span class=&quot;kwrd&quot;&gt;class&lt;/span&gt;)
+@RequestMapping(&lt;span class=&quot;kwrd&quot;&gt;value&lt;/span&gt;=&lt;span class=&quot;str&quot;&gt;&quot;/echo&quot;&lt;/span&gt;)
+&lt;span class=&quot;kwrd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kwrd&quot;&gt;class&lt;/span&gt; EchoUserController {
+
+    @RequestMapping(&lt;span class=&quot;kwrd&quot;&gt;value&lt;/span&gt;=&lt;span class=&quot;str&quot;&gt;&quot;/getuser&quot;&lt;/span&gt;,method=RequestMethod.POST)
+    &lt;span class=&quot;kwrd&quot;&gt;public&lt;/span&gt; @ResponseBody User getUser(@ModelAttribute(&lt;span class=&quot;str&quot;&gt;&quot;user&quot;&lt;/span&gt;) User user, BindingResult result, Model model){
+        &lt;span class=&quot;kwrd&quot;&gt;if&lt;/span&gt;(user == &lt;span class=&quot;kwrd&quot;&gt;null&lt;/span&gt;){
+            &lt;span class=&quot;kwrd&quot;&gt;throw&lt;/span&gt; &lt;span class=&quot;kwrd&quot;&gt;new&lt;/span&gt; RuntimeException(&lt;span class=&quot;str&quot;&gt;&quot;User not found&quot;&lt;/span&gt;);
+        }
+        &lt;span class=&quot;kwrd&quot;&gt;return&lt;/span&gt; user;
+    }
+}&lt;/pre&gt;
+&lt;p&gt;&amp;#160;&lt;/p&gt;
+&lt;p&gt;So we are all set with a layout to test our requests using Spring MVC test. Look at the below test class and we will go over each test case &amp;#8211;&lt;/p&gt;
+&lt;pre class=&quot;csharpcode&quot;&gt;package com.mms.blogs.demo.SpringMVC.Controller;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mock.web.MockHttpSession;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
+import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.RequestBuilder;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
+
+@WebAppConfiguration(&lt;span class=&quot;kwrd&quot;&gt;value&lt;/span&gt;=&lt;span class=&quot;str&quot;&gt;&quot;src/main/webapp&quot;&lt;/span&gt;)
+@ContextConfiguration(locations={&lt;span class=&quot;str&quot;&gt;&quot;classpath:SpringMVC-context.xml&quot;&lt;/span&gt;})
+&lt;span class=&quot;kwrd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kwrd&quot;&gt;class&lt;/span&gt; EchoUserControllerTest extends AbstractJUnit4SpringContextTests {
+
+    @Autowired
+    &lt;span class=&quot;kwrd&quot;&gt;private&lt;/span&gt; WebApplicationContext webapp;
+    
+    &lt;span class=&quot;kwrd&quot;&gt;private&lt;/span&gt; MockMvc mockMvc;
+    
+    @Before
+    &lt;span class=&quot;kwrd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kwrd&quot;&gt;void&lt;/span&gt; setup(){
+        &lt;span class=&quot;kwrd&quot;&gt;this&lt;/span&gt;.mockMvc = MockMvcBuilders.webAppContextSetup(webapp).build();
+    }
+    
+    @Test
+    &lt;span class=&quot;kwrd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kwrd&quot;&gt;void&lt;/span&gt; testAuthenticate() throws Exception{
+        &lt;span class=&quot;kwrd&quot;&gt;this&lt;/span&gt;.mockMvc.perform(MockMvcRequestBuilders.post(&lt;span class=&quot;str&quot;&gt;&quot;/login/authenticate&quot;&lt;/span&gt;)
+                                .param(&lt;span class=&quot;str&quot;&gt;&quot;userid&quot;&lt;/span&gt;, &lt;span class=&quot;str&quot;&gt;&quot;MMS1&quot;&lt;/span&gt;))
+                                .andExpect(MockMvcResultMatchers.status().isOk())
+                                .andExpect(MockMvcResultMatchers.model().attributeExists(&lt;span class=&quot;str&quot;&gt;&quot;user&quot;&lt;/span&gt;))
+                                .andDo(MockMvcResultHandlers.print());
+    }
+    
+    @Test
+    &lt;span class=&quot;kwrd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kwrd&quot;&gt;void&lt;/span&gt; testGetUser1() throws Exception{
+        
+        &lt;span class=&quot;kwrd&quot;&gt;this&lt;/span&gt;.mockMvc.perform(MockMvcRequestBuilders.post(&lt;span class=&quot;str&quot;&gt;&quot;/echo/getuser&quot;&lt;/span&gt;)).
+            andExpect(MockMvcResultMatchers.jsonPath(&lt;span class=&quot;str&quot;&gt;&quot;$.userid&quot;&lt;/span&gt;).&lt;span class=&quot;kwrd&quot;&gt;value&lt;/span&gt;(&lt;span class=&quot;str&quot;&gt;&quot;mms&quot;&lt;/span&gt;));
+    }
+    
+    @Test
+    &lt;span class=&quot;kwrd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kwrd&quot;&gt;void&lt;/span&gt; testGetUser2() throws Exception{
+    
+        ResultActions auth =&lt;span class=&quot;kwrd&quot;&gt;this&lt;/span&gt;.mockMvc.perform(MockMvcRequestBuilders.post(&lt;span class=&quot;str&quot;&gt;&quot;/login/authenticate&quot;&lt;/span&gt;)
+                                                .param(&lt;span class=&quot;str&quot;&gt;&quot;userid&quot;&lt;/span&gt;, &lt;span class=&quot;str&quot;&gt;&quot;MMS1&quot;&lt;/span&gt;));
+        
+        MvcResult result = auth.andReturn();
+        
+        MockHttpSession session = (MockHttpSession)result.getRequest().getSession();
+        
+        RequestBuilder echoUserReq = MockMvcRequestBuilders.post(&lt;span class=&quot;str&quot;&gt;&quot;/echo/getuser&quot;&lt;/span&gt;).session(session);
+        
+        &lt;span class=&quot;kwrd&quot;&gt;this&lt;/span&gt;.mockMvc.perform(echoUserReq)
+                .andDo(MockMvcResultHandlers.print()).
+            andExpect(MockMvcResultMatchers.jsonPath(&lt;span class=&quot;str&quot;&gt;&quot;$.userid&quot;&lt;/span&gt;).&lt;span class=&quot;kwrd&quot;&gt;value&lt;/span&gt;(&lt;span class=&quot;str&quot;&gt;&quot;MMS1&quot;&lt;/span&gt;));
+    }
+}&lt;/pre&gt;
+&lt;p&gt;&amp;#160;&lt;/p&gt;
+&lt;p&gt;setup() method will initialize and build a MockMVC object for us using our webapp and configuration.&lt;/p&gt;
+&lt;p&gt;&amp;#160;&lt;/p&gt;
+&lt;p&gt;testAuthenticate() tests our LoginController.authenticate(). It passes userid to authenticate and setup session. This test should pass.&lt;/p&gt;
+&lt;p&gt;&amp;#160;&lt;/p&gt;
+&lt;p&gt;testGetUser1() tests our EchoUserController.getUser() method. This test case call getUser and expects value of userid property in returned User object to match with “MMS1”. So as we have seen earlier, getUser method expects a session attribute user. Every request in MockMVC is independent of other. Calling testAuthenticate() first and the testGetUser1() will run different contexts and hence session set by former will not be visible to later. Here, testGetUser1()&amp;#160; is expected to fail for missing user attribute in session.&lt;/p&gt;
+&lt;p&gt;&amp;#160;&lt;/p&gt;
+&lt;p&gt;testGetUser2() agains tests getUser() method but here difference is we will be providing authenticated session to it. To do so, we will call authenticate method first &amp;#8211; &lt;/p&gt;
+&lt;pre class=&quot;csharpcode&quot;&gt;ResultActions auth =&lt;span class=&quot;kwrd&quot;&gt;this&lt;/span&gt;.mockMvc
+                .perform(MockMvcRequestBuilders.post(&lt;span class=&quot;str&quot;&gt;&quot;/login/authenticate&quot;&lt;/span&gt;)
+                                                .param(&lt;span class=&quot;str&quot;&gt;&quot;userid&quot;&lt;/span&gt;, &lt;span class=&quot;str&quot;&gt;&quot;MMS1&quot;&lt;/span&gt;));&lt;/pre&gt;
+&lt;p&gt;&amp;#160;&lt;/p&gt;
+&lt;p&gt;This call will authenticate user and set up a session for it. Let’s get the result of it in ‘auth’ of type ResultAction.&lt;/p&gt;
+&lt;p&gt;Second step is now to retrieve Session object from this response to use further.&lt;/p&gt;
+&lt;pre class=&quot;csharpcode&quot;&gt;MvcResult result = auth.andReturn();
+            
+MockHttpSession session = (MockHttpSession)result.getRequest().getSession();&lt;/pre&gt;
+&lt;p&gt;&amp;#160;&lt;/p&gt;
+&lt;p&gt;So we got an authenticated session for this user. Now we can pass this session to any other request. Let’s call our getUser() method again but this time setting session on the request.&lt;/p&gt;
+&lt;pre class=&quot;csharpcode&quot;&gt;RequestBuilder echoUserReq = MockMvcRequestBuilders.post(&lt;span class=&quot;str&quot;&gt;&quot;/echo/getuser&quot;&lt;/span&gt;).session(session);&lt;/pre&gt;
+&lt;p&gt;Here, we build our request and attach a session to it. With this we have made an authenticated session available to this request to getuser. Once done, below test step is expected to pass, returning User object.&lt;/p&gt;
+&lt;pre class=&quot;csharpcode&quot;&gt;&lt;span class=&quot;kwrd&quot;&gt;this&lt;/span&gt;.mockMvc.perform(echoUserReq)
+                .andDo(MockMvcResultHandlers.print()).
+            andExpect(MockMvcResultMatchers.jsonPath(&lt;span class=&quot;str&quot;&gt;&quot;$.userid&quot;&lt;/span&gt;).&lt;span class=&quot;kwrd&quot;&gt;value&lt;/span&gt;(&lt;span class=&quot;str&quot;&gt;&quot;MMS1&quot;&lt;/span&gt;));&lt;/pre&gt;
+&lt;p&gt;&amp;#160;&lt;/p&gt;
+&lt;p&gt;&amp;#160;&lt;/p&gt;
+&lt;p&gt;We are done! See, it’s so easy to use sessions in testing. This also makes sure we are testing our getUser with real sessions created by actual LoginController and not any dummy session created for testing purpose where there is a chance that it may differ from actual sessions created by application via LoginController.&lt;/p&gt;
+&lt;p&gt;&amp;#160;&lt;/p&gt;
+&lt;p&gt;Enjoy!!&lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>Spring MyBatis Integration and JUnit Testing using Spring’s embedded database</title>
+        <author>
+            <name>Manik Magar</name>
+        </author>
+        <link href="https://myjavaacademy.com/spring-mybatis-integration-and-junit-testing-using-springs-embedded-database/"/>
+        <updated>2013-01-01T00:00:00Z</updated>
+        <id>https://myjavaacademy.com/spring-mybatis-integration-and-junit-testing-using-springs-embedded-database/</id>
+        <category term="JUnit"/>
+        <category term="MyBatis"/>
+        <category term="Spring Framework"/>
+        <content type="html">
+            &lt;p&gt;Let’s look at a simple example to see how we can integrate MyBatis in Spring Application.&lt;/p&gt;
+&lt;p&gt;Maven POM for the demo &amp;#8211;&lt;/p&gt;
+&lt;pre class=&quot;xml&quot;&gt;&amp;lt;project xmlns=&lt;span class=&quot;str&quot;&gt;&quot;http://maven.apache.org/POM/4.0.0&quot;&lt;/span&gt; 
+xmlns:xsi=&lt;span class=&quot;str&quot;&gt;&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&lt;/span&gt; 
+xsi:schemaLocation=&lt;span class=&quot;str&quot;&gt;&quot;http://maven.apache.org/POM/4.0.0 
+http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&lt;/span&gt;&amp;gt;
+  &amp;lt;modelVersion&amp;gt;4.0.0&amp;lt;/modelVersion&amp;gt;
+  &amp;lt;groupId&amp;gt;com.mms.blogs&amp;lt;/groupId&amp;gt;
+  &amp;lt;artifactId&amp;gt;MyBatisSpringDemo&amp;lt;/artifactId&amp;gt;
+  &amp;lt;version&amp;gt;1.0.0-SNAPSHOT&amp;lt;/version&amp;gt;
+  &amp;lt;packaging&amp;gt;war&amp;lt;/packaging&amp;gt;
+  &amp;lt;name&amp;gt;MyBatisSpringDemo&amp;lt;/name&amp;gt;
+      &amp;lt;dependencies&amp;gt;
+      &amp;lt;dependency&amp;gt;
+          &amp;lt;groupId&amp;gt;org.mybatis&amp;lt;/groupId&amp;gt;
+          &amp;lt;artifact    Id&amp;gt;mybatis-spring&amp;lt;/artifactId&amp;gt;
+          &amp;lt;version&amp;gt;1.1.1&amp;lt;/version&amp;gt;
+      &amp;lt;/dependency&amp;gt;
+      &amp;lt;dependency&amp;gt;
+          &amp;lt;groupId&amp;gt;junit&amp;lt;/groupId&amp;gt;
+          &amp;lt;artifactId&amp;gt;junit&amp;lt;/artifactId&amp;gt;
+          &amp;lt;version&amp;gt;4.10&amp;lt;/version&amp;gt;
+      &amp;lt;/dependency&amp;gt;
+      &amp;lt;dependency&amp;gt;
+          &amp;lt;groupId&amp;gt;org.springframework&amp;lt;/groupId&amp;gt;
+          &amp;lt;artifactId&amp;gt;spring-test&amp;lt;/artifactId&amp;gt;
+          &amp;lt;version&amp;gt;3.2.0.RELEASE&amp;lt;/version&amp;gt;
+      &amp;lt;/dependency&amp;gt;
+      &amp;lt;dependency&amp;gt;
+          &amp;lt;groupId&amp;gt;org.springframework&amp;lt;/groupId&amp;gt;
+          &amp;lt;artifactId&amp;gt;spring-tx&amp;lt;/artifactId&amp;gt;
+          &amp;lt;version&amp;gt;3.2.0.RELEASE&amp;lt;/version&amp;gt;
+      &amp;lt;/dependency&amp;gt;
+      &amp;lt;dependency&amp;gt;
+          &amp;lt;groupId&amp;gt;org.hsqldb&amp;lt;/groupId&amp;gt;
+          &amp;lt;artifactId&amp;gt;hsqldb&amp;lt;/artifactId&amp;gt;
+          &amp;lt;version&amp;gt;2.2.9&amp;lt;/version&amp;gt;
+      &amp;lt;/dependency&amp;gt;
+      &amp;lt;dependency&amp;gt;
+          &amp;lt;groupId&amp;gt;org.springframework&amp;lt;/groupId&amp;gt;
+          &amp;lt;artifactId&amp;gt;spring-core&amp;lt;/artifactId&amp;gt;
+          &amp;lt;version&amp;gt;3.2.0.RELEASE&amp;lt;/version&amp;gt;
+      &amp;lt;/dependency&amp;gt;
+      &amp;lt;dependency&amp;gt;
+          &amp;lt;groupId&amp;gt;org.springframework&amp;lt;/groupId&amp;gt;
+          &amp;lt;artifactId&amp;gt;spring-context&amp;lt;/artifactId&amp;gt;
+          &amp;lt;version&amp;gt;3.2.0.RELEASE&amp;lt;/version&amp;gt;
+      &amp;lt;/dependency&amp;gt;
+  &amp;lt;/dependencies&amp;gt;
+&amp;lt;/project&amp;gt;&lt;/pre&gt;
+&lt;h2&gt;MyBatis Mapper &amp;#8211;&lt;/h2&gt;
+&lt;p&gt;MyBatis is driven by a Mapper Interface that defines the methods to interact against database. SQL mapping code is defined in a xml file defined by the same name of the Mapper Interface.&lt;/p&gt;
+&lt;p&gt;Mapping to work correctly, below three things should match for each mapper &amp;#8211;&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;Interface file name and package&lt;/li&gt;
+  &lt;li&gt;Xml file name and its location should be same as Interface.&lt;/li&gt;
+  &lt;li&gt;namespace in xml file.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;EmployeeMapper.java &amp;#8211;&lt;/p&gt;
+&lt;pre class=&quot;csharpcode&quot;&gt;package com.mms.blogs.demo.mybatisspring.mapper;
+
+import com.mms.blogs.demo.mybatisspring.vo.Employee;
+
+&lt;span class=&quot;kwrd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kwrd&quot;&gt;interface&lt;/span&gt; EmployeeMapper {
+
+    &lt;span class=&quot;kwrd&quot;&gt;public&lt;/span&gt; Employee getEmployeeName(&lt;span class=&quot;kwrd&quot;&gt;long&lt;/span&gt; empId);
+
+    &lt;span class=&quot;kwrd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kwrd&quot;&gt;void&lt;/span&gt; insertEmployee(Employee employee);
+
+}&lt;/pre&gt;
+&lt;p&gt;EmployeeMapper.xml &amp;#8211;&lt;/p&gt;
+&lt;pre class=&quot;csharpcode&quot;&gt;&amp;lt;?xml version=&lt;span class=&quot;str&quot;&gt;&quot;1.0&quot;&lt;/span&gt; encoding=&lt;span class=&quot;str&quot;&gt;&quot;UTF-8&quot;&lt;/span&gt;?&amp;gt;
+&amp;lt;!DOCTYPE mapper PUBLIC &lt;span class=&quot;str&quot;&gt;&quot;-//mybatis.org//DTD Mapper 3.0//EN&quot;&lt;/span&gt; 
+&lt;span class=&quot;str&quot;&gt;&quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;&lt;/span&gt;&amp;gt;
+
+&amp;lt;mapper &lt;span class=&quot;kwrd&quot;&gt;namespace&lt;/span&gt;=&lt;span class=&quot;str&quot;&gt;&quot;com.mms.blogs.demo.mybatisspring.mapper.EmployeeMapper&quot;&lt;/span&gt;&amp;gt;
+
+    &amp;lt;select id=&lt;span class=&quot;str&quot;&gt;&quot;getEmployeeName&quot;&lt;/span&gt; parameterType=&lt;span class=&quot;str&quot;&gt;&quot;long&quot;&lt;/span&gt;
+        resultType=&lt;span class=&quot;str&quot;&gt;&quot;com.mms.blogs.demo.mybatisspring.vo.Employee&quot;&lt;/span&gt;&amp;gt;
+        SELECT empid, first_name firstName,last_name lastName from employee &lt;span class=&quot;kwrd&quot;&gt;where&lt;/span&gt;
+        empid=#{empid}
+    &amp;lt;/select&amp;gt;
+
+    &amp;lt;insert id=&lt;span class=&quot;str&quot;&gt;&quot;insertEmployee&quot;&lt;/span&gt; parameterType=&lt;span class=&quot;str&quot;&gt;&quot;com.mms.blogs.demo.mybatisspring.vo.Employee&quot;&lt;/span&gt;&amp;gt;
+        insert into employee (empid,first_name,last_name) values
+        (#{empid},#{firstName},#{lastName})
+    &amp;lt;/insert&amp;gt;
+
+&amp;lt;/mapper&amp;gt;&lt;/pre&gt;
+&lt;p&gt;Employee.java – VO Object&lt;/p&gt;
+&lt;pre class=&quot;csharpcode&quot;&gt;package com.mms.blogs.demo.mybatisspring.vo;
+
+import org.springframework.stereotype.Component;
+
+@Component
+&lt;span class=&quot;kwrd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kwrd&quot;&gt;class&lt;/span&gt; Employee {
+    &lt;span class=&quot;kwrd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kwrd&quot;&gt;long&lt;/span&gt; empid;
+    &lt;span class=&quot;kwrd&quot;&gt;private&lt;/span&gt; String firstName;
+    &lt;span class=&quot;kwrd&quot;&gt;private&lt;/span&gt; String lastName;
+    &lt;span class=&quot;kwrd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kwrd&quot;&gt;long&lt;/span&gt; getEmpid() {
+        &lt;span class=&quot;kwrd&quot;&gt;return&lt;/span&gt; empid;
+    }
+    &lt;span class=&quot;kwrd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kwrd&quot;&gt;void&lt;/span&gt; setEmpid(&lt;span class=&quot;kwrd&quot;&gt;long&lt;/span&gt; empid) {
+        &lt;span class=&quot;kwrd&quot;&gt;this&lt;/span&gt;.empid = empid;
+    }
+    &lt;span class=&quot;kwrd&quot;&gt;public&lt;/span&gt; String getFirstName() {
+        &lt;span class=&quot;kwrd&quot;&gt;return&lt;/span&gt; firstName;
+    }
+    &lt;span class=&quot;kwrd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kwrd&quot;&gt;void&lt;/span&gt; setFirstName(String firstName) {
+        &lt;span class=&quot;kwrd&quot;&gt;this&lt;/span&gt;.firstName = firstName;
+    }
+    &lt;span class=&quot;kwrd&quot;&gt;public&lt;/span&gt; String getLastName() {
+        &lt;span class=&quot;kwrd&quot;&gt;return&lt;/span&gt; lastName;
+    }
+    &lt;span class=&quot;kwrd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kwrd&quot;&gt;void&lt;/span&gt; setLastName(String lastName) {
+        &lt;span class=&quot;kwrd&quot;&gt;this&lt;/span&gt;.lastName = lastName;
+    }
+
+}&lt;/pre&gt;
+&lt;h2&gt;Spring Application Context &amp;#8211;&lt;/h2&gt;
+&lt;p&gt;Following is the application context for this demo &amp;#8211;&lt;/p&gt;
+&lt;pre class=&quot;csharpcode&quot;&gt;&amp;lt;?xml version=&lt;span class=&quot;str&quot;&gt;&quot;1.0&quot;&lt;/span&gt; encoding=&lt;span class=&quot;str&quot;&gt;&quot;UTF-8&quot;&lt;/span&gt;?&amp;gt;
+&amp;lt;beans xmlns=&lt;span class=&quot;str&quot;&gt;&quot;http://www.springframework.org/schema/beans&quot;&lt;/span&gt;
+        xmlns:context=&lt;span class=&quot;str&quot;&gt;&quot;http://www.springframework.org/schema/context&quot;&lt;/span&gt;
+        xmlns:jdbc=&lt;span class=&quot;str&quot;&gt;&quot;http://www.springframework.org/schema/jdbc&quot;&lt;/span&gt;
+    xmlns:xsi=&lt;span class=&quot;str&quot;&gt;&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&lt;/span&gt;
+    xsi:schemaLocation=&lt;span class=&quot;str&quot;&gt;&quot;http://www.springframework.org/schema/beans
+                     http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+                     http://www.springframework.org/schema/context
+                     http://www.springframework.org/schema/context/spring-context-3.2.xsd
+                     http://www.springframework.org/schema/jdbc
+                     http://www.springframework.org/schema/jdbc/spring-jdbc-3.2.xsd&quot;&lt;/span&gt;&amp;gt;
+
+    &amp;lt;context:annotation-config/&amp;gt;
+
+    &amp;lt;context:component-scan &lt;span class=&quot;kwrd&quot;&gt;base&lt;/span&gt;-package=&lt;span class=&quot;str&quot;&gt;&quot;com.mms.blogs.demo.mybatisspring&quot;&lt;/span&gt;&amp;gt;&amp;lt;/context:component-scan&amp;gt;
+
+    &amp;lt;jdbc:embedded-database id=&lt;span class=&quot;str&quot;&gt;&quot;dataSource&quot;&lt;/span&gt;&amp;gt;
+        &amp;lt;jdbc:script location=&lt;span class=&quot;str&quot;&gt;&quot;classpath:schema.sql&quot;&lt;/span&gt;/&amp;gt;
+    &amp;lt;/jdbc:embedded-database&amp;gt;
+
+    &amp;lt;bean id=&lt;span class=&quot;str&quot;&gt;&quot;transactionManager&quot;&lt;/span&gt; &lt;span class=&quot;kwrd&quot;&gt;class&lt;/span&gt;=&lt;span class=&quot;str&quot;&gt;&quot;org.springframework.jdbc.datasource.DataSourceTransactionManager&quot;&lt;/span&gt;&amp;gt;
+        &amp;lt;property name=&lt;span class=&quot;str&quot;&gt;&quot;dataSource&quot;&lt;/span&gt; &lt;span class=&quot;kwrd&quot;&gt;ref&lt;/span&gt;=&lt;span class=&quot;str&quot;&gt;&quot;dataSource&quot;&lt;/span&gt;/&amp;gt;
+    &amp;lt;/bean&amp;gt;
+
+    &amp;lt;bean &lt;span class=&quot;kwrd&quot;&gt;class&lt;/span&gt;=&lt;span class=&quot;str&quot;&gt;&quot;org.mybatis.spring.SqlSessionFactoryBean&quot;&lt;/span&gt; id=&lt;span class=&quot;str&quot;&gt;&quot;sqlSessionFactory&quot;&lt;/span&gt;&amp;gt;
+        &amp;lt;property name=&lt;span class=&quot;str&quot;&gt;&quot;dataSource&quot;&lt;/span&gt; &lt;span class=&quot;kwrd&quot;&gt;ref&lt;/span&gt;=&lt;span class=&quot;str&quot;&gt;&quot;dataSource&quot;&lt;/span&gt;/&amp;gt;
+    &amp;lt;/bean&amp;gt;
+
+    &amp;lt;bean &lt;span class=&quot;kwrd&quot;&gt;class&lt;/span&gt;=&lt;span class=&quot;str&quot;&gt;&quot;org.mybatis.spring.mapper.MapperScannerConfigurer&quot;&lt;/span&gt;&amp;gt;
+        &amp;lt;property name=&lt;span class=&quot;str&quot;&gt;&quot;sqlSessionFactoryBeanName&quot;&lt;/span&gt; &lt;span class=&quot;kwrd&quot;&gt;value&lt;/span&gt;=&lt;span class=&quot;str&quot;&gt;&quot;sqlSessionFactory&quot;&lt;/span&gt;/&amp;gt;
+        &amp;lt;property name=&lt;span class=&quot;str&quot;&gt;&quot;basePackage&quot;&lt;/span&gt; &lt;span class=&quot;kwrd&quot;&gt;value&lt;/span&gt;=&lt;span class=&quot;str&quot;&gt;&quot;com.mms.blogs.demo.mybatisspring.mapper&quot;&lt;/span&gt;/&amp;gt;
+     &amp;lt;/bean&amp;gt;
+
+&amp;lt;/beans&amp;gt;&lt;/pre&gt;
+&lt;ol&gt;
+  &lt;li&gt;Enable annotation config to Autowire our Spring configuration and also Autowire MyBatis mappers where ever needed.&lt;/li&gt;
+  &lt;li&gt;component-scan provides base package to look for components.&lt;/li&gt;
+  &lt;li&gt;TransactionManager to handle transactions&lt;/li&gt;
+  &lt;li&gt;Spring’s embedded database instance. This loads the sample teable Employee into embedded database using sql defined in compile.sql script.&lt;/li&gt;
+  &lt;li&gt;Bean for org.mybatis.spring.SqlSessionFactoryBean to configure the datasource.&lt;/li&gt;
+  &lt;li&gt;MapperScannerConfigurer – This class initializes a bean for each of the mapper interface defined in basePackage and injects sqlSessionFactory instance in it. This enables Autowiring of the mapper interfaces in code.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Schema.sql &amp;#8211;&lt;/p&gt;
+&lt;pre class=&quot;csharpcode&quot;&gt;create table employee(
+    empid BIGINT,
+    first_name varchar(50),
+    last_name varchar(50)
+    );&lt;/pre&gt;
+&lt;p&gt;So with all above configuration MyBatis is now integrated with Spring. Let’s write a simple JUnit to test our integration &amp;#8211;&lt;/p&gt;
+&lt;pre class=&quot;csharpcode&quot;&gt;package com.mms.blogs.demo.mybatisspring.mapper;
+
+import junit.framework.Assert;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import com.mms.blogs.demo.mybatisspring.vo.Employee;
+
+@RunWith(SpringJUnit4ClassRunner.&lt;span class=&quot;kwrd&quot;&gt;class&lt;/span&gt;)
+@ContextConfiguration(&lt;span class=&quot;kwrd&quot;&gt;value&lt;/span&gt;={&lt;span class=&quot;str&quot;&gt;&quot;classpath:applicationContext.xml&quot;&lt;/span&gt;})
+&lt;span class=&quot;kwrd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kwrd&quot;&gt;class&lt;/span&gt; EmployeeTest extends AbstractTransactionalJUnit4SpringContextTests {
+
+    @Autowired
+    &lt;span class=&quot;kwrd&quot;&gt;private&lt;/span&gt; EmployeeMapper employeeMapper;
+
+    @Before
+    &lt;span class=&quot;kwrd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kwrd&quot;&gt;void&lt;/span&gt; insertEmployee(){
+        Employee emp = &lt;span class=&quot;kwrd&quot;&gt;new&lt;/span&gt; Employee();
+        emp.setEmpid(1);
+        emp.setFirstName(&lt;span class=&quot;str&quot;&gt;&quot;Manik&quot;&lt;/span&gt;);
+        emp.setLastName(&lt;span class=&quot;str&quot;&gt;&quot;Magar&quot;&lt;/span&gt;);
+        employeeMapper.insertEmployee(emp);
+    }
+
+    @Test
+    &lt;span class=&quot;kwrd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kwrd&quot;&gt;void&lt;/span&gt; testEmployee(){
+        System.&lt;span class=&quot;kwrd&quot;&gt;out&lt;/span&gt;.println(&lt;span class=&quot;str&quot;&gt;&quot;testEmployee&quot;&lt;/span&gt;);
+        Employee emp = employeeMapper.getEmployeeName(1);
+        Assert.assertNotNull(emp);
+    }
+
+}&lt;/pre&gt;
+&lt;p&gt;Cheers!&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Where is the source? &amp;#8230; It&amp;#8217;s&lt;/strong&gt; &lt;a title=&quot;MyBatisSpingDemo&quot; href=&quot;https://github.com/manikmagar/mms_repo/tree/master/MyBatisSpringDemo&quot; target=&quot;_blank&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;p&gt;References&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://www.mybatis.org/spring/&quot; title=&quot;http://www.mybatis.org/spring/&quot;&gt;http://www.mybatis.org/spring/&lt;/a&gt;&lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>How to create a certificate for ios development on windows?</title>
+        <author>
+            <name>Manik Magar</name>
+        </author>
+        <link href="https://myjavaacademy.com/how-to-create-a-certificate-for-ios-development-on-windows/"/>
+        <updated>2012-06-13T00:00:00Z</updated>
+        <id>https://myjavaacademy.com/how-to-create-a-certificate-for-ios-development-on-windows/</id>
+        <category term="Adobe"/>
+        <category term="iOS Development"/>
+        <content type="html">
+            &lt;p&gt;I was browsing through adobe sites and forums to find out how can I create a certificate for iOS development on windows. I tried OpenSSL on widnows but it always failed to find the config file.&lt;/p&gt;
+&lt;p&gt;So here is what I did &amp;#8211;&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;Install Cygwin &amp;#8211; &lt;a href=&quot;http://cygwin.com/install.html&quot;&gt;http://cygwin.com/install.html&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Cygwin doesnt by default install OpenSSL so during installation, select the OpenSSL package for installation under &amp;#8216;Net&amp;#8217; packages.&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;After installation, run Cygwin Terminal.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;on Terminal type &amp;#8216;openssl&amp;#8217; and enter, prompt should change to OpenSSL &amp;#8211;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;mailto:&amp;#77;a&amp;#110;&amp;#x69;&amp;#x6b;&amp;#x40;&amp;#x4d;&amp;#105;&amp;#x6c;&amp;#x6b;y&amp;#119;&amp;#x61;&amp;#121;&quot;&gt;&amp;#77;a&amp;#110;&amp;#x69;&amp;#x6b;&amp;#x40;&amp;#x4d;&amp;#105;&amp;#x6c;&amp;#x6b;y&amp;#119;&amp;#x61;&amp;#121;&lt;/a&gt; ~&lt;/p&gt;
+&lt;p&gt;$ openssl&lt;/p&gt;
+&lt;p&gt;OpenSSL&amp;gt;&lt;/p&gt;
+&lt;p&gt;3.  Type in below command to create CSR file. After entering that command, it shall ask you to enter some information and a password at the end. Remember that password, you would need it.  At then you should have a key and csr file in c:/test folder.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;mailto:M&amp;#97;&amp;#110;&amp;#105;k&amp;#64;M&amp;#x69;&amp;#108;&amp;#x6b;&amp;#x79;&amp;#119;&amp;#97;y&quot;&gt;M&amp;#97;&amp;#110;&amp;#105;k&amp;#64;M&amp;#x69;&amp;#108;&amp;#x6b;&amp;#x79;&amp;#119;&amp;#97;y&lt;/a&gt; ~&lt;/p&gt;
+&lt;p&gt;$ openssl&lt;/p&gt;
+&lt;p&gt;OpenSSL&amp;gt; &lt;strong&gt;req -nodes -newkey rsa:2048 -keyout /cygdrive/C/test/mms.key -out /cygdrive/C/test/mms.csr&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Generating a 2048 bit RSA private key&lt;/p&gt;
+&lt;p&gt;&amp;#8230;&amp;#8230;&amp;#8230;&amp;#8230;&amp;#8230;&amp;#8230;&amp;#8230;&amp;#8230;&amp;#8230;&amp;#8230;&amp;#8230;&amp;#8230;&amp;#8230;&amp;#8230;&amp;#8230;&amp;#8230;&amp;#8230;&amp;#8230;&amp;#8230;&amp;#8230;&amp;#8230;.+++&lt;/p&gt;
+&lt;p&gt;&amp;#8230;&amp;#8230;&amp;#8230;&amp;#8230;&amp;#8230;&amp;#8230;&amp;#8230;&amp;#8230;&amp;#8230;&amp;#8230;&amp;#8230;&amp;#8230;&amp;#8230;&amp;#8230;&amp;#8230;&amp;#8230;&amp;#8230;&amp;#8230;..+++&lt;/p&gt;
+&lt;p&gt;writing new private key to &amp;#8216;/cygdrive/C/mms.key&amp;#8217;&lt;/p&gt;
+&lt;p&gt;&amp;#8212;&amp;#8211;&lt;/p&gt;
+&lt;p&gt;You are about to be asked to enter information that will be incorporated&lt;/p&gt;
+&lt;p&gt;into your certificate request.&lt;/p&gt;
+&lt;p&gt;What you are about to enter is what is called a Distinguished Name or a DN.&lt;/p&gt;
+&lt;p&gt;There are quite a few fields but you can leave some blank&lt;/p&gt;
+&lt;p&gt;For some fields there will be a default value,&lt;/p&gt;
+&lt;p&gt;If you enter &amp;#8216;.&amp;#8217;, the field will be left blank.&lt;/p&gt;
+&lt;p&gt;&amp;#8212;&amp;#8211;&lt;/p&gt;
+&lt;p&gt;Country Name (2 letter code) [AU]:US&lt;/p&gt;
+&lt;p&gt;State or Province Name (full name) [Some-State]:State&lt;/p&gt;
+&lt;p&gt;Locality Name (eg, city) []:City&lt;/p&gt;
+&lt;p&gt;Organization Name (eg, company) [Internet Widgits Pty Ltd]:My Company&lt;/p&gt;
+&lt;p&gt;Organizational Unit Name (eg, section) []:Org&lt;/p&gt;
+&lt;p&gt;Common Name (e.g. server FQDN or YOUR name) []:CN&lt;/p&gt;
+&lt;p&gt;Email Address []:&lt;a href=&quot;mailto:&amp;#x6d;&amp;#x65;@&amp;#109;&amp;#x65;&amp;#x2e;&amp;#99;&amp;#111;&amp;#109;&quot;&gt;&amp;#x6d;&amp;#x65;@&amp;#109;&amp;#x65;&amp;#x2e;&amp;#99;&amp;#111;&amp;#109;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Please enter the following &amp;#8216;extra&amp;#8217; attributes&lt;/p&gt;
+&lt;p&gt;to be sent with your certificate request&lt;/p&gt;
+&lt;p&gt;A challenge password []:test&lt;/p&gt;
+&lt;p&gt;An optional company name []:anything&lt;/p&gt;
+&lt;p&gt;OpenSSL&amp;gt;&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;
+  &lt;p&gt;Upload the .csr file to iOS provisioning portal&amp;gt;Certificates &amp;#8211; &lt;a href=&quot;https://developer.apple.com/ios/manage/certificates/team/&quot;&gt;https://developer.apple.com/ios/manage/certificates/team/&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+  &lt;li&gt;
+  &lt;p&gt;Once you get have the certificate approved and available for download, get it. Copy that .cer file to c:/test folder.&lt;/p&gt;&lt;/li&gt;
+  &lt;li&gt;
+  &lt;p&gt;Go to Cygwin&amp;gt;OpenSSL prompt and enter below command &amp;#8211;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;x509 -in /cygdrive/C/test/ios_development.cer -inform DER -out /cygdrive/C/test/ios_development.pem -outform PEM&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;To create .p12 file run below command on OpenSSL prompt &amp;#8211;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;openssl pkcs12 -export -inkey /cygdrive/C/test/mms.key -in /cygdrive/C/test/ios_development.pem -out /cygdrive/C/test/mms.p12&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;Check your c:/test folder, you should have your certificate ready for use.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>Struts2-Spring-WebSphere not working</title>
+        <author>
+            <name>Manik Magar</name>
+        </author>
+        <link href="https://myjavaacademy.com/struts2-spring-websphere-not-working/"/>
+        <updated>2012-04-15T00:00:00Z</updated>
+        <id>https://myjavaacademy.com/struts2-spring-websphere-not-working/</id>
+        <category term="Spring Framework"/>
+        <content type="html">
+            &lt;p&gt;I created an application with Struts2 and Spring. It worked perfectly on tomcat 5.5. But when I deployed it on WebSphere 6, i was not able to call any action except static jsp files. I was getting HTTP 404 for all requests. I found solution on – &lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://www.ibm.com/developerworks/forums/thread.jspa?threadID=158327&quot;&gt;http://www.ibm.com/developerworks/forums/thread.jspa?threadID=158327&lt;/a&gt; &lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://www-01.ibm.com/support/docview.wss?uid=swg24014758&quot;&gt;http://www-01.ibm.com/support/docview.wss?uid=swg24014758&lt;/a&gt; &lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://stackoverflow.com/questions/1337786/struts2-doesnt-find-jsp-files&quot;&gt;http://stackoverflow.com/questions/1337786/struts2-doesnt-find-jsp-files&lt;/a&gt;&lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>Flex Tree and GroupingCollection</title>
+        <author>
+            <name>Manik Magar</name>
+        </author>
+        <link href="https://myjavaacademy.com/flex-tree-and-groupingcollection/"/>
+        <updated>2011-08-21T00:00:00Z</updated>
+        <id>https://myjavaacademy.com/flex-tree-and-groupingcollection/</id>
+        <category term="Flex"/>
+        <content type="html">
+            &lt;p&gt;&lt;strong&gt;How to display flat view datacollection in mx:Tree component?&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;dataProvider for Tree control requires an Object of tree data or ArrayCollection or XMLListCollection. But many times we need to display the GroupingCollection object into Tree. Below example how can we do that using the root object of GroupingCollection.&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;
+  &lt;p&gt;Create a Tree.&lt;/p&gt;&lt;/li&gt;
+  &lt;li&gt;
+  &lt;p&gt;Instantiate a flat data source (arcData)&lt;/p&gt;&lt;/li&gt;
+  &lt;li&gt;
+  &lt;p&gt;Create GroupingCollection2 (Flex 4), as pre required Grouping Fields.&lt;/p&gt;&lt;/li&gt;
+  &lt;li&gt;
+  &lt;p&gt;Whenever arcData, the base collection, changes; call refreshTree() function.&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&amp;lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&amp;gt;
+&amp;lt;s:WindowedApplication xmlns:fx=&quot;http://ns.adobe.com/mxml/2009&quot;
+                       xmlns:s=&quot;library://ns.adobe.com/flex/spark&quot;
+                       xmlns:mx=&quot;library://ns.adobe.com/flex/mx&quot; creationComplete=&quot;windowedapplication1_creationCompleteHandler(event)&quot; xmlns:local=&quot;*&quot; width=&quot;318&quot; height=&quot;400&quot;&amp;gt;
+    &amp;lt;s:layout&amp;gt;
+        &amp;lt;s:VerticalLayout/&amp;gt;
+    &amp;lt;/s:layout&amp;gt;
+    &amp;lt;fx:Script&amp;gt;
+        &amp;lt;![CDATA[
+            import mx.events.CollectionEvent;
+            import mx.events.FlexEvent;
+
+            protected function windowedapplication1_creationCompleteHandler(event:FlexEvent):void
+            {
+                refreshTree();    
+            }
+
+            private function refreshTree():void{
+                gc.refresh();
+                myTree.dataProvider = gc.getRoot();
+            }
+
+        ]]&amp;gt;
+    &amp;lt;/fx:Script&amp;gt;
+    &amp;lt;fx:Declarations&amp;gt;
+
+        &amp;lt;s:ArrayCollection id=&quot;arcData&quot;&amp;gt;
+                &amp;lt;local:TestItem year=&quot;2009&quot; month=&quot;Jan&quot; label=&quot;Jan Report 1&quot;/&amp;gt;
+                &amp;lt;local:TestItem year=&quot;2009&quot; month=&quot;Jan&quot; label=&quot;Jan Report 2&quot;/&amp;gt;
+                &amp;lt;local:TestItem year=&quot;2009&quot; month=&quot;July&quot; label=&quot;July Report 1&quot;/&amp;gt;
+                &amp;lt;local:TestItem year=&quot;2009&quot; month=&quot;July&quot; label=&quot;July Report 2&quot;/&amp;gt;
+                &amp;lt;local:TestItem year=&quot;2010&quot; month=&quot;Feb&quot; label=&quot;Feb Report 1&quot;/&amp;gt;
+                &amp;lt;local:TestItem year=&quot;2010&quot; month=&quot;Feb&quot; label=&quot;Feb Report 2&quot;/&amp;gt;
+                &amp;lt;local:TestItem year=&quot;2010&quot; month=&quot;Dec&quot; label=&quot;Dec Report 1&quot;/&amp;gt;
+                &amp;lt;local:TestItem year=&quot;2010&quot; month=&quot;Dec&quot; label=&quot;Dec Report 2&quot;/&amp;gt;
+        &amp;lt;/s:ArrayCollection&amp;gt;
+
+        &amp;lt;mx:GroupingCollection2 id=&quot;gc&quot; source=&quot;{arcData}&quot;&amp;gt;
+            &amp;lt;mx:grouping&amp;gt;
+                &amp;lt;mx:Grouping&amp;gt;
+                    &amp;lt;mx:fields&amp;gt;
+                        &amp;lt;mx:GroupingField name=&quot;year&quot;/&amp;gt;
+                        &amp;lt;mx:GroupingField name=&quot;month&quot;/&amp;gt;    
+                    &amp;lt;/mx:fields&amp;gt;
+                &amp;lt;/mx:Grouping&amp;gt;
+            &amp;lt;/mx:grouping&amp;gt;
+        &amp;lt;/mx:GroupingCollection2&amp;gt;
+    &amp;lt;/fx:Declarations&amp;gt;
+
+    &amp;lt;mx:Tree id=&quot;myTree&quot; dataProvider=&quot;{gc.getRoot()}&quot; labelField=&quot;GroupLabel&quot; width=&quot;100%&quot; height=&quot;100%&quot;&amp;gt;
+
+    &amp;lt;/mx:Tree&amp;gt;
+
+&amp;lt;/s:WindowedApplication&amp;gt;&lt;/pre&gt;
+&lt;p&gt;Hope this helps.&lt;/p&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;div id=&quot;attachment_64&quot; style=&quot;width: 336px&quot; class=&quot;wp-caption alignnone&quot;&gt;
+  &lt;a href=&quot;https://i2.wp.com/www.myjavaacademy.com/wp-content/uploads/2011/08/testgc.jpg&quot;&gt;&lt;img class=&quot;size-full wp-image-64&quot; title=&quot;TestGC&quot; src=&quot;https://i2.wp.com/www.myjavaacademy.com/wp-content/uploads/2011/08/testgc.jpg?resize=326%2C434&quot; alt=&quot;Flex Tree and GroupingCollection2&quot; data-recalc-dims=&quot;1&quot; /&gt;&lt;/a&gt;
+  
+  &lt;p class=&quot;wp-caption-text&quot;&gt;
+    Flex Tree and GroupingCollection2
+  &lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>Flex error &#8216;Reference error 1056 :Cannot create property myname on mycustomobject&#8217;.	  &#8216;'</title>
+        <author>
+            <name>Manik Magar</name>
+        </author>
+        <link href="https://myjavaacademy.com/flex-error-reference-error-1056-cannot-create-property-myname-on-mycustomobject/"/>
+        <updated>2011-07-24T00:00:00Z</updated>
+        <id>https://myjavaacademy.com/flex-error-reference-error-1056-cannot-create-property-myname-on-mycustomobject/</id>
+        <category term="Flex"/>
+        <content type="html">
+            &lt;p&gt;Some times we get this error in flex &amp;#8211;&lt;/p&gt;
+&lt;p&gt;Reference error 1056 :Cannot create property myname on mycustomobject.&lt;/p&gt;
+&lt;p&gt;You will get this error if you are setting/accessing any property that dose not exist on any object which is not declared as dynamic.The base class &amp;#8216;Object&amp;#8217; is a dynamic class. &lt;/p&gt;
+&lt;p&gt;What is dynamic class? &amp;#8211; below declaration will make mycustomeobject as dynamic and allows addition/deletion of properties at runtime. &lt;/p&gt;
+&lt;p&gt;Public dynamic class mycustomeobject{&lt;/p&gt;
+&lt;p&gt;} &lt;/p&gt;
+&lt;p&gt;You can do &amp;#8211;&lt;/p&gt;
+&lt;p&gt;mycustomeobject[&amp;#8216;prop1&amp;#8217;] = value1; &lt;/p&gt;
+&lt;p&gt;Prop1 need not be present at compile time. Same statemne will give us this reference error if we do not declare that class as dynamic.&lt;/p&gt;
+&lt;p&gt;Also you can delete the properties at runtime-&lt;/p&gt;
+&lt;p&gt;delete mycustomeobject.prop1;&lt;/p&gt;
+&lt;p&gt;If you are planning to use dynamic objects, its always good you check property existance before you use it &amp;#8211;&lt;/p&gt;
+&lt;p&gt;mycustomobject.hasOwnProperty(&amp;#8216;prop1&amp;#8217;)&lt;/p&gt;
+&lt;p&gt;Hope this helps &amp;#8230; Have fun!&lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>Connecting to local database in adobe AIR</title>
+        <author>
+            <name>Manik Magar</name>
+        </author>
+        <link href="https://myjavaacademy.com/connecting-to-local-database-in-adobe-air/"/>
+        <updated>2011-01-02T00:00:00Z</updated>
+        <id>https://myjavaacademy.com/connecting-to-local-database-in-adobe-air/</id>
+        <category term="Adobe AIR"/>
+        <category term=""/>
+        <category term="Database"/>
+        <category term="Flex"/>
+        <category term="Oracle"/>
+        <content type="html">
+            &lt;p&gt;I wanted to create a sample desktop application using Adobe AIR. Application was supposed to get the data from local oracle express edition database. I started working on it but soon i realize that I cannot connect to local database through AIR. I googled a lot but could not find anything. So i decided to create something new and then i started working on &lt;a href=&quot;http://code.google.com/p/air-db-connector/&quot; target=&quot;_blank&quot;&gt;AirDBConnector&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;AirDBConnector has three parts &amp;#8211;&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;java4airdb – Local Java Server that sits between air application and database.&lt;/li&gt;
+  &lt;li&gt;air-lib – flex library that provides API for DB communication.&lt;/li&gt;
+  &lt;li&gt;sql-gen – An Air application to generate sql query configurations.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;java4airdb:&lt;/h2&gt;
+&lt;p&gt;Its a java application that uses ServerThread and listens on particular port for air application db requests.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;airdb.connector.port : Specifies port to be used for communication.&lt;/li&gt;
+  &lt;li&gt;airdb.connector.sql-config: Path to sql config file.&lt;/li&gt;
+  &lt;li&gt;java4airdb.bat : Batch file to start java server for db interaction.&lt;/li&gt;
+  &lt;li&gt;java4airdb.jar: Java jar file&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Starting server is very simple just define the connector port in properties file, specify the sql-config file path and run the java4airdb.bat file.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;*This requires Java5+. Set JAVA_HOME property.&lt;/strong&gt;&amp;#160;&lt;/p&gt;
+&lt;h2&gt;sql-gen:&lt;/h2&gt;
+&lt;p&gt;Its a very simple utility air application to generate sql-config file in proper syntax. &lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://i1.wp.com/www.myjavaacademy.com/wp-content/uploads/2011/01/sqlgen1.png&quot;&gt;&lt;img style=&quot;display:inline;border-width:0;&quot; title=&quot;SqlGen1&quot; border=&quot;0&quot; alt=&quot;SqlGen1&quot; src=&quot;https://i0.wp.com/www.myjavaacademy.com/wp-content/uploads/2011/01/sqlgen1_thumb.png?resize=505%2C319&quot; data-recalc-dims=&quot;1&quot; /&gt;&lt;/a&gt; &lt;/p&gt;
+&lt;p&gt;&amp;#160;&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;Run AirDbConfigGenerator. Click on ‘New Config’. Enter DSN Name. If required username and password.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;a href=&quot;https://i2.wp.com/www.myjavaacademy.com/wp-content/uploads/2011/01/image.png&quot;&gt;&lt;img style=&quot;display:inline;border-width:0;&quot; title=&quot;image&quot; border=&quot;0&quot; alt=&quot;image&quot; src=&quot;https://i1.wp.com/www.myjavaacademy.com/wp-content/uploads/2011/01/image_thumb.png?resize=513%2C324&quot; data-recalc-dims=&quot;1&quot; /&gt;&lt;/a&gt; &lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;To add SQL queries, click on ‘+’ button in SQL queries. Add below fields and Save Query.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+  &lt;li&gt;Unique query id per config file.&lt;/li&gt;
+  &lt;li&gt;query type: Select, Insert/Update, Proc/Function&lt;/li&gt;
+  &lt;li&gt;SQL query&lt;/li&gt;
+  &lt;li&gt;Parameters&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;You can have any number of queries in config file.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://i1.wp.com/www.myjavaacademy.com/wp-content/uploads/2011/01/image1.png&quot;&gt;&lt;img style=&quot;display:inline;border-width:0;&quot; title=&quot;image&quot; border=&quot;0&quot; alt=&quot;image&quot; src=&quot;https://i1.wp.com/www.myjavaacademy.com/wp-content/uploads/2011/01/image_thumb1.png?resize=524%2C331&quot; data-recalc-dims=&quot;1&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&amp;#160;&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;Once you are done with adding all queries. Click on ‘Generate XML’ button on top to generate sql-config.xml file.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Thats It! you have successfully generated you sql-config.xml and you can find it on desktop.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;u&gt;Isn’t that easy. You do not need to know XML syntaxes.&lt;/u&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;u&gt;&lt;/u&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Sample XML file &amp;#8211;&lt;/p&gt;
+&lt;div class=&quot;csharpcode&quot;&gt;
+  &lt;pre class=&quot;alt&quot;&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;sql-config&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/pre&gt;
+  
+  &lt;pre&gt;  &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;connection&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/pre&gt;
+  
+  &lt;pre class=&quot;alt&quot;&gt;    &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;dsn&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;password&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;password&quot;&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;MyDSN&quot;&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;username&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;user1&quot;&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;/&amp;gt;&lt;/span&gt;&lt;/pre&gt;
+  
+  &lt;pre&gt;  &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;connection&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/pre&gt;
+  
+  &lt;pre class=&quot;alt&quot;&gt;  &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;queries&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/pre&gt;
+  
+  &lt;pre&gt;    &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;select&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;Query1&quot;&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/pre&gt;
+  
+  &lt;pre class=&quot;alt&quot;&gt;      &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;sql&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;Select * from test_table1 where id=?&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;sql&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/pre&gt;
+  
+  &lt;pre&gt;      &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;parameters&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/pre&gt;
+  
+  &lt;pre class=&quot;alt&quot;&gt;        &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;parameter&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/pre&gt;
+  
+  &lt;pre&gt;          &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;param1&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/pre&gt;
+  
+  &lt;pre class=&quot;alt&quot;&gt;          &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;BIGINT&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/pre&gt;
+  
+  &lt;pre&gt;          &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;typeVal&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;-5&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;typeVal&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/pre&gt;
+  
+  &lt;pre class=&quot;alt&quot;&gt;        &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;parameter&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/pre&gt;
+  
+  &lt;pre&gt;      &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;parameters&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/pre&gt;
+  
+  &lt;pre class=&quot;alt&quot;&gt;    &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;select&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/pre&gt;
+  
+  &lt;pre&gt;  &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;queries&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/pre&gt;
+  
+  &lt;pre class=&quot;alt&quot;&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;sql-config&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;.csharpcode, .csharpcode pre&lt;/p&gt;
+&lt;p&gt;{&lt;/p&gt;
+&lt;p&gt;font-size: small;&lt;/p&gt;
+&lt;p&gt;color: black;&lt;/p&gt;
+&lt;p&gt;font-family: consolas, &amp;#8220;Courier New&amp;#8221;, courier, monospace;&lt;/p&gt;
+&lt;p&gt;background-color: #ffffff;&lt;/p&gt;
+&lt;p&gt;/*white-space: pre;*/&lt;/p&gt;
+&lt;p&gt;}&lt;/p&gt;
+&lt;p&gt;.csharpcode pre { margin: 0em; }&lt;/p&gt;
+&lt;p&gt;.csharpcode .rem { color: #008000; }&lt;/p&gt;
+&lt;p&gt;.csharpcode .kwrd { color: #0000ff; }&lt;/p&gt;
+&lt;p&gt;.csharpcode .str { color: #006080; }&lt;/p&gt;
+&lt;p&gt;.csharpcode .op { color: #0000c0; }&lt;/p&gt;
+&lt;p&gt;.csharpcode .preproc { color: #cc6633; }&lt;/p&gt;
+&lt;p&gt;.csharpcode .asp { background-color: #ffff00; }&lt;/p&gt;
+&lt;p&gt;.csharpcode .html { color: #800000; }&lt;/p&gt;
+&lt;p&gt;.csharpcode .attr { color: #ff0000; }&lt;/p&gt;
+&lt;p&gt;.csharpcode .alt&lt;/p&gt;
+&lt;p&gt;{&lt;/p&gt;
+&lt;p&gt;background-color: #f4f4f4;&lt;/p&gt;
+&lt;p&gt;width: 100%;&lt;/p&gt;
+&lt;p&gt;margin: 0em;&lt;/p&gt;
+&lt;p&gt;}&lt;/p&gt;
+&lt;p&gt;.csharpcode .lnum { color: #606060; }&lt;/p&gt;
+&lt;h2&gt;air-lib:&lt;/h2&gt;
+&lt;p&gt;This provides flex API to communicate to JAVA server. Integration with your AIR application is very easy, you just need to add AirDBConnector.swc in you application.&lt;/p&gt;
+&lt;p&gt;Below code shows the sample usage of library API &amp;#8211;&lt;/p&gt;
+&lt;div class=&quot;csharpcode&quot;&gt;
+  &amp;#160;
+&lt;/div&gt;
+&lt;div class=&quot;csharpcode&quot;&gt;
+  &lt;pre class=&quot;alt&quot;&gt;&lt;span class=&quot;lnum&quot;&gt;   1:  &lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;?&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;xml&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;1.0&quot;&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;encoding&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;utf-8&quot;&lt;/span&gt;?&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/pre&gt;
+  
+  &lt;pre&gt;&lt;span class=&quot;lnum&quot;&gt;   2:  &lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;mx:WindowedApplication&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;xmlns:mx&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;http://www.adobe.com/2006/mxml&quot;&lt;/span&gt; &lt;/pre&gt;
+  
+  &lt;pre class=&quot;alt&quot;&gt;&lt;span class=&quot;lnum&quot;&gt;   3:  &lt;/span&gt;    &lt;span class=&quot;attr&quot;&gt;layout&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;vertical&quot;&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;xmlns:airdb&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;com.mm.apps.airdb.*&quot;&lt;/span&gt;&lt;/pre&gt;
+  
+  &lt;pre&gt;&lt;span class=&quot;lnum&quot;&gt;   4:  &lt;/span&gt;    &lt;span class=&quot;attr&quot;&gt;creationComplete&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;airDB.init();&quot;&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/pre&gt;
+  
+  &lt;pre class=&quot;alt&quot;&gt;&lt;span class=&quot;lnum&quot;&gt;   5:  &lt;/span&gt;    &lt;/pre&gt;
+  
+  &lt;pre&gt;&lt;span class=&quot;lnum&quot;&gt;   6:  &lt;/span&gt;    &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;mx:Script&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/pre&gt;
+  
+  &lt;pre class=&quot;alt&quot;&gt;&lt;span class=&quot;lnum&quot;&gt;   7:  &lt;/span&gt;        &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;!&lt;/span&gt;[CDATA[&lt;/pre&gt;
+  
+  &lt;pre&gt;&lt;span class=&quot;lnum&quot;&gt;   8:  &lt;/span&gt;            import com.mm.apps.airdb.AirConnectorEvent;&lt;/pre&gt;
+  
+  &lt;pre class=&quot;alt&quot;&gt;&lt;span class=&quot;lnum&quot;&gt;   9:  &lt;/span&gt;            private function onIncomingData(event:AirConnectorEvent):void{&lt;/pre&gt;
+  
+  &lt;pre&gt;&lt;span class=&quot;lnum&quot;&gt;  10:  &lt;/span&gt;               dg.dataProvider = event.resultRows;&lt;/pre&gt;
+  
+  &lt;pre class=&quot;alt&quot;&gt;&lt;span class=&quot;lnum&quot;&gt;  11:  &lt;/span&gt;            } &lt;/pre&gt;
+  
+  &lt;pre&gt;&lt;span class=&quot;lnum&quot;&gt;  12:  &lt;/span&gt;        ]]&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/pre&gt;
+  
+  &lt;pre class=&quot;alt&quot;&gt;&lt;span class=&quot;lnum&quot;&gt;  13:  &lt;/span&gt;    &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;mx:Script&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/pre&gt;
+  
+  &lt;pre&gt;&lt;span class=&quot;lnum&quot;&gt;  14:  &lt;/span&gt;    &lt;/pre&gt;
+  
+  &lt;pre class=&quot;alt&quot;&gt;&lt;span class=&quot;lnum&quot;&gt;  15:  &lt;/span&gt;    &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;airdb:AirDBConnector&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;airDB&quot;&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;serverPort&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;9000&quot;&lt;/span&gt; &lt;/pre&gt;
+  
+  &lt;pre&gt;&lt;span class=&quot;lnum&quot;&gt;  16:  &lt;/span&gt;        &lt;span class=&quot;attr&quot;&gt;serverAddress&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;localhost&quot;&lt;/span&gt; &lt;/pre&gt;
+  
+  &lt;pre class=&quot;alt&quot;&gt;&lt;span class=&quot;lnum&quot;&gt;  17:  &lt;/span&gt;        &lt;span class=&quot;attr&quot;&gt;dataReceived&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;onIncomingData(event)&quot;&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;/&amp;gt;&lt;/span&gt;&lt;/pre&gt;
+  
+  &lt;pre&gt;&lt;span class=&quot;lnum&quot;&gt;  18:  &lt;/span&gt;    &lt;/pre&gt;
+  
+  &lt;pre class=&quot;alt&quot;&gt;&lt;span class=&quot;lnum&quot;&gt;  19:  &lt;/span&gt;    &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;mx:Button&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;label&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;Get Data&quot;&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;click&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;{airDB.executeQuery(&apos;get_frameworks&apos;);}&quot;&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;/&amp;gt;&lt;/span&gt;&lt;/pre&gt;
+  
+  &lt;pre&gt;&lt;span class=&quot;lnum&quot;&gt;  20:  &lt;/span&gt;    &lt;/pre&gt;
+  
+  &lt;pre class=&quot;alt&quot;&gt;&lt;span class=&quot;lnum&quot;&gt;  21:  &lt;/span&gt;    &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;mx:DataGrid&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;dg&quot;&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;10&quot;&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;423&quot;&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;height&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;250&quot;&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;width&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;100%&quot;&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/pre&gt;
+  
+  &lt;pre&gt;&lt;span class=&quot;lnum&quot;&gt;  22:  &lt;/span&gt;        &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;mx:columns&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/pre&gt;
+  
+  &lt;pre class=&quot;alt&quot;&gt;&lt;span class=&quot;lnum&quot;&gt;  23:  &lt;/span&gt;            &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;mx:DataGridColumn&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;dataField&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;framework_id&quot;&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;/&amp;gt;&lt;/span&gt;&lt;/pre&gt;
+  
+  &lt;pre&gt;&lt;span class=&quot;lnum&quot;&gt;  24:  &lt;/span&gt;            &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;mx:DataGridColumn&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;dataField&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;name&quot;&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;/&amp;gt;&lt;/span&gt;&lt;/pre&gt;
+  
+  &lt;pre class=&quot;alt&quot;&gt;&lt;span class=&quot;lnum&quot;&gt;  25:  &lt;/span&gt;            &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;mx:DataGridColumn&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;dataField&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;version&quot;&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;/&amp;gt;&lt;/span&gt;&lt;/pre&gt;
+  
+  &lt;pre&gt;&lt;span class=&quot;lnum&quot;&gt;  26:  &lt;/span&gt;            &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;mx:DataGridColumn&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;dataField&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;description&quot;&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;/&amp;gt;&lt;/span&gt;&lt;/pre&gt;
+  
+  &lt;pre class=&quot;alt&quot;&gt;&lt;span class=&quot;lnum&quot;&gt;  27:  &lt;/span&gt;            &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;mx:DataGridColumn&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;dataField&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;source_url&quot;&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;/&amp;gt;&lt;/span&gt;&lt;/pre&gt;
+  
+  &lt;pre&gt;&lt;span class=&quot;lnum&quot;&gt;  28:  &lt;/span&gt;        &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;mx:columns&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/pre&gt;
+  
+  &lt;pre class=&quot;alt&quot;&gt;&lt;span class=&quot;lnum&quot;&gt;  29:  &lt;/span&gt;    &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;mx:DataGrid&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;        &lt;/pre&gt;
+  
+  &lt;pre&gt;&lt;span class=&quot;lnum&quot;&gt;  30:  &lt;/span&gt;    &lt;/pre&gt;
+  
+  &lt;pre class=&quot;alt&quot;&gt;&lt;span class=&quot;lnum&quot;&gt;  31:  &lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;mx:WindowedApplication&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;.csharpcode, .csharpcode pre&lt;/p&gt;
+&lt;p&gt;{&lt;/p&gt;
+&lt;p&gt;font-size: small;&lt;/p&gt;
+&lt;p&gt;color: black;&lt;/p&gt;
+&lt;p&gt;font-family: consolas, &amp;#8220;Courier New&amp;#8221;, courier, monospace;&lt;/p&gt;
+&lt;p&gt;background-color: #ffffff;&lt;/p&gt;
+&lt;p&gt;/*white-space: pre;*/&lt;/p&gt;
+&lt;p&gt;}&lt;/p&gt;
+&lt;p&gt;.csharpcode pre { margin: 0em; }&lt;/p&gt;
+&lt;p&gt;.csharpcode .rem { color: #008000; }&lt;/p&gt;
+&lt;p&gt;.csharpcode .kwrd { color: #0000ff; }&lt;/p&gt;
+&lt;p&gt;.csharpcode .str { color: #006080; }&lt;/p&gt;
+&lt;p&gt;.csharpcode .op { color: #0000c0; }&lt;/p&gt;
+&lt;p&gt;.csharpcode .preproc { color: #cc6633; }&lt;/p&gt;
+&lt;p&gt;.csharpcode .asp { background-color: #ffff00; }&lt;/p&gt;
+&lt;p&gt;.csharpcode .html { color: #800000; }&lt;/p&gt;
+&lt;p&gt;.csharpcode .attr { color: #ff0000; }&lt;/p&gt;
+&lt;p&gt;.csharpcode .alt&lt;/p&gt;
+&lt;p&gt;{&lt;/p&gt;
+&lt;p&gt;background-color: #f4f4f4;&lt;/p&gt;
+&lt;p&gt;width: 100%;&lt;/p&gt;
+&lt;p&gt;margin: 0em;&lt;/p&gt;
+&lt;p&gt;}&lt;/p&gt;
+&lt;p&gt;.csharpcode .lnum { color: #606060; }&lt;/p&gt;
+&lt;p&gt;.csharpcode, .csharpcode pre&lt;/p&gt;
+&lt;p&gt;{&lt;/p&gt;
+&lt;p&gt;font-size: small;&lt;/p&gt;
+&lt;p&gt;color: black;&lt;/p&gt;
+&lt;p&gt;font-family: consolas, &amp;#8220;Courier New&amp;#8221;, courier, monospace;&lt;/p&gt;
+&lt;p&gt;background-color: #ffffff;&lt;/p&gt;
+&lt;p&gt;/*white-space: pre;*/&lt;/p&gt;
+&lt;p&gt;}&lt;/p&gt;
+&lt;p&gt;.csharpcode pre { margin: 0em; }&lt;/p&gt;
+&lt;p&gt;.csharpcode .rem { color: #008000; }&lt;/p&gt;
+&lt;p&gt;.csharpcode .kwrd { color: #0000ff; }&lt;/p&gt;
+&lt;p&gt;.csharpcode .str { color: #006080; }&lt;/p&gt;
+&lt;p&gt;.csharpcode .op { color: #0000c0; }&lt;/p&gt;
+&lt;p&gt;.csharpcode .preproc { color: #cc6633; }&lt;/p&gt;
+&lt;p&gt;.csharpcode .asp { background-color: #ffff00; }&lt;/p&gt;
+&lt;p&gt;.csharpcode .html { color: #800000; }&lt;/p&gt;
+&lt;p&gt;.csharpcode .attr { color: #ff0000; }&lt;/p&gt;
+&lt;p&gt;.csharpcode .alt&lt;/p&gt;
+&lt;p&gt;{&lt;/p&gt;
+&lt;p&gt;background-color: #f4f4f4;&lt;/p&gt;
+&lt;p&gt;width: 100%;&lt;/p&gt;
+&lt;p&gt;margin: 0em;&lt;/p&gt;
+&lt;p&gt;}&lt;/p&gt;
+&lt;p&gt;.csharpcode .lnum { color: #606060; }&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;u&gt;Line 15:&lt;/u&gt;&lt;/strong&gt; Create an instance of AirDBConnector. Specify serverPort, serverAddress and event handling method for dataReceived event.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;u&gt;_&lt;font color=&quot;#0000ff&quot;&gt;Line 4: THE MOST IMPORTANT, CALL airDB.init()&lt;/font&gt;_&lt;/u&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;u&gt;Line 19:&lt;/u&gt;&lt;/strong&gt; on button click, query with id ‘get_frameworks’ is executed by calling executeQuery method on airDB. Optionally you can also pass parameters and callback function to executeQuery method. Below are two flavours of execute query method. These two methods returns an unique string id for each method call. If required you can use this id to match with the result id in event object.&lt;/p&gt;
+&lt;div class=&quot;csharpcode&quot;&gt;
+  &lt;pre class=&quot;alt&quot;&gt;&lt;span class=&quot;lnum&quot;&gt;   1:  &lt;/span&gt;executeQuery(queryId:String, callback:Function = &lt;span class=&quot;kwrd&quot;&gt;null&lt;/span&gt;):String&lt;/pre&gt;
+  
+  &lt;pre&gt;&lt;span class=&quot;lnum&quot;&gt;   2:  &lt;/span&gt;&amp;#160;&lt;/pre&gt;
+  
+  &lt;pre class=&quot;alt&quot;&gt;&lt;span class=&quot;lnum&quot;&gt;   3:  &lt;/span&gt;executeQueryParams(queryId:String, &lt;span class=&quot;kwrd&quot;&gt;params&lt;/span&gt;:Array, callback:Function = &lt;span class=&quot;kwrd&quot;&gt;null&lt;/span&gt;):String&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;&amp;#160;&lt;/p&gt;
+&lt;p&gt;callback function must have below signature-&lt;/p&gt;
+&lt;pre class=&quot;csharpcode&quot;&gt;function (&lt;span class=&quot;kwrd&quot;&gt;event&lt;/span&gt;:AirConnectorEvent) void&lt;/pre&gt;
+&lt;p&gt;.csharpcode, .csharpcode pre&lt;/p&gt;
+&lt;p&gt;{&lt;/p&gt;
+&lt;p&gt;font-size: small;&lt;/p&gt;
+&lt;p&gt;color: black;&lt;/p&gt;
+&lt;p&gt;font-family: consolas, &amp;#8220;Courier New&amp;#8221;, courier, monospace;&lt;/p&gt;
+&lt;p&gt;background-color: #ffffff;&lt;/p&gt;
+&lt;p&gt;/*white-space: pre;*/&lt;/p&gt;
+&lt;p&gt;}&lt;/p&gt;
+&lt;p&gt;.csharpcode pre { margin: 0em; }&lt;/p&gt;
+&lt;p&gt;.csharpcode .rem { color: #008000; }&lt;/p&gt;
+&lt;p&gt;.csharpcode .kwrd { color: #0000ff; }&lt;/p&gt;
+&lt;p&gt;.csharpcode .str { color: #006080; }&lt;/p&gt;
+&lt;p&gt;.csharpcode .op { color: #0000c0; }&lt;/p&gt;
+&lt;p&gt;.csharpcode .preproc { color: #cc6633; }&lt;/p&gt;
+&lt;p&gt;.csharpcode .asp { background-color: #ffff00; }&lt;/p&gt;
+&lt;p&gt;.csharpcode .html { color: #800000; }&lt;/p&gt;
+&lt;p&gt;.csharpcode .attr { color: #ff0000; }&lt;/p&gt;
+&lt;p&gt;.csharpcode .alt&lt;/p&gt;
+&lt;p&gt;{&lt;/p&gt;
+&lt;p&gt;background-color: #f4f4f4;&lt;/p&gt;
+&lt;p&gt;width: 100%;&lt;/p&gt;
+&lt;p&gt;margin: 0em;&lt;/p&gt;
+&lt;p&gt;}&lt;/p&gt;
+&lt;p&gt;.csharpcode .lnum { color: #606060; }&lt;/p&gt;
+&lt;p&gt;AirConnectorEvent has below set of properties &amp;#8211;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;message – XML Response from java4db. Sample XML Response is &amp;#8211;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class=&quot;csharpcode&quot;&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;?&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;xml&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;1.0&quot;&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;encoding&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;UTF-8&quot;&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;standalone&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;no&quot;&lt;/span&gt;?&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;transporter&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;Query with id end is processed.&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;status&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;100&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;status&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;4&quot;&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;row&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;framework_id&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;1&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;framework_id&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;Spring&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;3.0.5&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;description&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;Spring Framework&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;description&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;source_url&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;http://www.springsource.com&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;source_url&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;row&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;row&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;framework_id&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;2&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;framework_id&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;Spring&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;2.0&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;description&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;Spring Framework&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;description&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;source_url&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;http://www.springsource.com&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;source_url&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;row&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;row&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;framework_id&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;3&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;framework_id&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;Hibernate&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;2.0&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;description&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;Hibernate&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;description&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;source_url&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;Hibernate.com&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;source_url&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;row&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;row&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;framework_id&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;4&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;framework_id&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;Hibernate&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;3.0&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;description&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;Hibernate&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;description&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;source_url&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;Hibernate.com&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;source_url&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;row&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;requestId&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;B540B76E-4433-46F5-64DF-459F46715E16&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;requestId&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;transporter&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/pre&gt;
+&lt;p&gt;.csharpcode, .csharpcode pre&lt;/p&gt;
+&lt;p&gt;{&lt;/p&gt;
+&lt;p&gt;font-size: small;&lt;/p&gt;
+&lt;p&gt;color: black;&lt;/p&gt;
+&lt;p&gt;font-family: consolas, &amp;#8220;Courier New&amp;#8221;, courier, monospace;&lt;/p&gt;
+&lt;p&gt;background-color: #ffffff;&lt;/p&gt;
+&lt;p&gt;/*white-space: pre;*/&lt;/p&gt;
+&lt;p&gt;}&lt;/p&gt;
+&lt;p&gt;.csharpcode pre { margin: 0em; }&lt;/p&gt;
+&lt;p&gt;.csharpcode .rem { color: #008000; }&lt;/p&gt;
+&lt;p&gt;.csharpcode .kwrd { color: #0000ff; }&lt;/p&gt;
+&lt;p&gt;.csharpcode .str { color: #006080; }&lt;/p&gt;
+&lt;p&gt;.csharpcode .op { color: #0000c0; }&lt;/p&gt;
+&lt;p&gt;.csharpcode .preproc { color: #cc6633; }&lt;/p&gt;
+&lt;p&gt;.csharpcode .asp { background-color: #ffff00; }&lt;/p&gt;
+&lt;p&gt;.csharpcode .html { color: #800000; }&lt;/p&gt;
+&lt;p&gt;.csharpcode .attr { color: #ff0000; }&lt;/p&gt;
+&lt;p&gt;.csharpcode .alt&lt;/p&gt;
+&lt;p&gt;{&lt;/p&gt;
+&lt;p&gt;background-color: #f4f4f4;&lt;/p&gt;
+&lt;p&gt;width: 100%;&lt;/p&gt;
+&lt;p&gt;margin: 0em;&lt;/p&gt;
+&lt;p&gt;}&lt;/p&gt;
+&lt;p&gt;.csharpcode .lnum { color: #606060; }&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;resultId : Unique id for each db request&lt;/li&gt;
+  &lt;li&gt;resultRowCount: Number of row return by select query&lt;/li&gt;
+  &lt;li&gt;resultRow: XMLList containing &lt;row&gt; elements from response. You can use this property for assignment to dataProviders.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a href=&quot;https://i1.wp.com/www.myjavaacademy.com/wp-content/uploads/2011/01/image2.png&quot;&gt;&lt;img style=&quot;display:inline;border-width:0;&quot; title=&quot;image&quot; border=&quot;0&quot; alt=&quot;image&quot; src=&quot;https://i2.wp.com/www.myjavaacademy.com/wp-content/uploads/2011/01/image_thumb2.png?resize=559%2C448&quot; data-recalc-dims=&quot;1&quot; /&gt;&lt;/a&gt; &lt;/p&gt;
+&lt;p&gt;&amp;#160;&lt;/p&gt;
+&lt;p&gt;&amp;#160;&lt;/p&gt;
+&lt;p&gt;&amp;#160;&lt;/p&gt;
+&lt;p&gt;So that’s all. I hope this is easy to interact with local database. &lt;/p&gt;
+&lt;p&gt;Project home &amp;#8211; &lt;a href=&quot;http://code.google.com/p/air-db-connector/&quot; title=&quot;http://code.google.com/p/air-db-connector/&quot;&gt;http://code.google.com/p/air-db-connector/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Download Release 1.0 &amp;#8211; &lt;a href=&quot;http://code.google.com/p/air-db-connector/downloads/list&quot; title=&quot;http://code.google.com/p/air-db-connector/downloads/list&quot;&gt;http://code.google.com/p/air-db-connector/downloads/list&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&amp;#160;&lt;/p&gt;
+&lt;p&gt;Please let me know your comments/issues/changes.&lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>Iterate through ActionScript Object properties – AS Reflection</title>
+        <author>
+            <name>Manik Magar</name>
+        </author>
+        <link href="https://myjavaacademy.com/iterate-through-actionscript-object-properties-as-reflection/"/>
+        <updated>2009-09-20T00:00:00Z</updated>
+        <id>https://myjavaacademy.com/iterate-through-actionscript-object-properties-as-reflection/</id>
+        <category term="Flex"/>
+        <content type="html">
+            &lt;p&gt;I was wondering if reflection is possible in ActionScript or not. After diving into API, i got something which seems like reflection in Flex. &lt;/p&gt;
+&lt;p&gt;ActionScript API provide one class ObjectUtil. It contains some helper methods like compare, dateComapre etc for handling objects.&lt;/p&gt;
+&lt;p&gt;This class also has one very useful method getClassInfo(). Below code shows usage of this method to iterate through properties of an object &amp;#8211;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt; &amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;utf-8&amp;quot;?&amp;gt;
+    &amp;lt;mx:Application xmlns:mx=&amp;quot;http://www.adobe.com/2006/mxml&amp;quot; 
+        width=&amp;quot;100%&amp;quot; height=&amp;quot;100%&amp;quot; creationComplete=&amp;quot;init(event)&amp;quot;&amp;gt;
+       &amp;lt;mx:Script&amp;gt;
+           &amp;lt;![CDATA[
+               import mx.utils.ObjectUtil;
+               private function init(event:Event):void{
+                   printProperties1();
+                   printProperties2();
+               }
+               private function printProperties1():void{
+                   var props:Object = ObjectUtil.getClassInfo(this);
+                   for each (var p:QName in props.properties){
+                       var propName:String = p.localName;
+                       var propValue:Object = this[propName];
+                       trace(propName +&amp;quot;:&amp;quot;+ propValue);
+                   }    
+              }
+              private function printProperties2():void{
+                  var excludes:Array = [&amp;#39;x&amp;#39;,&amp;#39;y&amp;#39;];
+                  var props:Object = ObjectUtil.getClassInfo(this,excludes);
+                  for each (var p:QName in props.properties){
+                      var propName:String = p.localName;
+                      var propValue:Object = this[propName];
+                      trace(propName +&amp;quot;:&amp;quot;+ propValue);
+                  }    
+              }
+          ]]&amp;gt;
+      &amp;lt;/mx:Script&amp;gt;
+  &amp;lt;/mx:Application&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;printProperties1() method should print all properties of Application class. Second implementation printProperties2() shows excluding certain properties from search.&lt;/p&gt;
+&lt;p&gt;Even though this introspection is not like java or any other language reflection but still its very useful since flex supports dynamic objects. To iterate through properties of dynamic objects this method can be used.&lt;/p&gt;
+&lt;p&gt;Hope this helps!&lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>Move Items between Flex List objects</title>
+        <author>
+            <name>Manik Magar</name>
+        </author>
+        <link href="https://myjavaacademy.com/move-items-between-flex-list-objects/"/>
+        <updated>2009-02-25T00:00:00Z</updated>
+        <id>https://myjavaacademy.com/move-items-between-flex-list-objects/</id>
+        <category term="Flex"/>
+        <content type="html">
+            &lt;p&gt;In this article we will see how to move data in between Lists. Same approach can be implemented to move the items across the other components like datagrid, advancedatagrid etc.&lt;/p&gt;
+&lt;p&gt;In the application mxml file, we will add two List components and two buttons.&lt;/p&gt;
+&lt;div style=&quot;border-bottom:silver 1px solid;text-align:left;border-left:silver 1px solid;line-height:12pt;background-color:#f4f4f4;width:97.5%;font-family:&amp;#39;direction:ltr;max-height:200px;font-size:8pt;overflow:auto;border-top:silver 1px solid;cursor:text;border-right:silver 1px solid;margin:20px 0 10px;padding:4px;&quot; id=&quot;codeSnippetWrapper&quot;&gt;
+  &lt;div style=&quot;text-align:left;line-height:12pt;background-color:#f4f4f4;width:100%;font-family:&amp;#39;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;&quot; id=&quot;codeSnippet&quot;&gt;
+    &lt;pre style=&quot;text-align:left;line-height:12pt;background-color:white;width:100%;font-family:&amp;#39;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;margin:0;padding:0;&quot;&gt;&lt;span style=&quot;color:#606060;&quot; id=&quot;lnum1&quot;&gt;   1:&lt;/span&gt; &amp;lt;mx:List id=&lt;span style=&quot;color:#006080;&quot;&gt;&quot;sourceList&quot;&lt;/span&gt;&lt;/pre&gt;
+    
+    &lt;p&gt;
+      &lt;!--CRLF--&gt;
+    &lt;/p&gt;
+    
+    &lt;pre style=&quot;text-align:left;line-height:12pt;background-color:#f4f4f4;width:100%;font-family:&amp;#39;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;margin:0;padding:0;&quot;&gt;&lt;span style=&quot;color:#606060;&quot; id=&quot;lnum2&quot;&gt;   2:&lt;/span&gt;    width=&lt;span style=&quot;color:#006080;&quot;&gt;&quot;100&quot;&lt;/span&gt; height=&lt;span style=&quot;color:#006080;&quot;&gt;&quot;200&quot;&lt;/span&gt;/&amp;gt;&lt;/pre&gt;
+    
+    &lt;p&gt;
+      &lt;!--CRLF--&gt;
+    &lt;/p&gt;
+    
+    &lt;pre style=&quot;text-align:left;line-height:12pt;background-color:white;width:100%;font-family:&amp;#39;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;margin:0;padding:0;&quot;&gt;&lt;span style=&quot;color:#606060;&quot; id=&quot;lnum3&quot;&gt;   3:&lt;/span&gt;&amp;#160; &lt;/pre&gt;
+    
+    &lt;p&gt;
+      &lt;!--CRLF--&gt;
+    &lt;/p&gt;
+    
+    &lt;pre style=&quot;text-align:left;line-height:12pt;background-color:#f4f4f4;width:100%;font-family:&amp;#39;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;margin:0;padding:0;&quot;&gt;&lt;span style=&quot;color:#606060;&quot; id=&quot;lnum4&quot;&gt;   4:&lt;/span&gt; &amp;lt;mx:Button id=&lt;span style=&quot;color:#006080;&quot;&gt;&quot;moveToLeft&quot;&lt;/span&gt;&lt;/pre&gt;
+    
+    &lt;p&gt;
+      &lt;!--CRLF--&gt;
+    &lt;/p&gt;
+    
+    &lt;pre style=&quot;text-align:left;line-height:12pt;background-color:white;width:100%;font-family:&amp;#39;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;margin:0;padding:0;&quot;&gt;&lt;span style=&quot;color:#606060;&quot; id=&quot;lnum5&quot;&gt;   5:&lt;/span&gt;    label=&lt;span style=&quot;color:#006080;&quot;&gt;&quot;Add&quot;&lt;/span&gt;/&amp;gt;&lt;/pre&gt;
+    
+    &lt;p&gt;
+      &lt;!--CRLF--&gt;
+    &lt;/p&gt;
+    
+    &lt;pre style=&quot;text-align:left;line-height:12pt;background-color:#f4f4f4;width:100%;font-family:&amp;#39;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;margin:0;padding:0;&quot;&gt;&lt;span style=&quot;color:#606060;&quot; id=&quot;lnum6&quot;&gt;   6:&lt;/span&gt;   &amp;lt;mx:Button id=&lt;span style=&quot;color:#006080;&quot;&gt;&quot;moveToRight&quot;&lt;/span&gt;&lt;/pre&gt;
+    
+    &lt;p&gt;
+      &lt;!--CRLF--&gt;
+    &lt;/p&gt;
+    
+    &lt;pre style=&quot;text-align:left;line-height:12pt;background-color:white;width:100%;font-family:&amp;#39;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;margin:0;padding:0;&quot;&gt;&lt;span style=&quot;color:#606060;&quot; id=&quot;lnum7&quot;&gt;   7:&lt;/span&gt;    label=&lt;span style=&quot;color:#006080;&quot;&gt;&quot;Remove&quot;&lt;/span&gt; /&amp;gt;&lt;/pre&gt;
+    
+    &lt;p&gt;
+      &lt;!--CRLF--&gt;
+    &lt;/p&gt;
+    
+    &lt;pre style=&quot;text-align:left;line-height:12pt;background-color:#f4f4f4;width:100%;font-family:&amp;#39;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;margin:0;padding:0;&quot;&gt;&lt;span style=&quot;color:#606060;&quot; id=&quot;lnum8&quot;&gt;   8:&lt;/span&gt;&amp;#160; &lt;/pre&gt;
+    
+    &lt;p&gt;
+      &lt;!--CRLF--&gt;
+    &lt;/p&gt;
+    
+    &lt;pre style=&quot;text-align:left;line-height:12pt;background-color:white;width:100%;font-family:&amp;#39;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;margin:0;padding:0;&quot;&gt;&lt;span style=&quot;color:#606060;&quot; id=&quot;lnum9&quot;&gt;   9:&lt;/span&gt; &amp;lt;mx:List id=&lt;span style=&quot;color:#006080;&quot;&gt;&quot;destList&quot;&lt;/span&gt;&lt;/pre&gt;
+    
+    &lt;p&gt;
+      &lt;!--CRLF--&gt;
+    &lt;/p&gt;
+    
+    &lt;pre style=&quot;text-align:left;line-height:12pt;background-color:#f4f4f4;width:100%;font-family:&amp;#39;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;margin:0;padding:0;&quot;&gt;&lt;span style=&quot;color:#606060;&quot; id=&quot;lnum10&quot;&gt;  10:&lt;/span&gt;    width=&lt;span style=&quot;color:#006080;&quot;&gt;&quot;100&quot;&lt;/span&gt; height=&lt;span style=&quot;color:#006080;&quot;&gt;&quot;200&quot;&lt;/span&gt;/&amp;gt; &lt;/pre&gt;
+    
+    &lt;p&gt;
+      &lt;!--CRLF--&gt;&lt;/div&gt; &lt;/div&gt;
+&lt;pre&gt;&lt;code&gt;  &amp;lt;p&amp;gt;
+    &amp;amp;#160;&amp;amp;#160;&amp;amp;#160; &amp;lt;br /&amp;gt;Now, in &amp;lt;mx:Script&amp;gt; create two variables of type ArrayCollection. We will declare these two variables as &amp;lt;a href=&amp;quot;http://livedocs.adobe.com/flex/3/html/help.html?content=databinding_8.html&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;[Bindable]&amp;lt;/a&amp;gt; so that these can be used for dynamic binding in mxml code.
+  &amp;lt;/p&amp;gt;
+
+  &amp;lt;div style=&amp;quot;border-bottom:silver 1px solid;text-align:left;border-left:silver 1px solid;line-height:12pt;background-color:#f4f4f4;width:97.5%;font-family:&amp;amp;#39;direction:ltr;max-height:200px;font-size:8pt;overflow:auto;border-top:silver 1px solid;cursor:text;border-right:silver 1px solid;margin:20px 0 10px;padding:4px;&amp;quot; id=&amp;quot;codeSnippetWrapper&amp;quot;&amp;gt;
+    &amp;lt;div style=&amp;quot;text-align:left;line-height:12pt;background-color:#f4f4f4;width:100%;font-family:&amp;amp;#39;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;&amp;quot; id=&amp;quot;codeSnippet&amp;quot;&amp;gt;
+      &amp;lt;pre style=&amp;quot;text-align:left;line-height:12pt;background-color:white;width:100%;font-family:&amp;amp;#39;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;margin:0;padding:0;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color:#606060;&amp;quot; id=&amp;quot;lnum1&amp;quot;&amp;gt;   1:&amp;lt;/span&amp;gt; [Bindable]&amp;lt;/pre&amp;gt;
+
+      &amp;lt;p&amp;gt;
+        &amp;lt;!--CRLF--&amp;gt;
+      &amp;lt;/p&amp;gt;
+
+      &amp;lt;pre style=&amp;quot;text-align:left;line-height:12pt;background-color:#f4f4f4;width:100%;font-family:&amp;amp;#39;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;margin:0;padding:0;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color:#606060;&amp;quot; id=&amp;quot;lnum2&amp;quot;&amp;gt;   2:&amp;lt;/span&amp;gt;   &amp;lt;span style=&amp;quot;color:#0000ff;&amp;quot;&amp;gt;private&amp;lt;/span&amp;gt; var listData:ArrayCollection = &amp;lt;span style=&amp;quot;color:#0000ff;&amp;quot;&amp;gt;new&amp;lt;/span&amp;gt; ArrayCollection([&amp;lt;span style=&amp;quot;color:#006080;&amp;quot;&amp;gt;&amp;quot;Item A&amp;quot;&amp;lt;/span&amp;gt;,&amp;lt;span style=&amp;quot;color:#006080;&amp;quot;&amp;gt;&amp;quot;Item B&amp;quot;&amp;lt;/span&amp;gt;,&amp;lt;span style=&amp;quot;color:#006080;&amp;quot;&amp;gt;&amp;quot;Item C&amp;quot;&amp;lt;/span&amp;gt;,&amp;lt;span style=&amp;quot;color:#006080;&amp;quot;&amp;gt;&amp;quot;Item D&amp;quot;&amp;lt;/span&amp;gt;,&amp;lt;span style=&amp;quot;color:#006080;&amp;quot;&amp;gt;&amp;quot;Item E&amp;quot;&amp;lt;/span&amp;gt;,&amp;lt;span style=&amp;quot;color:#006080;&amp;quot;&amp;gt;&amp;quot;Item F&amp;quot;&amp;lt;/span&amp;gt;]);&amp;lt;/pre&amp;gt;
+
+      &amp;lt;p&amp;gt;
+        &amp;lt;!--CRLF--&amp;gt;
+      &amp;lt;/p&amp;gt;
+
+      &amp;lt;pre style=&amp;quot;text-align:left;line-height:12pt;background-color:white;width:100%;font-family:&amp;amp;#39;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;margin:0;padding:0;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color:#606060;&amp;quot; id=&amp;quot;lnum3&amp;quot;&amp;gt;   3:&amp;lt;/span&amp;gt;      &amp;lt;/pre&amp;gt;
+
+      &amp;lt;p&amp;gt;
+        &amp;lt;!--CRLF--&amp;gt;
+      &amp;lt;/p&amp;gt;
+
+      &amp;lt;pre style=&amp;quot;text-align:left;line-height:12pt;background-color:#f4f4f4;width:100%;font-family:&amp;amp;#39;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;margin:0;padding:0;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color:#606060;&amp;quot; id=&amp;quot;lnum4&amp;quot;&amp;gt;   4:&amp;lt;/span&amp;gt;   [Bindable]&amp;lt;/pre&amp;gt;
+
+      &amp;lt;p&amp;gt;
+        &amp;lt;!--CRLF--&amp;gt;
+      &amp;lt;/p&amp;gt;
+
+      &amp;lt;pre style=&amp;quot;text-align:left;line-height:12pt;background-color:white;width:100%;font-family:&amp;amp;#39;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;margin:0;padding:0;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color:#606060;&amp;quot; id=&amp;quot;lnum5&amp;quot;&amp;gt;   5:&amp;lt;/span&amp;gt;   &amp;lt;span style=&amp;quot;color:#0000ff;&amp;quot;&amp;gt;private&amp;lt;/span&amp;gt; var filteredData:ArrayCollection = &amp;lt;span style=&amp;quot;color:#0000ff;&amp;quot;&amp;gt;new&amp;lt;/span&amp;gt; ArrayCollection();&amp;lt;/pre&amp;gt;
+
+      &amp;lt;p&amp;gt;
+        &amp;lt;!--CRLF--&amp;gt;&amp;lt;/div&amp;gt; &amp;lt;/div&amp;gt; 
+
+        &amp;lt;p&amp;gt;
+          &amp;lt;br /&amp;gt;&amp;amp;#160;&amp;amp;#160; &amp;lt;br /&amp;gt;We have initialized the listData variable to some String items. Now we will use these collections as data providers for our lists. Lets change the List declarations to use the bindings.
+        &amp;lt;/p&amp;gt;
+
+        &amp;lt;p&amp;gt;
+          &amp;amp;#160;
+        &amp;lt;/p&amp;gt;
+
+        &amp;lt;div style=&amp;quot;border-bottom:silver 1px solid;text-align:left;border-left:silver 1px solid;line-height:12pt;background-color:#f4f4f4;width:97.5%;font-family:&amp;amp;#39;direction:ltr;max-height:200px;font-size:8pt;overflow:auto;border-top:silver 1px solid;cursor:text;border-right:silver 1px solid;margin:20px 0 10px;padding:4px;&amp;quot; id=&amp;quot;codeSnippetWrapper&amp;quot;&amp;gt;
+          &amp;lt;div style=&amp;quot;text-align:left;line-height:12pt;background-color:#f4f4f4;width:100%;font-family:&amp;amp;#39;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;&amp;quot; id=&amp;quot;codeSnippet&amp;quot;&amp;gt;
+            &amp;lt;pre style=&amp;quot;text-align:left;line-height:12pt;background-color:white;width:100%;font-family:&amp;amp;#39;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;margin:0;padding:0;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color:#606060;&amp;quot; id=&amp;quot;lnum1&amp;quot;&amp;gt;   1:&amp;lt;/span&amp;gt; &amp;amp;lt;mx:List id=&amp;lt;span style=&amp;quot;color:#006080;&amp;quot;&amp;gt;&amp;quot;sourceList&amp;quot;&amp;lt;/span&amp;gt;&amp;lt;/pre&amp;gt;
+
+            &amp;lt;p&amp;gt;
+              &amp;lt;!--CRLF--&amp;gt;
+            &amp;lt;/p&amp;gt;
+
+            &amp;lt;pre style=&amp;quot;text-align:left;line-height:12pt;background-color:#f4f4f4;width:100%;font-family:&amp;amp;#39;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;margin:0;padding:0;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color:#606060;&amp;quot; id=&amp;quot;lnum2&amp;quot;&amp;gt;   2:&amp;lt;/span&amp;gt;  width=&amp;lt;span style=&amp;quot;color:#006080;&amp;quot;&amp;gt;&amp;quot;100&amp;quot;&amp;lt;/span&amp;gt; height=&amp;lt;span style=&amp;quot;color:#006080;&amp;quot;&amp;gt;&amp;quot;200&amp;quot;&amp;lt;/span&amp;gt;&amp;lt;/pre&amp;gt;
+
+            &amp;lt;p&amp;gt;
+              &amp;lt;!--CRLF--&amp;gt;
+            &amp;lt;/p&amp;gt;
+
+            &amp;lt;pre style=&amp;quot;text-align:left;line-height:12pt;background-color:white;width:100%;font-family:&amp;amp;#39;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;margin:0;padding:0;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color:#606060;&amp;quot; id=&amp;quot;lnum3&amp;quot;&amp;gt;   3:&amp;lt;/span&amp;gt;  dataProvider=&amp;lt;span style=&amp;quot;color:#006080;&amp;quot;&amp;gt;&amp;quot;{listData}&amp;quot;&amp;lt;/span&amp;gt;/&amp;amp;gt;&amp;lt;/pre&amp;gt;
+
+            &amp;lt;p&amp;gt;
+              &amp;lt;!--CRLF--&amp;gt;
+            &amp;lt;/p&amp;gt;
+
+            &amp;lt;pre style=&amp;quot;text-align:left;line-height:12pt;background-color:#f4f4f4;width:100%;font-family:&amp;amp;#39;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;margin:0;padding:0;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color:#606060;&amp;quot; id=&amp;quot;lnum4&amp;quot;&amp;gt;   4:&amp;lt;/span&amp;gt;&amp;amp;#160; &amp;lt;/pre&amp;gt;
+
+            &amp;lt;p&amp;gt;
+              &amp;lt;!--CRLF--&amp;gt;
+            &amp;lt;/p&amp;gt;
+
+            &amp;lt;pre style=&amp;quot;text-align:left;line-height:12pt;background-color:white;width:100%;font-family:&amp;amp;#39;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;margin:0;padding:0;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color:#606060;&amp;quot; id=&amp;quot;lnum5&amp;quot;&amp;gt;   5:&amp;lt;/span&amp;gt; x:List id=&amp;lt;span style=&amp;quot;color:#006080;&amp;quot;&amp;gt;&amp;quot;destList&amp;quot;&amp;lt;/span&amp;gt;&amp;lt;/pre&amp;gt;
+
+            &amp;lt;p&amp;gt;
+              &amp;lt;!--CRLF--&amp;gt;
+            &amp;lt;/p&amp;gt;
+
+            &amp;lt;pre style=&amp;quot;text-align:left;line-height:12pt;background-color:#f4f4f4;width:100%;font-family:&amp;amp;#39;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;margin:0;padding:0;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color:#606060;&amp;quot; id=&amp;quot;lnum6&amp;quot;&amp;gt;   6:&amp;lt;/span&amp;gt;  width=&amp;lt;span style=&amp;quot;color:#006080;&amp;quot;&amp;gt;&amp;quot;100&amp;quot;&amp;lt;/span&amp;gt; height=&amp;lt;span style=&amp;quot;color:#006080;&amp;quot;&amp;gt;&amp;quot;200&amp;quot;&amp;lt;/span&amp;gt;&amp;lt;/pre&amp;gt;
+
+            &amp;lt;p&amp;gt;
+              &amp;lt;!--CRLF--&amp;gt;
+            &amp;lt;/p&amp;gt;
+
+            &amp;lt;pre style=&amp;quot;text-align:left;line-height:12pt;background-color:white;width:100%;font-family:&amp;amp;#39;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;margin:0;padding:0;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color:#606060;&amp;quot; id=&amp;quot;lnum7&amp;quot;&amp;gt;   7:&amp;lt;/span&amp;gt;  dataProvider=&amp;lt;span style=&amp;quot;color:#006080;&amp;quot;&amp;gt;&amp;quot;{filteredData}&amp;quot;&amp;lt;/span&amp;gt;/&amp;amp;gt;  &amp;lt;/pre&amp;gt;
+
+            &amp;lt;p&amp;gt;
+              &amp;lt;!--CRLF--&amp;gt;
+
+              &amp;lt;!--CRLF--&amp;gt;&amp;lt;/div&amp;gt; &amp;lt;/div&amp;gt; 
+
+              &amp;lt;p&amp;gt;
+                &amp;lt;br /&amp;gt;Great we are ready with lists populated with data. Now lets add a function calls to handle the button click events. Change the button declaration code and add the click event handlers for each button.
+              &amp;lt;/p&amp;gt;
+
+              &amp;lt;p&amp;gt;
+              &amp;lt;/p&amp;gt;
+
+              &amp;lt;div style=&amp;quot;border-bottom:silver 1px solid;text-align:left;border-left:silver 1px solid;line-height:12pt;background-color:#f4f4f4;width:97.5%;font-family:&amp;amp;#39;direction:ltr;max-height:200px;font-size:8pt;overflow:auto;border-top:silver 1px solid;cursor:text;border-right:silver 1px solid;margin:20px 0 10px;padding:4px;&amp;quot; id=&amp;quot;codeSnippetWrapper&amp;quot;&amp;gt;
+                &amp;lt;div style=&amp;quot;text-align:left;line-height:12pt;background-color:#f4f4f4;width:100%;font-family:&amp;amp;#39;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;&amp;quot; id=&amp;quot;codeSnippet&amp;quot;&amp;gt;
+                  &amp;lt;pre style=&amp;quot;text-align:left;line-height:12pt;background-color:white;width:100%;font-family:&amp;amp;#39;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;margin:0;padding:0;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color:#606060;&amp;quot; id=&amp;quot;lnum1&amp;quot;&amp;gt;   1:&amp;lt;/span&amp;gt; &amp;amp;lt;mx:Button id=&amp;lt;span style=&amp;quot;color:#006080;&amp;quot;&amp;gt;&amp;quot;moveToLeft&amp;quot;&amp;lt;/span&amp;gt;&amp;lt;/pre&amp;gt;
+
+                  &amp;lt;p&amp;gt;
+                    &amp;lt;!--CRLF--&amp;gt;
+                  &amp;lt;/p&amp;gt;
+
+                  &amp;lt;pre style=&amp;quot;text-align:left;line-height:12pt;background-color:#f4f4f4;width:100%;font-family:&amp;amp;#39;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;margin:0;padding:0;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color:#606060;&amp;quot; id=&amp;quot;lnum2&amp;quot;&amp;gt;   2:&amp;lt;/span&amp;gt;  label=&amp;lt;span style=&amp;quot;color:#006080;&amp;quot;&amp;gt;&amp;quot;Add&amp;quot;&amp;lt;/span&amp;gt;&amp;lt;/pre&amp;gt;
+
+                  &amp;lt;p&amp;gt;
+                    &amp;lt;!--CRLF--&amp;gt;
+                  &amp;lt;/p&amp;gt;
+
+                  &amp;lt;pre style=&amp;quot;text-align:left;line-height:12pt;background-color:white;width:100%;font-family:&amp;amp;#39;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;margin:0;padding:0;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color:#606060;&amp;quot; id=&amp;quot;lnum3&amp;quot;&amp;gt;   3:&amp;lt;/span&amp;gt;  click=&amp;lt;span style=&amp;quot;color:#006080;&amp;quot;&amp;gt;&amp;quot;addItems(event)&amp;quot;&amp;lt;/span&amp;gt;/&amp;amp;gt;&amp;lt;/pre&amp;gt;
+
+                  &amp;lt;p&amp;gt;
+                    &amp;lt;!--CRLF--&amp;gt;
+                  &amp;lt;/p&amp;gt;
+
+                  &amp;lt;pre style=&amp;quot;text-align:left;line-height:12pt;background-color:#f4f4f4;width:100%;font-family:&amp;amp;#39;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;margin:0;padding:0;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color:#606060;&amp;quot; id=&amp;quot;lnum4&amp;quot;&amp;gt;   4:&amp;lt;/span&amp;gt;  &amp;lt;/pre&amp;gt;
+
+                  &amp;lt;p&amp;gt;
+                    &amp;lt;!--CRLF--&amp;gt;
+                  &amp;lt;/p&amp;gt;
+
+                  &amp;lt;pre style=&amp;quot;text-align:left;line-height:12pt;background-color:white;width:100%;font-family:&amp;amp;#39;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;margin:0;padding:0;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color:#606060;&amp;quot; id=&amp;quot;lnum5&amp;quot;&amp;gt;   5:&amp;lt;/span&amp;gt; &amp;amp;lt;mx:Button id=&amp;lt;span style=&amp;quot;color:#006080;&amp;quot;&amp;gt;&amp;quot;moveToRight&amp;quot;&amp;lt;/span&amp;gt;&amp;lt;/pre&amp;gt;
+
+                  &amp;lt;p&amp;gt;
+                    &amp;lt;!--CRLF--&amp;gt;
+                  &amp;lt;/p&amp;gt;
+
+                  &amp;lt;pre style=&amp;quot;text-align:left;line-height:12pt;background-color:#f4f4f4;width:100%;font-family:&amp;amp;#39;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;margin:0;padding:0;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color:#606060;&amp;quot; id=&amp;quot;lnum6&amp;quot;&amp;gt;   6:&amp;lt;/span&amp;gt;  label=&amp;lt;span style=&amp;quot;color:#006080;&amp;quot;&amp;gt;&amp;quot;Remove&amp;quot;&amp;lt;/span&amp;gt;&amp;lt;/pre&amp;gt;
+
+                  &amp;lt;p&amp;gt;
+                    &amp;lt;!--CRLF--&amp;gt;
+                  &amp;lt;/p&amp;gt;
+
+                  &amp;lt;pre style=&amp;quot;text-align:left;line-height:12pt;background-color:white;width:100%;font-family:&amp;amp;#39;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;margin:0;padding:0;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color:#606060;&amp;quot; id=&amp;quot;lnum7&amp;quot;&amp;gt;   7:&amp;lt;/span&amp;gt;  click=&amp;lt;span style=&amp;quot;color:#006080;&amp;quot;&amp;gt;&amp;quot;removeItem(event)&amp;quot;&amp;lt;/span&amp;gt;/&amp;amp;gt; &amp;lt;/pre&amp;gt;
+
+                  &amp;lt;p&amp;gt;
+                    &amp;lt;!--CRLF--&amp;gt;&amp;lt;/div&amp;gt; &amp;lt;/div&amp;gt; 
+
+                    &amp;lt;p&amp;gt;
+                      &amp;lt;br /&amp;gt;&amp;amp;#160; &amp;lt;br /&amp;gt;but where are the functions addItems and removeItem?? We are yet to define them. In &amp;lt;mx:Script&amp;gt; lets write some action script to perform action.
+                    &amp;lt;/p&amp;gt;
+
+                    &amp;lt;div style=&amp;quot;border-bottom:silver 1px solid;text-align:left;border-left:silver 1px solid;line-height:12pt;background-color:#f4f4f4;width:97.5%;font-family:&amp;amp;#39;direction:ltr;max-height:200px;font-size:8pt;overflow:auto;border-top:silver 1px solid;cursor:text;border-right:silver 1px solid;margin:20px 0 10px;padding:4px;&amp;quot; id=&amp;quot;codeSnippetWrapper&amp;quot;&amp;gt;
+                      &amp;lt;div style=&amp;quot;text-align:left;line-height:12pt;background-color:#f4f4f4;width:100%;font-family:&amp;amp;#39;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;&amp;quot; id=&amp;quot;codeSnippet&amp;quot;&amp;gt;
+                        &amp;lt;pre style=&amp;quot;text-align:left;line-height:12pt;background-color:white;width:100%;font-family:&amp;amp;#39;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;margin:0;padding:0;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color:#606060;&amp;quot; id=&amp;quot;lnum1&amp;quot;&amp;gt;   1:&amp;lt;/span&amp;gt; &amp;lt;span style=&amp;quot;color:#0000ff;&amp;quot;&amp;gt;private&amp;lt;/span&amp;gt; function addItems(eventL:MouseEvent):&amp;lt;span style=&amp;quot;color:#0000ff;&amp;quot;&amp;gt;void&amp;lt;/span&amp;gt;{&amp;lt;/pre&amp;gt;
+
+                        &amp;lt;p&amp;gt;
+                          &amp;lt;!--CRLF--&amp;gt;
+                        &amp;lt;/p&amp;gt;
+
+                        &amp;lt;pre style=&amp;quot;text-align:left;line-height:12pt;background-color:#f4f4f4;width:100%;font-family:&amp;amp;#39;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;margin:0;padding:0;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color:#606060;&amp;quot; id=&amp;quot;lnum2&amp;quot;&amp;gt;   2:&amp;lt;/span&amp;gt;    var obj:Object;&amp;lt;/pre&amp;gt;
+
+                        &amp;lt;p&amp;gt;
+                          &amp;lt;!--CRLF--&amp;gt;
+                        &amp;lt;/p&amp;gt;
+
+                        &amp;lt;pre style=&amp;quot;text-align:left;line-height:12pt;background-color:white;width:100%;font-family:&amp;amp;#39;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;margin:0;padding:0;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color:#606060;&amp;quot; id=&amp;quot;lnum3&amp;quot;&amp;gt;   3:&amp;lt;/span&amp;gt;    &amp;lt;span style=&amp;quot;color:#008000;&amp;quot;&amp;gt;// Iterate through selected items collection and add it to filtered data collection object.&amp;lt;/span&amp;gt;&amp;lt;/pre&amp;gt;
+
+                        &amp;lt;p&amp;gt;
+                          &amp;lt;!--CRLF--&amp;gt;
+                        &amp;lt;/p&amp;gt;
+
+                        &amp;lt;pre style=&amp;quot;text-align:left;line-height:12pt;background-color:#f4f4f4;width:100%;font-family:&amp;amp;#39;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;margin:0;padding:0;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color:#606060;&amp;quot; id=&amp;quot;lnum4&amp;quot;&amp;gt;   4:&amp;lt;/span&amp;gt;    &amp;lt;span style=&amp;quot;color:#0000ff;&amp;quot;&amp;gt;for&amp;lt;/span&amp;gt; each (obj in sourceList.selectedItems){&amp;lt;/pre&amp;gt;
+
+                        &amp;lt;p&amp;gt;
+                          &amp;lt;!--CRLF--&amp;gt;
+                        &amp;lt;/p&amp;gt;
+
+                        &amp;lt;pre style=&amp;quot;text-align:left;line-height:12pt;background-color:white;width:100%;font-family:&amp;amp;#39;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;margin:0;padding:0;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color:#606060;&amp;quot; id=&amp;quot;lnum5&amp;quot;&amp;gt;   5:&amp;lt;/span&amp;gt;     filteredData.addItem(obj);&amp;lt;/pre&amp;gt;
+
+                        &amp;lt;p&amp;gt;
+                          &amp;lt;!--CRLF--&amp;gt;
+                        &amp;lt;/p&amp;gt;
+
+                        &amp;lt;pre style=&amp;quot;text-align:left;line-height:12pt;background-color:#f4f4f4;width:100%;font-family:&amp;amp;#39;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;margin:0;padding:0;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color:#606060;&amp;quot; id=&amp;quot;lnum6&amp;quot;&amp;gt;   6:&amp;lt;/span&amp;gt;    }&amp;lt;/pre&amp;gt;
+
+                        &amp;lt;p&amp;gt;
+                          &amp;lt;!--CRLF--&amp;gt;
+                        &amp;lt;/p&amp;gt;
+
+                        &amp;lt;pre style=&amp;quot;text-align:left;line-height:12pt;background-color:white;width:100%;font-family:&amp;amp;#39;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;margin:0;padding:0;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color:#606060;&amp;quot; id=&amp;quot;lnum7&amp;quot;&amp;gt;   7:&amp;lt;/span&amp;gt;    &amp;lt;span style=&amp;quot;color:#008000;&amp;quot;&amp;gt;// De-Select all selected items after adding each one to destination.&amp;lt;/span&amp;gt;&amp;lt;/pre&amp;gt;
+
+                        &amp;lt;p&amp;gt;
+                          &amp;lt;!--CRLF--&amp;gt;
+                        &amp;lt;/p&amp;gt;
+
+                        &amp;lt;pre style=&amp;quot;text-align:left;line-height:12pt;background-color:#f4f4f4;width:100%;font-family:&amp;amp;#39;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;margin:0;padding:0;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color:#606060;&amp;quot; id=&amp;quot;lnum8&amp;quot;&amp;gt;   8:&amp;lt;/span&amp;gt;    sourceList.selectedItems = [];&amp;lt;/pre&amp;gt;
+
+                        &amp;lt;p&amp;gt;
+                          &amp;lt;!--CRLF--&amp;gt;
+                        &amp;lt;/p&amp;gt;
+
+                        &amp;lt;pre style=&amp;quot;text-align:left;line-height:12pt;background-color:white;width:100%;font-family:&amp;amp;#39;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;margin:0;padding:0;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color:#606060;&amp;quot; id=&amp;quot;lnum9&amp;quot;&amp;gt;   9:&amp;lt;/span&amp;gt;   }&amp;lt;/pre&amp;gt;
+
+                        &amp;lt;p&amp;gt;
+                          &amp;lt;!--CRLF--&amp;gt;
+                        &amp;lt;/p&amp;gt;
+
+                        &amp;lt;pre style=&amp;quot;text-align:left;line-height:12pt;background-color:#f4f4f4;width:100%;font-family:&amp;amp;#39;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;margin:0;padding:0;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color:#606060;&amp;quot; id=&amp;quot;lnum10&amp;quot;&amp;gt;  10:&amp;lt;/span&amp;gt;&amp;amp;#160; &amp;lt;/pre&amp;gt;
+
+                        &amp;lt;p&amp;gt;
+                          &amp;lt;!--CRLF--&amp;gt;
+                        &amp;lt;/p&amp;gt;
+
+                        &amp;lt;pre style=&amp;quot;text-align:left;line-height:12pt;background-color:white;width:100%;font-family:&amp;amp;#39;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;margin:0;padding:0;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color:#606060;&amp;quot; id=&amp;quot;lnum11&amp;quot;&amp;gt;  11:&amp;lt;/span&amp;gt; &amp;lt;span style=&amp;quot;color:#0000ff;&amp;quot;&amp;gt;private&amp;lt;/span&amp;gt; function removeItem(event:MouseEvent):&amp;lt;span style=&amp;quot;color:#0000ff;&amp;quot;&amp;gt;void&amp;lt;/span&amp;gt;{&amp;lt;/pre&amp;gt;
+
+                        &amp;lt;p&amp;gt;
+                          &amp;lt;!--CRLF--&amp;gt;
+                        &amp;lt;/p&amp;gt;
+
+                        &amp;lt;pre style=&amp;quot;text-align:left;line-height:12pt;background-color:#f4f4f4;width:100%;font-family:&amp;amp;#39;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;margin:0;padding:0;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color:#606060;&amp;quot; id=&amp;quot;lnum12&amp;quot;&amp;gt;  12:&amp;lt;/span&amp;gt;    var obj:Object;&amp;lt;/pre&amp;gt;
+
+                        &amp;lt;p&amp;gt;
+                          &amp;lt;!--CRLF--&amp;gt;
+                        &amp;lt;/p&amp;gt;
+
+                        &amp;lt;pre style=&amp;quot;text-align:left;line-height:12pt;background-color:white;width:100%;font-family:&amp;amp;#39;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;margin:0;padding:0;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color:#606060;&amp;quot; id=&amp;quot;lnum13&amp;quot;&amp;gt;  13:&amp;lt;/span&amp;gt;    &amp;lt;span style=&amp;quot;color:#0000ff;&amp;quot;&amp;gt;for&amp;lt;/span&amp;gt; each (obj in destList.selectedItems){&amp;lt;/pre&amp;gt;
+
+                        &amp;lt;p&amp;gt;
+                          &amp;lt;!--CRLF--&amp;gt;
+                        &amp;lt;/p&amp;gt;
+
+                        &amp;lt;pre style=&amp;quot;text-align:left;line-height:12pt;background-color:#f4f4f4;width:100%;font-family:&amp;amp;#39;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;margin:0;padding:0;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color:#606060;&amp;quot; id=&amp;quot;lnum14&amp;quot;&amp;gt;  14:&amp;lt;/span&amp;gt;     filteredData.removeItemAt(filteredData.getItemIndex(obj));&amp;lt;/pre&amp;gt;
+
+                        &amp;lt;p&amp;gt;
+                          &amp;lt;!--CRLF--&amp;gt;
+                        &amp;lt;/p&amp;gt;
+
+                        &amp;lt;pre style=&amp;quot;text-align:left;line-height:12pt;background-color:white;width:100%;font-family:&amp;amp;#39;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;margin:0;padding:0;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color:#606060;&amp;quot; id=&amp;quot;lnum15&amp;quot;&amp;gt;  15:&amp;lt;/span&amp;gt;    }&amp;lt;/pre&amp;gt;
+
+                        &amp;lt;p&amp;gt;
+                          &amp;lt;!--CRLF--&amp;gt;
+                        &amp;lt;/p&amp;gt;
+
+                        &amp;lt;pre style=&amp;quot;text-align:left;line-height:12pt;background-color:#f4f4f4;width:100%;font-family:&amp;amp;#39;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;margin:0;padding:0;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color:#606060;&amp;quot; id=&amp;quot;lnum16&amp;quot;&amp;gt;  16:&amp;lt;/span&amp;gt;   }&amp;lt;/pre&amp;gt;
+
+                        &amp;lt;p&amp;gt;
+                          &amp;lt;!--CRLF--&amp;gt;&amp;lt;/div&amp;gt; &amp;lt;/div&amp;gt; 
+
+                          &amp;lt;p&amp;gt;
+                            &amp;amp;#160;&amp;amp;#160; &amp;lt;br /&amp;gt;You will see we are actully performing addition and removal on filteredData collection object, rather than List object. Remember, we have made filterData object as [Bindable], so whatever we do with filteredData, changes are immediately reflected in destination list.
+                          &amp;lt;/p&amp;gt;
+
+                          &amp;lt;p&amp;gt;
+                            Cool &amp;amp;#8230; we are ready to move!
+                          &amp;lt;/p&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>What are FavIcons?</title>
+        <author>
+            <name>Manik Magar</name>
+        </author>
+        <link href="https://myjavaacademy.com/what-are-favicons/"/>
+        <updated>2009-02-24T00:00:00Z</updated>
+        <id>https://myjavaacademy.com/what-are-favicons/</id>
+        <category term="Web"/>
+        <content type="html">
+            &lt;p&gt;&lt;span style=&quot;font-size:small;font-family:Calibri;&quot;&gt;You must have seen the “g” icon that appears in browser&amp;#8217;s address bar when you open a google page &lt;/span&gt;&lt;span style=&quot;font-size:small;font-family:Calibri;&quot;&gt;or a “W” icon for Wikipedia page. Have you ever wonder what are they called or How they are embedded there?&lt;/span&gt;&lt;/p&gt;
+&lt;span style=&quot;font-size:small;font-family:Calibri;&quot;&gt;Google Icon &amp;#8211;&lt;/span&gt;
+&lt;img src=&quot;https://i0.wp.com/ch1blogs/blogs/149732/files/2008/11/FavIcon_Google.JPG?resize=319%2C89&amp;#038;ssl=1&quot; alt=&quot;FavIcon for Google&quot; data-recalc-dims=&quot;1&quot; /&gt;
+&lt;span style=&quot;font-size:small;font-family:Calibri;&quot;&gt;Wikipedia Icon &amp;#8211;&lt;/span&gt;
+&lt;img src=&quot;https://i1.wp.com/ch1blogs/blogs/149732/files/2008/11/FavIcon_Wikipedia.JPG?resize=390%2C91&amp;#038;ssl=1&quot; alt=&quot;FavIcon For Wikipedia&quot; data-recalc-dims=&quot;1&quot; /&gt;
+&lt;p&gt; &lt;/p&gt;
+&lt;span style=&quot;font-size:small;font-family:Calibri;&quot;&gt;Those tiny icons in browser&amp;#8217;s address bar are called as &lt;strong&gt;“Favorites Icon”&lt;/strong&gt; or &lt;strong&gt;“FavIcon”. &lt;/strong&gt;These are also known as a website icon, shortcut icon, url icon, or bookmark icon that are associated with a particular website or webpage. These are the icons (.ico) files with size 16 X 16 pixels or larger.&lt;/span&gt;
+&lt;span style=&quot;font-size:small;font-family:Calibri;&quot;&gt;&lt;strong&gt;How to put FavIcon in action?&lt;/strong&gt;&lt;/span&gt;
+&lt;span style=&quot;font-size:small;font-family:Calibri;&quot;&gt;In early age of FavIcon, developers use to put a favIcon.ico file in root directory of web application. This would be then automatically used by Internet Explorer for favorites display. But soon, another flexible approach is created for implementing FavIcon. This new system used HTML for embedding the FavIcon for website.  Later, HTML approach is revised to meet the standards of World Wide Web Consortium (W3C) and now all browsers supports this system.&lt;/span&gt;
+&lt;span style=&quot;font-size:small;font-family:Calibri;&quot;&gt;Although IE supports only for .ico formats, Mozilla and other browser also provide support for PNG and GIF image formats.&lt;/span&gt;
+&lt;span style=&quot;font-size:small;font-family:Calibri;&quot;&gt;There are two ways to add FavIcon to your website –&lt;/span&gt;
+&lt;p&gt;&lt;span style=&quot;font-size:small;font-family:Calibri;&quot;&gt;1.&lt;/span&gt;       &lt;span style=&quot;font-size:small;font-family:Calibri;&quot;&gt;Use of ‘&lt;em&gt;rel&lt;/em&gt;’ attribute (Preferred)&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span style=&quot;font-size:small;font-family:Calibri;&quot;&gt;2.&lt;/span&gt;       &lt;span style=&quot;font-size:small;font-family:Calibri;&quot;&gt;Put favicon.ico in predefined location in web app&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt; &lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;span style=&quot;font-size:small;&quot;&gt;·&lt;/span&gt;         &lt;span style=&quot;font-size:small;font-family:Calibri;&quot;&gt;Use of ‘rel’ attribute –&lt;/span&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span style=&quot;font-size:small;font-family:Calibri;&quot;&gt;The first approach for specifying a favicon is to use the rel attribute value &amp;#8220;icon&amp;#8221;. In this HTML 4.01 example, the FavIcon identified via the URI &lt;/span&gt;&lt;a href=&quot;http://localhost:8080/MyApp/favicon.ico&quot;&gt;&lt;span style=&quot;font-size:small;color:#141464;font-family:Calibri;&quot;&gt;http://localhost:8080/MyApp/favicon.ico&lt;/span&gt;&lt;/a&gt; &lt;span style=&quot;font-size:small;font-family:Calibri;&quot;&gt;as being a favicon:&lt;/span&gt;&lt;/p&gt;
+&lt;span style=&quot;font-size:small;font-family:Calibri;&quot;&gt;&lt;!DOCTYPE html&lt;br /&gt;       PUBLIC &amp;#8220;-//W3C//DTD HTML 4.01//EN&amp;#8221;&lt;br /&gt;       &amp;#8220;&lt;a href=&quot;http://www.w3.org/TR/html4/strict.dtd&quot;&gt;&lt;span style=&quot;color:#141464;&quot;&gt;http://www.w3.org/TR/html4/strict.dtd&lt;/span&gt;&lt;/a&gt;&amp;#8220;&gt;&lt;br /&gt; &lt;html lang=&amp;#8221;en-US&amp;#8221;&gt;&lt;br /&gt; &lt;head profile=&amp;#8221;&lt;a href=&quot;http://www.w3.org/2005/10/profile&quot;&gt;&lt;span style=&quot;color:#141464;&quot;&gt;http://www.w3.org/2005/10/profile&lt;/span&gt;&lt;/a&gt;&amp;#8220;&gt;&lt;br /&gt; &lt;link rel=&amp;#8221;shortcut icon&amp;#8221; href=&amp;#8221;&lt;a href=&quot;http://localhost:8080/MyApp/favicon.ico%22/&quot;&gt;&lt;span style=&quot;color:#141464;&quot;&gt;http://localhost:8080/MyApp/favicon.ico&amp;#8221;/&lt;/span&gt;&lt;/a&gt;&gt;&lt;br /&gt; &lt;/head&gt;&lt;br /&gt; &lt;body&gt;&lt;br /&gt;  FavIcon Example.&lt;br /&gt; &lt;/body&gt;&lt;br /&gt; &lt;/html&gt;&lt;/span&gt;
+&lt;p&gt; &lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;span style=&quot;font-size:small;&quot;&gt;·&lt;/span&gt;         &lt;span style=&quot;font-size:small;font-family:Calibri;&quot;&gt;Putting FavIcon in predefined url:&lt;/span&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span style=&quot;font-size:small;font-family:Calibri;&quot;&gt;A second method for specifying a FavIcon relies on using a predefined URI to identify the image: &amp;#8220;/favicon&amp;#8221;, which is relative to the server root. This method works because some browsers have been programmed to look for favicons using that URI. This approach is inconsistent with some principles of Web architecture and is being discussed by W3C&amp;#8217;s &lt;/span&gt;&lt;a href=&quot;http://www.w3.org/2001/tag/&quot;&gt;&lt;span style=&quot;font-size:small;color:#141464;font-family:Calibri;&quot;&gt;Technical Architecture Group (TAG)&lt;/span&gt;&lt;/a&gt; &lt;span style=&quot;font-size:small;font-family:Calibri;&quot;&gt;as their issue &lt;/span&gt;&lt;a href=&quot;http://www.w3.org/2001/tag/issues.html?type=1#siteData-36&quot;&gt;&lt;span style=&quot;font-size:small;color:#141464;font-family:Calibri;&quot;&gt;siteData-36&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot;font-size:small;font-family:Calibri;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span style=&quot;font-size:small;font-family:Calibri;&quot;&gt; &lt;/span&gt;&lt;span style=&quot;font-size:small;font-family:Calibri;&quot;&gt;Here is a FavIcon that i put to my site &amp;#8211; &lt;/span&gt;&lt;/p&gt;
+&lt;img class=&quot;alignnone size-full wp-image-12&quot; title=&quot;favicon&quot; src=&quot;https://i0.wp.com/www.myjavaacademy.com/wp-content/uploads/2009/02/favicon.jpg?resize=470%2C182&quot; alt=&quot;favicon&quot; data-recalc-dims=&quot;1&quot; /&gt;
+&lt;span style=&quot;font-size:small;font-family:Calibri;&quot;&gt;References:&lt;/span&gt;
+&lt;p&gt;&lt;a href=&quot;http://en.wikipedia.org/wiki/Favicon&quot;&gt;&lt;span style=&quot;font-size:small;color:#141464;font-family:Calibri;&quot;&gt;http://en.wikipedia.org/wiki/Favicon&lt;/span&gt;&lt;/a&gt; &lt;span style=&quot;font-size:small;font-family:Calibri;&quot;&gt;&amp;#8211; Details the concept of FavIcon&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://www.html-kit.com/favicon/&quot;&gt;&lt;span style=&quot;font-size:small;color:#800080;font-family:Calibri;&quot;&gt;http://www.html-kit.com/favicon/&lt;/span&gt;&lt;/a&gt; &lt;span style=&quot;font-size:small;font-family:Calibri;&quot;&gt;&amp;#8211; provides Utility to create FavIcon from gif and other formats.&lt;/span&gt;&lt;/p&gt;
+        </content>
+    </entry>
+    
+</feed>

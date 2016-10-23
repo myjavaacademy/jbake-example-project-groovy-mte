@@ -1,0 +1,167 @@
+<!DOCTYPE html><html lang="en">
+    <head>
+<meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>My {Java} Academy</title>
+        <link rel="shortcut" href="/icons/myJ.png"/>
+        <link rel="shortcut icon" href="/icons/myJ.png"/>
+        <meta property="og:locale" content="en_US"/>
+        <meta property="og:type" content="website"/>
+        <meta property="og:title" content="My {Java} Academy - Learn java and related technologies"/>
+        <meta property="og:description" content="[Learn Java, Advanced Java, Spring, Mule ESB and other languages through examples.]"/>
+        <meta property="og:url" content="/"/>
+        <meta property="og:site_name" content="My {Java} Academy"/>
+        <meta name="twitter:card" content="summary"/>
+        <meta name="twitter:description" content="[Learn Java, Advanced Java, Spring, Mule ESB and other languages through examples.]"/>
+        <meta name="twitter:title" content="My {Java} Academy - Learn java and related technologies"/>
+        <link rel="stylesheet" href="/css/asciidoctor.css"/>
+        <link rel="stylesheet" href="/css/foundation.css"/>
+        <link rel="stylesheet" href="/css/social_foundicons.css"/>
+        <link rel="stylesheet" href="/css/prettify.css"/>
+        <link rel="stylesheet" href="/css/desert.css"/>
+        <link rel="stylesheet" href="/css/app.css"/>
+        
+        <script src="/js/vendor/modernizr.js"></script>
+        <script src="/js/app.js"></script>
+        
+    </head><body class="antialiased" onload="prettyPrint();">
+<div class="row">
+            <div class="small-12 large-12 middle-12 small-text-center large-text-center middle-text-center columns">
+                <div class="title-box">
+                    <div class="title-content">
+                        <h1>My {Java} Academy</h1>
+                        <p>Learn java and related technologies</p>
+                        <p class="title-contact">
+                            <a href="https://twitter.com/myjavaacademy">
+                                <i class="foundicon-twitter"></i>
+                            </a><a href="https://github.com/myjavaacademy">
+                                <i class="foundicon-github"></i>
+                            </a>
+                        </p>
+                    </div>
+                </div><div class="sticky contain-to-grid">
+                    <nav class="top-bar" data-topbar="" role="navigation">
+                        <ul class="title-area">
+                            <li class="name"></li><!--Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone--><li class="toggle-topbar menu-icon">
+                                <a href="#">
+                                    <span>Menu</span>
+                                </a>
+                            </li>
+                        </ul><section class="top-bar-section">
+                            <ul class="left">
+                                <li>
+                                    <a href="/">Home</a>
+                                </li><li>
+                                    <a href="/archive.html">Archive</a>
+                                </li><li>
+                                    <a href="https://manik.magar.me" target="_blank">About</a>
+                                </li><li>
+                                    <a href="/feed.xml">RSS Subscribe</a>
+                                </li>
+                            </ul>
+                        </section>
+                    </nav>
+                </div>
+            </div>
+        </div>        <main>
+<div class="row">
+                <div class="small-12 middle-12 large-12 columns">
+                    <article class="wrap">
+                        <header>
+                            <div class="row">
+                                <div class="small-3 medium-1 large-1 columns">
+<div class="termin">
+                                        <div class="month">Jul</div>
+                                        <div class="date">24</div>
+                                        <div class="year">2011</div>
+                                    </div>                                    
+                                </div><div class="small-9 medium-11 large-11 columns">
+                                    <div>
+                                        <h2>
+                                            <a href="/flex-error-reference-error-1056-cannot-create-property-myname-on-mycustomobject/">Flex error &#8216;Reference error 1056 :Cannot create property myname on mycustomobject&#8217;.	  &#8216;'</a>
+                                        </h2><p>
+                                            <span>
+                                                <a href="/tags/Flex.html" class="label">Flex</a>
+                                            </span><a href="/flex-error-reference-error-1056-cannot-create-property-myname-on-mycustomobject/#disqus_thread" class="label">Post comments</a>
+                                        </p><hr/>
+                                    </div>
+                                </div>
+                            </div>
+                        </header><div class="row">
+                            <div class="small-9 small-offset-3 medium-11 medium-offset-1 large-11 large-offset-1 columns">
+                                <p>Some times we get this error in flex &#8211;</p>
+<p>Reference error 1056 :Cannot create property myname on mycustomobject.</p>
+<p>You will get this error if you are setting/accessing any property that dose not exist on any object which is not declared as dynamic.The base class &#8216;Object&#8217; is a dynamic class. </p>
+<p>What is dynamic class? &#8211; below declaration will make mycustomeobject as dynamic and allows addition/deletion of properties at runtime. </p>
+<p>Public dynamic class mycustomeobject{</p>
+<p>} </p>
+<p>You can do &#8211;</p>
+<p>mycustomeobject[&#8216;prop1&#8217;] = value1; </p>
+<p>Prop1 need not be present at compile time. Same statemne will give us this reference error if we do not declare that class as dynamic.</p>
+<p>Also you can delete the properties at runtime-</p>
+<p>delete mycustomeobject.prop1;</p>
+<p>If you are planning to use dynamic objects, its always good you check property existance before you use it &#8211;</p>
+<p>mycustomobject.hasOwnProperty(&#8216;prop1&#8217;)</p>
+<p>Hope this helps &#8230; Have fun!</p>
+                            </div>
+                        </div><div class="row">
+                            <div class="small-9 small-offset-3 medium-11 medium-offset-1 large-11 large-offset-1 columns">
+                                <hr/>
+<div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = '//myjavaacademy.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>            
+        </main>
+<yieldUnesacped><script id="dsq-count-scr" src="//myjavaacademy.disqus.com/count.js" async></script></yieldUnesacped><div class="row">
+            <div class="small-9 small-offset-3 medium-11 medium-offset-1 large-11 large-offset-1 columns">
+                <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-75535410-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+            </div>
+        </div><div class="row">
+            <div class="small-12 small-text-center">
+                <p class="muted credit">
+                    2014 - 2016 | Mixed with <a href="http://foundation.zurb.com/">Foundation v5.5.1</a> | Baked with <a href="http://jbake.org">JBake v2.5.0</a> | <a href="/sitemap.xml">Sitemap</a> | <a href="/terms-and-usage">Terms and Usage Policy</a>
+                </p>
+            </div>
+        </div>        <script src="/js/vendor/jquery.js"></script>
+        <script src="/js/foundation.min.js"></script>
+        <script src="/js/vendor/prettify.js"></script>
+        <script>
+            $(document).foundation();
+            $(function() {
+               hljs.tabReplace = "  ";
+               hljs.initHighlighting();
+            });
+        </script>
+        
+    </body>
+</html>

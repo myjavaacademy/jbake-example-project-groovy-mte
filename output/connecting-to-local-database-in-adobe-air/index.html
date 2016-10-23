@@ -1,0 +1,498 @@
+<!DOCTYPE html><html lang="en">
+    <head>
+<meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>My {Java} Academy</title>
+        <link rel="shortcut" href="/icons/myJ.png"/>
+        <link rel="shortcut icon" href="/icons/myJ.png"/>
+        <meta property="og:locale" content="en_US"/>
+        <meta property="og:type" content="website"/>
+        <meta property="og:title" content="My {Java} Academy - Learn java and related technologies"/>
+        <meta property="og:description" content="[Learn Java, Advanced Java, Spring, Mule ESB and other languages through examples.]"/>
+        <meta property="og:url" content="/"/>
+        <meta property="og:site_name" content="My {Java} Academy"/>
+        <meta name="twitter:card" content="summary"/>
+        <meta name="twitter:description" content="[Learn Java, Advanced Java, Spring, Mule ESB and other languages through examples.]"/>
+        <meta name="twitter:title" content="My {Java} Academy - Learn java and related technologies"/>
+        <link rel="stylesheet" href="/css/asciidoctor.css"/>
+        <link rel="stylesheet" href="/css/foundation.css"/>
+        <link rel="stylesheet" href="/css/social_foundicons.css"/>
+        <link rel="stylesheet" href="/css/prettify.css"/>
+        <link rel="stylesheet" href="/css/desert.css"/>
+        <link rel="stylesheet" href="/css/app.css"/>
+        
+        <script src="/js/vendor/modernizr.js"></script>
+        <script src="/js/app.js"></script>
+        
+    </head><body class="antialiased" onload="prettyPrint();">
+<div class="row">
+            <div class="small-12 large-12 middle-12 small-text-center large-text-center middle-text-center columns">
+                <div class="title-box">
+                    <div class="title-content">
+                        <h1>My {Java} Academy</h1>
+                        <p>Learn java and related technologies</p>
+                        <p class="title-contact">
+                            <a href="https://twitter.com/myjavaacademy">
+                                <i class="foundicon-twitter"></i>
+                            </a><a href="https://github.com/myjavaacademy">
+                                <i class="foundicon-github"></i>
+                            </a>
+                        </p>
+                    </div>
+                </div><div class="sticky contain-to-grid">
+                    <nav class="top-bar" data-topbar="" role="navigation">
+                        <ul class="title-area">
+                            <li class="name"></li><!--Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone--><li class="toggle-topbar menu-icon">
+                                <a href="#">
+                                    <span>Menu</span>
+                                </a>
+                            </li>
+                        </ul><section class="top-bar-section">
+                            <ul class="left">
+                                <li>
+                                    <a href="/">Home</a>
+                                </li><li>
+                                    <a href="/archive.html">Archive</a>
+                                </li><li>
+                                    <a href="https://manik.magar.me" target="_blank">About</a>
+                                </li><li>
+                                    <a href="/feed.xml">RSS Subscribe</a>
+                                </li>
+                            </ul>
+                        </section>
+                    </nav>
+                </div>
+            </div>
+        </div>        <main>
+<div class="row">
+                <div class="small-12 middle-12 large-12 columns">
+                    <article class="wrap">
+                        <header>
+                            <div class="row">
+                                <div class="small-3 medium-1 large-1 columns">
+<div class="termin">
+                                        <div class="month">Jan</div>
+                                        <div class="date">02</div>
+                                        <div class="year">2011</div>
+                                    </div>                                    
+                                </div><div class="small-9 medium-11 large-11 columns">
+                                    <div>
+                                        <h2>
+                                            <a href="/connecting-to-local-database-in-adobe-air/">Connecting to local database in adobe AIR</a>
+                                        </h2><p>
+                                            <span>
+                                                <a href="/tags/Adobe-AIR.html" class="label">Adobe AIR</a>
+                                            </span><span>
+                                                <a href="/tags/.html" class="label"></a>
+                                            </span><span>
+                                                <a href="/tags/Database.html" class="label">Database</a>
+                                            </span><span>
+                                                <a href="/tags/Flex.html" class="label">Flex</a>
+                                            </span><span>
+                                                <a href="/tags/Oracle.html" class="label">Oracle</a>
+                                            </span><a href="/connecting-to-local-database-in-adobe-air/#disqus_thread" class="label">Post comments</a>
+                                        </p><hr/>
+                                    </div>
+                                </div>
+                            </div>
+                        </header><div class="row">
+                            <div class="small-9 small-offset-3 medium-11 medium-offset-1 large-11 large-offset-1 columns">
+                                <p>I wanted to create a sample desktop application using Adobe AIR. Application was supposed to get the data from local oracle express edition database. I started working on it but soon i realize that I cannot connect to local database through AIR. I googled a lot but could not find anything. So i decided to create something new and then i started working on <a href="http://code.google.com/p/air-db-connector/" target="_blank">AirDBConnector</a>.</p>
+<p>AirDBConnector has three parts &#8211;</p>
+<ol>
+  <li>java4airdb – Local Java Server that sits between air application and database.</li>
+  <li>air-lib – flex library that provides API for DB communication.</li>
+  <li>sql-gen – An Air application to generate sql query configurations.</li>
+</ol>
+<h2>java4airdb:</h2>
+<p>Its a java application that uses ServerThread and listens on particular port for air application db requests.</p>
+<ul>
+  <li>airdb.connector.port : Specifies port to be used for communication.</li>
+  <li>airdb.connector.sql-config: Path to sql config file.</li>
+  <li>java4airdb.bat : Batch file to start java server for db interaction.</li>
+  <li>java4airdb.jar: Java jar file</li>
+</ul>
+<p>Starting server is very simple just define the connector port in properties file, specify the sql-config file path and run the java4airdb.bat file.</p>
+<p><strong>*This requires Java5+. Set JAVA_HOME property.</strong>&#160;</p>
+<h2>sql-gen:</h2>
+<p>Its a very simple utility air application to generate sql-config file in proper syntax. </p>
+<p><a href="https://i1.wp.com/www.myjavaacademy.com/wp-content/uploads/2011/01/sqlgen1.png"><img style="display:inline;border-width:0;" title="SqlGen1" border="0" alt="SqlGen1" src="https://i0.wp.com/www.myjavaacademy.com/wp-content/uploads/2011/01/sqlgen1_thumb.png?resize=505%2C319" data-recalc-dims="1" /></a> </p>
+<p>&#160;</p>
+<ol>
+  <li>Run AirDbConfigGenerator. Click on ‘New Config’. Enter DSN Name. If required username and password.</li>
+</ol>
+<p><a href="https://i2.wp.com/www.myjavaacademy.com/wp-content/uploads/2011/01/image.png"><img style="display:inline;border-width:0;" title="image" border="0" alt="image" src="https://i1.wp.com/www.myjavaacademy.com/wp-content/uploads/2011/01/image_thumb.png?resize=513%2C324" data-recalc-dims="1" /></a> </p>
+<ol>
+  <li>To add SQL queries, click on ‘+’ button in SQL queries. Add below fields and Save Query.</li>
+</ol>
+<ul>
+  <li>Unique query id per config file.</li>
+  <li>query type: Select, Insert/Update, Proc/Function</li>
+  <li>SQL query</li>
+  <li>Parameters</li>
+</ul>
+<p>You can have any number of queries in config file.</p>
+<p><a href="https://i1.wp.com/www.myjavaacademy.com/wp-content/uploads/2011/01/image1.png"><img style="display:inline;border-width:0;" title="image" border="0" alt="image" src="https://i1.wp.com/www.myjavaacademy.com/wp-content/uploads/2011/01/image_thumb1.png?resize=524%2C331" data-recalc-dims="1" /></a></p>
+<p>&#160;</p>
+<ol>
+  <li>Once you are done with adding all queries. Click on ‘Generate XML’ button on top to generate sql-config.xml file.</li>
+</ol>
+<p>Thats It! you have successfully generated you sql-config.xml and you can find it on desktop.</p>
+<p><strong><u>Isn’t that easy. You do not need to know XML syntaxes.</u></strong></p>
+<p><strong><u></u></strong></p>
+<p>Sample XML file &#8211;</p>
+<div class="csharpcode">
+  <pre class="alt"><span class="kwrd">&lt;</span><span class="html">sql-config</span><span class="kwrd">&gt;</span></pre>
+  
+  <pre>  <span class="kwrd">&lt;</span><span class="html">connection</span><span class="kwrd">&gt;</span></pre>
+  
+  <pre class="alt">    <span class="kwrd">&lt;</span><span class="html">dsn</span> <span class="attr">password</span><span class="kwrd">="password"</span> <span class="attr">name</span><span class="kwrd">="MyDSN"</span> <span class="attr">username</span><span class="kwrd">="user1"</span><span class="kwrd">/&gt;</span></pre>
+  
+  <pre>  <span class="kwrd">&lt;/</span><span class="html">connection</span><span class="kwrd">&gt;</span></pre>
+  
+  <pre class="alt">  <span class="kwrd">&lt;</span><span class="html">queries</span><span class="kwrd">&gt;</span></pre>
+  
+  <pre>    <span class="kwrd">&lt;</span><span class="html">select</span> <span class="attr">id</span><span class="kwrd">="Query1"</span><span class="kwrd">&gt;</span></pre>
+  
+  <pre class="alt">      <span class="kwrd">&lt;</span><span class="html">sql</span><span class="kwrd">&gt;</span>Select * from test_table1 where id=?<span class="kwrd">&lt;/</span><span class="html">sql</span><span class="kwrd">&gt;</span></pre>
+  
+  <pre>      <span class="kwrd">&lt;</span><span class="html">parameters</span><span class="kwrd">&gt;</span></pre>
+  
+  <pre class="alt">        <span class="kwrd">&lt;</span><span class="html">parameter</span><span class="kwrd">&gt;</span></pre>
+  
+  <pre>          <span class="kwrd">&lt;</span><span class="html">name</span><span class="kwrd">&gt;</span>param1<span class="kwrd">&lt;/</span><span class="html">name</span><span class="kwrd">&gt;</span></pre>
+  
+  <pre class="alt">          <span class="kwrd">&lt;</span><span class="html">type</span><span class="kwrd">&gt;</span>BIGINT<span class="kwrd">&lt;/</span><span class="html">type</span><span class="kwrd">&gt;</span></pre>
+  
+  <pre>          <span class="kwrd">&lt;</span><span class="html">typeVal</span><span class="kwrd">&gt;</span>-5<span class="kwrd">&lt;/</span><span class="html">typeVal</span><span class="kwrd">&gt;</span></pre>
+  
+  <pre class="alt">        <span class="kwrd">&lt;/</span><span class="html">parameter</span><span class="kwrd">&gt;</span></pre>
+  
+  <pre>      <span class="kwrd">&lt;/</span><span class="html">parameters</span><span class="kwrd">&gt;</span></pre>
+  
+  <pre class="alt">    <span class="kwrd">&lt;/</span><span class="html">select</span><span class="kwrd">&gt;</span></pre>
+  
+  <pre>  <span class="kwrd">&lt;/</span><span class="html">queries</span><span class="kwrd">&gt;</span></pre>
+  
+  <pre class="alt"><span class="kwrd">&lt;/</span><span class="html">sql-config</span><span class="kwrd">&gt;</span></pre>
+</div>
+<p>.csharpcode, .csharpcode pre</p>
+<p>{</p>
+<p>font-size: small;</p>
+<p>color: black;</p>
+<p>font-family: consolas, &#8220;Courier New&#8221;, courier, monospace;</p>
+<p>background-color: #ffffff;</p>
+<p>/*white-space: pre;*/</p>
+<p>}</p>
+<p>.csharpcode pre { margin: 0em; }</p>
+<p>.csharpcode .rem { color: #008000; }</p>
+<p>.csharpcode .kwrd { color: #0000ff; }</p>
+<p>.csharpcode .str { color: #006080; }</p>
+<p>.csharpcode .op { color: #0000c0; }</p>
+<p>.csharpcode .preproc { color: #cc6633; }</p>
+<p>.csharpcode .asp { background-color: #ffff00; }</p>
+<p>.csharpcode .html { color: #800000; }</p>
+<p>.csharpcode .attr { color: #ff0000; }</p>
+<p>.csharpcode .alt</p>
+<p>{</p>
+<p>background-color: #f4f4f4;</p>
+<p>width: 100%;</p>
+<p>margin: 0em;</p>
+<p>}</p>
+<p>.csharpcode .lnum { color: #606060; }</p>
+<h2>air-lib:</h2>
+<p>This provides flex API to communicate to JAVA server. Integration with your AIR application is very easy, you just need to add AirDBConnector.swc in you application.</p>
+<p>Below code shows the sample usage of library API &#8211;</p>
+<div class="csharpcode">
+  &#160;
+</div>
+<div class="csharpcode">
+  <pre class="alt"><span class="lnum">   1:  </span><span class="kwrd">&lt;?</span><span class="html">xml</span> <span class="attr">version</span><span class="kwrd">="1.0"</span> <span class="attr">encoding</span><span class="kwrd">="utf-8"</span>?<span class="kwrd">&gt;</span></pre>
+  
+  <pre><span class="lnum">   2:  </span><span class="kwrd">&lt;</span><span class="html">mx:WindowedApplication</span> <span class="attr">xmlns:mx</span><span class="kwrd">="http://www.adobe.com/2006/mxml"</span> </pre>
+  
+  <pre class="alt"><span class="lnum">   3:  </span>    <span class="attr">layout</span><span class="kwrd">="vertical"</span> <span class="attr">xmlns:airdb</span><span class="kwrd">="com.mm.apps.airdb.*"</span></pre>
+  
+  <pre><span class="lnum">   4:  </span>    <span class="attr">creationComplete</span><span class="kwrd">="airDB.init();"</span><span class="kwrd">&gt;</span></pre>
+  
+  <pre class="alt"><span class="lnum">   5:  </span>    </pre>
+  
+  <pre><span class="lnum">   6:  </span>    <span class="kwrd">&lt;</span><span class="html">mx:Script</span><span class="kwrd">&gt;</span></pre>
+  
+  <pre class="alt"><span class="lnum">   7:  </span>        <span class="kwrd">&lt;!</span>[CDATA[</pre>
+  
+  <pre><span class="lnum">   8:  </span>            import com.mm.apps.airdb.AirConnectorEvent;</pre>
+  
+  <pre class="alt"><span class="lnum">   9:  </span>            private function onIncomingData(event:AirConnectorEvent):void{</pre>
+  
+  <pre><span class="lnum">  10:  </span>               dg.dataProvider = event.resultRows;</pre>
+  
+  <pre class="alt"><span class="lnum">  11:  </span>            } </pre>
+  
+  <pre><span class="lnum">  12:  </span>        ]]<span class="kwrd">&gt;</span></pre>
+  
+  <pre class="alt"><span class="lnum">  13:  </span>    <span class="kwrd">&lt;/</span><span class="html">mx:Script</span><span class="kwrd">&gt;</span></pre>
+  
+  <pre><span class="lnum">  14:  </span>    </pre>
+  
+  <pre class="alt"><span class="lnum">  15:  </span>    <span class="kwrd">&lt;</span><span class="html">airdb:AirDBConnector</span> <span class="attr">id</span><span class="kwrd">="airDB"</span> <span class="attr">serverPort</span><span class="kwrd">="9000"</span> </pre>
+  
+  <pre><span class="lnum">  16:  </span>        <span class="attr">serverAddress</span><span class="kwrd">="localhost"</span> </pre>
+  
+  <pre class="alt"><span class="lnum">  17:  </span>        <span class="attr">dataReceived</span><span class="kwrd">="onIncomingData(event)"</span><span class="kwrd">/&gt;</span></pre>
+  
+  <pre><span class="lnum">  18:  </span>    </pre>
+  
+  <pre class="alt"><span class="lnum">  19:  </span>    <span class="kwrd">&lt;</span><span class="html">mx:Button</span> <span class="attr">label</span><span class="kwrd">="Get Data"</span> <span class="attr">click</span><span class="kwrd">="{airDB.executeQuery('get_frameworks');}"</span><span class="kwrd">/&gt;</span></pre>
+  
+  <pre><span class="lnum">  20:  </span>    </pre>
+  
+  <pre class="alt"><span class="lnum">  21:  </span>    <span class="kwrd">&lt;</span><span class="html">mx:DataGrid</span> <span class="attr">id</span><span class="kwrd">="dg"</span> <span class="attr">x</span><span class="kwrd">="10"</span> <span class="attr">y</span><span class="kwrd">="423"</span> <span class="attr">height</span><span class="kwrd">="250"</span> <span class="attr">width</span><span class="kwrd">="100%"</span><span class="kwrd">&gt;</span></pre>
+  
+  <pre><span class="lnum">  22:  </span>        <span class="kwrd">&lt;</span><span class="html">mx:columns</span><span class="kwrd">&gt;</span></pre>
+  
+  <pre class="alt"><span class="lnum">  23:  </span>            <span class="kwrd">&lt;</span><span class="html">mx:DataGridColumn</span> <span class="attr">dataField</span><span class="kwrd">="framework_id"</span><span class="kwrd">/&gt;</span></pre>
+  
+  <pre><span class="lnum">  24:  </span>            <span class="kwrd">&lt;</span><span class="html">mx:DataGridColumn</span> <span class="attr">dataField</span><span class="kwrd">="name"</span><span class="kwrd">/&gt;</span></pre>
+  
+  <pre class="alt"><span class="lnum">  25:  </span>            <span class="kwrd">&lt;</span><span class="html">mx:DataGridColumn</span> <span class="attr">dataField</span><span class="kwrd">="version"</span><span class="kwrd">/&gt;</span></pre>
+  
+  <pre><span class="lnum">  26:  </span>            <span class="kwrd">&lt;</span><span class="html">mx:DataGridColumn</span> <span class="attr">dataField</span><span class="kwrd">="description"</span><span class="kwrd">/&gt;</span></pre>
+  
+  <pre class="alt"><span class="lnum">  27:  </span>            <span class="kwrd">&lt;</span><span class="html">mx:DataGridColumn</span> <span class="attr">dataField</span><span class="kwrd">="source_url"</span><span class="kwrd">/&gt;</span></pre>
+  
+  <pre><span class="lnum">  28:  </span>        <span class="kwrd">&lt;/</span><span class="html">mx:columns</span><span class="kwrd">&gt;</span></pre>
+  
+  <pre class="alt"><span class="lnum">  29:  </span>    <span class="kwrd">&lt;/</span><span class="html">mx:DataGrid</span><span class="kwrd">&gt;</span>        </pre>
+  
+  <pre><span class="lnum">  30:  </span>    </pre>
+  
+  <pre class="alt"><span class="lnum">  31:  </span><span class="kwrd">&lt;/</span><span class="html">mx:WindowedApplication</span><span class="kwrd">&gt;</span></pre>
+</div>
+<p>.csharpcode, .csharpcode pre</p>
+<p>{</p>
+<p>font-size: small;</p>
+<p>color: black;</p>
+<p>font-family: consolas, &#8220;Courier New&#8221;, courier, monospace;</p>
+<p>background-color: #ffffff;</p>
+<p>/*white-space: pre;*/</p>
+<p>}</p>
+<p>.csharpcode pre { margin: 0em; }</p>
+<p>.csharpcode .rem { color: #008000; }</p>
+<p>.csharpcode .kwrd { color: #0000ff; }</p>
+<p>.csharpcode .str { color: #006080; }</p>
+<p>.csharpcode .op { color: #0000c0; }</p>
+<p>.csharpcode .preproc { color: #cc6633; }</p>
+<p>.csharpcode .asp { background-color: #ffff00; }</p>
+<p>.csharpcode .html { color: #800000; }</p>
+<p>.csharpcode .attr { color: #ff0000; }</p>
+<p>.csharpcode .alt</p>
+<p>{</p>
+<p>background-color: #f4f4f4;</p>
+<p>width: 100%;</p>
+<p>margin: 0em;</p>
+<p>}</p>
+<p>.csharpcode .lnum { color: #606060; }</p>
+<p>.csharpcode, .csharpcode pre</p>
+<p>{</p>
+<p>font-size: small;</p>
+<p>color: black;</p>
+<p>font-family: consolas, &#8220;Courier New&#8221;, courier, monospace;</p>
+<p>background-color: #ffffff;</p>
+<p>/*white-space: pre;*/</p>
+<p>}</p>
+<p>.csharpcode pre { margin: 0em; }</p>
+<p>.csharpcode .rem { color: #008000; }</p>
+<p>.csharpcode .kwrd { color: #0000ff; }</p>
+<p>.csharpcode .str { color: #006080; }</p>
+<p>.csharpcode .op { color: #0000c0; }</p>
+<p>.csharpcode .preproc { color: #cc6633; }</p>
+<p>.csharpcode .asp { background-color: #ffff00; }</p>
+<p>.csharpcode .html { color: #800000; }</p>
+<p>.csharpcode .attr { color: #ff0000; }</p>
+<p>.csharpcode .alt</p>
+<p>{</p>
+<p>background-color: #f4f4f4;</p>
+<p>width: 100%;</p>
+<p>margin: 0em;</p>
+<p>}</p>
+<p>.csharpcode .lnum { color: #606060; }</p>
+<p><strong><u>Line 15:</u></strong> Create an instance of AirDBConnector. Specify serverPort, serverAddress and event handling method for dataReceived event.</p>
+<p><strong><u>_<font color="#0000ff">Line 4: THE MOST IMPORTANT, CALL airDB.init()</font>_</u></strong></p>
+<p><strong><u>Line 19:</u></strong> on button click, query with id ‘get_frameworks’ is executed by calling executeQuery method on airDB. Optionally you can also pass parameters and callback function to executeQuery method. Below are two flavours of execute query method. These two methods returns an unique string id for each method call. If required you can use this id to match with the result id in event object.</p>
+<div class="csharpcode">
+  <pre class="alt"><span class="lnum">   1:  </span>executeQuery(queryId:String, callback:Function = <span class="kwrd">null</span>):String</pre>
+  
+  <pre><span class="lnum">   2:  </span>&#160;</pre>
+  
+  <pre class="alt"><span class="lnum">   3:  </span>executeQueryParams(queryId:String, <span class="kwrd">params</span>:Array, callback:Function = <span class="kwrd">null</span>):String</pre>
+</div>
+<p>&#160;</p>
+<p>callback function must have below signature-</p>
+<pre class="csharpcode">function (<span class="kwrd">event</span>:AirConnectorEvent) void</pre>
+<p>.csharpcode, .csharpcode pre</p>
+<p>{</p>
+<p>font-size: small;</p>
+<p>color: black;</p>
+<p>font-family: consolas, &#8220;Courier New&#8221;, courier, monospace;</p>
+<p>background-color: #ffffff;</p>
+<p>/*white-space: pre;*/</p>
+<p>}</p>
+<p>.csharpcode pre { margin: 0em; }</p>
+<p>.csharpcode .rem { color: #008000; }</p>
+<p>.csharpcode .kwrd { color: #0000ff; }</p>
+<p>.csharpcode .str { color: #006080; }</p>
+<p>.csharpcode .op { color: #0000c0; }</p>
+<p>.csharpcode .preproc { color: #cc6633; }</p>
+<p>.csharpcode .asp { background-color: #ffff00; }</p>
+<p>.csharpcode .html { color: #800000; }</p>
+<p>.csharpcode .attr { color: #ff0000; }</p>
+<p>.csharpcode .alt</p>
+<p>{</p>
+<p>background-color: #f4f4f4;</p>
+<p>width: 100%;</p>
+<p>margin: 0em;</p>
+<p>}</p>
+<p>.csharpcode .lnum { color: #606060; }</p>
+<p>AirConnectorEvent has below set of properties &#8211;</p>
+<ul>
+  <li>message – XML Response from java4db. Sample XML Response is &#8211;</li>
+</ul>
+<pre class="csharpcode"><span class="kwrd">&lt;?</span><span class="html">xml</span> <span class="attr">version</span><span class="kwrd">="1.0"</span> <span class="attr">encoding</span><span class="kwrd">="UTF-8"</span> <span class="attr">standalone</span><span class="kwrd">="no"</span>?<span class="kwrd">&gt;</span>
+<span class="kwrd">&lt;</span><span class="html">transporter</span><span class="kwrd">&gt;</span>
+<span class="kwrd">&lt;</span><span class="html">message</span><span class="kwrd">&gt;</span>Query with id end is processed.<span class="kwrd">&lt;/</span><span class="html">message</span><span class="kwrd">&gt;</span>
+<span class="kwrd">&lt;</span><span class="html">status</span><span class="kwrd">&gt;</span>100<span class="kwrd">&lt;/</span><span class="html">status</span><span class="kwrd">&gt;</span>
+<span class="kwrd">&lt;</span><span class="html">data</span><span class="kwrd">&gt;</span>
+<span class="kwrd">&lt;</span><span class="html">result</span> <span class="attr">size</span><span class="kwrd">="4"</span><span class="kwrd">&gt;</span>
+<span class="kwrd">&lt;</span><span class="html">row</span><span class="kwrd">&gt;</span>
+<span class="kwrd">&lt;</span><span class="html">framework_id</span><span class="kwrd">&gt;</span>1<span class="kwrd">&lt;/</span><span class="html">framework_id</span><span class="kwrd">&gt;</span>
+<span class="kwrd">&lt;</span><span class="html">name</span><span class="kwrd">&gt;</span>Spring<span class="kwrd">&lt;/</span><span class="html">name</span><span class="kwrd">&gt;</span>
+<span class="kwrd">&lt;</span><span class="html">version</span><span class="kwrd">&gt;</span>3.0.5<span class="kwrd">&lt;/</span><span class="html">version</span><span class="kwrd">&gt;</span>
+<span class="kwrd">&lt;</span><span class="html">description</span><span class="kwrd">&gt;</span>Spring Framework<span class="kwrd">&lt;/</span><span class="html">description</span><span class="kwrd">&gt;</span>
+<span class="kwrd">&lt;</span><span class="html">source_url</span><span class="kwrd">&gt;</span>http://www.springsource.com<span class="kwrd">&lt;/</span><span class="html">source_url</span><span class="kwrd">&gt;</span>
+<span class="kwrd">&lt;/</span><span class="html">row</span><span class="kwrd">&gt;</span>
+<span class="kwrd">&lt;</span><span class="html">row</span><span class="kwrd">&gt;</span>
+<span class="kwrd">&lt;</span><span class="html">framework_id</span><span class="kwrd">&gt;</span>2<span class="kwrd">&lt;/</span><span class="html">framework_id</span><span class="kwrd">&gt;</span>
+<span class="kwrd">&lt;</span><span class="html">name</span><span class="kwrd">&gt;</span>Spring<span class="kwrd">&lt;/</span><span class="html">name</span><span class="kwrd">&gt;</span>
+<span class="kwrd">&lt;</span><span class="html">version</span><span class="kwrd">&gt;</span>2.0<span class="kwrd">&lt;/</span><span class="html">version</span><span class="kwrd">&gt;</span>
+<span class="kwrd">&lt;</span><span class="html">description</span><span class="kwrd">&gt;</span>Spring Framework<span class="kwrd">&lt;/</span><span class="html">description</span><span class="kwrd">&gt;</span>
+<span class="kwrd">&lt;</span><span class="html">source_url</span><span class="kwrd">&gt;</span>http://www.springsource.com<span class="kwrd">&lt;/</span><span class="html">source_url</span><span class="kwrd">&gt;</span>
+<span class="kwrd">&lt;/</span><span class="html">row</span><span class="kwrd">&gt;</span>
+<span class="kwrd">&lt;</span><span class="html">row</span><span class="kwrd">&gt;</span>
+<span class="kwrd">&lt;</span><span class="html">framework_id</span><span class="kwrd">&gt;</span>3<span class="kwrd">&lt;/</span><span class="html">framework_id</span><span class="kwrd">&gt;</span>
+<span class="kwrd">&lt;</span><span class="html">name</span><span class="kwrd">&gt;</span>Hibernate<span class="kwrd">&lt;/</span><span class="html">name</span><span class="kwrd">&gt;</span>
+<span class="kwrd">&lt;</span><span class="html">version</span><span class="kwrd">&gt;</span>2.0<span class="kwrd">&lt;/</span><span class="html">version</span><span class="kwrd">&gt;</span>
+<span class="kwrd">&lt;</span><span class="html">description</span><span class="kwrd">&gt;</span>Hibernate<span class="kwrd">&lt;/</span><span class="html">description</span><span class="kwrd">&gt;</span>
+<span class="kwrd">&lt;</span><span class="html">source_url</span><span class="kwrd">&gt;</span>Hibernate.com<span class="kwrd">&lt;/</span><span class="html">source_url</span><span class="kwrd">&gt;</span>
+<span class="kwrd">&lt;/</span><span class="html">row</span><span class="kwrd">&gt;</span>
+<span class="kwrd">&lt;</span><span class="html">row</span><span class="kwrd">&gt;</span>
+<span class="kwrd">&lt;</span><span class="html">framework_id</span><span class="kwrd">&gt;</span>4<span class="kwrd">&lt;/</span><span class="html">framework_id</span><span class="kwrd">&gt;</span>
+<span class="kwrd">&lt;</span><span class="html">name</span><span class="kwrd">&gt;</span>Hibernate<span class="kwrd">&lt;/</span><span class="html">name</span><span class="kwrd">&gt;</span>
+<span class="kwrd">&lt;</span><span class="html">version</span><span class="kwrd">&gt;</span>3.0<span class="kwrd">&lt;/</span><span class="html">version</span><span class="kwrd">&gt;</span>
+<span class="kwrd">&lt;</span><span class="html">description</span><span class="kwrd">&gt;</span>Hibernate<span class="kwrd">&lt;/</span><span class="html">description</span><span class="kwrd">&gt;</span>
+<span class="kwrd">&lt;</span><span class="html">source_url</span><span class="kwrd">&gt;</span>Hibernate.com<span class="kwrd">&lt;/</span><span class="html">source_url</span><span class="kwrd">&gt;</span>
+<span class="kwrd">&lt;/</span><span class="html">row</span><span class="kwrd">&gt;</span>
+<span class="kwrd">&lt;/</span><span class="html">result</span><span class="kwrd">&gt;</span>
+<span class="kwrd">&lt;/</span><span class="html">data</span><span class="kwrd">&gt;</span>
+<span class="kwrd">&lt;</span><span class="html">requestId</span><span class="kwrd">&gt;</span>B540B76E-4433-46F5-64DF-459F46715E16<span class="kwrd">&lt;/</span><span class="html">requestId</span><span class="kwrd">&gt;</span>
+<span class="kwrd">&lt;/</span><span class="html">transporter</span><span class="kwrd">&gt;</span></pre>
+<p>.csharpcode, .csharpcode pre</p>
+<p>{</p>
+<p>font-size: small;</p>
+<p>color: black;</p>
+<p>font-family: consolas, &#8220;Courier New&#8221;, courier, monospace;</p>
+<p>background-color: #ffffff;</p>
+<p>/*white-space: pre;*/</p>
+<p>}</p>
+<p>.csharpcode pre { margin: 0em; }</p>
+<p>.csharpcode .rem { color: #008000; }</p>
+<p>.csharpcode .kwrd { color: #0000ff; }</p>
+<p>.csharpcode .str { color: #006080; }</p>
+<p>.csharpcode .op { color: #0000c0; }</p>
+<p>.csharpcode .preproc { color: #cc6633; }</p>
+<p>.csharpcode .asp { background-color: #ffff00; }</p>
+<p>.csharpcode .html { color: #800000; }</p>
+<p>.csharpcode .attr { color: #ff0000; }</p>
+<p>.csharpcode .alt</p>
+<p>{</p>
+<p>background-color: #f4f4f4;</p>
+<p>width: 100%;</p>
+<p>margin: 0em;</p>
+<p>}</p>
+<p>.csharpcode .lnum { color: #606060; }</p>
+<ul>
+  <li>resultId : Unique id for each db request</li>
+  <li>resultRowCount: Number of row return by select query</li>
+  <li>resultRow: XMLList containing <row> elements from response. You can use this property for assignment to dataProviders.</li>
+</ul>
+<p><a href="https://i1.wp.com/www.myjavaacademy.com/wp-content/uploads/2011/01/image2.png"><img style="display:inline;border-width:0;" title="image" border="0" alt="image" src="https://i2.wp.com/www.myjavaacademy.com/wp-content/uploads/2011/01/image_thumb2.png?resize=559%2C448" data-recalc-dims="1" /></a> </p>
+<p>&#160;</p>
+<p>&#160;</p>
+<p>&#160;</p>
+<p>So that’s all. I hope this is easy to interact with local database. </p>
+<p>Project home &#8211; <a href="http://code.google.com/p/air-db-connector/" title="http://code.google.com/p/air-db-connector/">http://code.google.com/p/air-db-connector/</a></p>
+<p>Download Release 1.0 &#8211; <a href="http://code.google.com/p/air-db-connector/downloads/list" title="http://code.google.com/p/air-db-connector/downloads/list">http://code.google.com/p/air-db-connector/downloads/list</a></p>
+<p>&#160;</p>
+<p>Please let me know your comments/issues/changes.</p>
+                            </div>
+                        </div><div class="row">
+                            <div class="small-9 small-offset-3 medium-11 medium-offset-1 large-11 large-offset-1 columns">
+                                <hr/>
+<div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = '//myjavaacademy.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>            
+        </main>
+<yieldUnesacped><script id="dsq-count-scr" src="//myjavaacademy.disqus.com/count.js" async></script></yieldUnesacped><div class="row">
+            <div class="small-9 small-offset-3 medium-11 medium-offset-1 large-11 large-offset-1 columns">
+                <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-75535410-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+            </div>
+        </div><div class="row">
+            <div class="small-12 small-text-center">
+                <p class="muted credit">
+                    2014 - 2016 | Mixed with <a href="http://foundation.zurb.com/">Foundation v5.5.1</a> | Baked with <a href="http://jbake.org">JBake v2.5.0</a> | <a href="/sitemap.xml">Sitemap</a> | <a href="/terms-and-usage">Terms and Usage Policy</a>
+                </p>
+            </div>
+        </div>        <script src="/js/vendor/jquery.js"></script>
+        <script src="/js/foundation.min.js"></script>
+        <script src="/js/vendor/prettify.js"></script>
+        <script>
+            $(document).foundation();
+            $(function() {
+               hljs.tabReplace = "  ";
+               hljs.initHighlighting();
+            });
+        </script>
+        
+    </body>
+</html>

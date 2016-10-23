@@ -2,9 +2,9 @@ layout 'layout/main.tpl', true,
         projects: projects,
         bodyContents: contents {
 
-            published_posts[0..2].each { post ->
+            published_posts[0..5].each { post ->
                 model.put('post', post)
-                include template: 'post-brick.tpl'
+                include template: 'post-snippet.tpl'
             }
             div(class:"row"){
                 div(class:"small-12 columns"){

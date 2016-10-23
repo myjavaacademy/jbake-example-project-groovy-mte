@@ -8,10 +8,10 @@ div(class:"row"){
                 p("${config.blog_subtitle}")
                 newLine()
                 p(class:"title-contact"){
-                    a(href:"https://twitter.com/javabake"){
+                    a(href:"https://twitter.com/myjavaacademy"){
                         i(class:"foundicon-twitter"){}
                     }
-                    a(href:"https://github.com/jbake-org/jbake"){
+                    a(href:"https://github.com/myjavaacademy"){
                         i(class:"foundicon-github"){}
                     }
                 }
@@ -32,28 +32,17 @@ div(class:"row"){
                 section(class:"top-bar-section"){
                     ul(class:"left"){
                         li{
-                            a(href:"${config.site_contextPath}index.html","Home")
+                            a(href:"${config.site_contextPath}","Home")
                         }
                         li{
                             a(href:"${config.site_contextPath}${config.archive_file}","Archive")
                         }
 
-                        li(class:"has-dropdown"){
-                            a(href:"#",'Projects')
-                            ul(class:"dropdown"){
-                                projects.each { project ->
-                                    li{
-                                        a(href:"${config.site_contextPath}${project.uri}","${project.doctitle}")
-                                    }
-                                }
-                            }
-                        }
-
                         li{
-                            a(href:"${config.site_contextPath}about.html","About")
+                            a(href:"https://manik.magar.me","About", target:"_blank")
                         }
                         li{
-                            a(href:"${config.site_contextPath}${config.feed_file}","Subscribe")
+                            a(href:"${config.site_contextPath}${config.feed_file}","RSS Subscribe")
                         }
                     }
                 }
