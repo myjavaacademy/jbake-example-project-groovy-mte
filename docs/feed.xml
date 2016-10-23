@@ -1,24 +1,25 @@
 <?xml version="1.0"?>
-<feed xmlns="http://www.w3.org/2005/Atom">
-    <title>My {Java} Academy</title>
-    <link href="https://myjavaacademy.com/"/>
-    <link rel="self" type="application/atom+xml" href="https://myjavaacademy.com/feed.xml"/>
-    <subtitle>Learn java and related technologies</subtitle>
-    <updated>2016-10-22T23:56:11Z</updated>
-    <id>tag:MyJavaAcademy,2016:10</id>
-    <entry>
-        <title>File outbound endpoint and inline transformers-refs to write flow variables to file</title>
-        <author>
-            <name>Manik Magar</name>
-        </author>
-        <link href="https://myjavaacademy.com/file-outbound-endpoint-inline-transformers-refs-write-flow-variables-file/"/>
-        <updated>2016-06-02T00:00:00Z</updated>
-        <id>https://myjavaacademy.com/file-outbound-endpoint-inline-transformers-refs-write-flow-variables-file/</id>
-        <category term="DataWeave"/>
-        <category term="Endpoints"/>
-        <category term="Mule ESB"/>
-        <content type="html">
-            &lt;p&gt;In this post, we will see how we can use inline transformers for writing flow variable content to file. At the end of this post, you will know how to achieve below things in Mule &amp;#8211;&lt;/p&gt;
+<rss xmlns="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>My {Java} Academy</title>
+        <link href="https://myjavaacademy.com/"/>
+        <link rel="self" type="application/rss+xml" href="https://myjavaacademy.com/feed.xml"/>
+        <subtitle>Learn java and related technologies</subtitle>
+        <updated>2016-10-23T14:07:27Z</updated>
+        <id>tag:MyJavaAcademy,2016:10</id>
+        <item>
+            <title>File outbound endpoint and inline transformers-refs to write flow variables to file</title>
+            <author>
+                <name>Manik Magar</name>
+            </author>
+            <link href="https://myjavaacademy.com/file-outbound-endpoint-inline-transformers-refs-write-flow-variables-file/"/>
+            <updated>2016-06-02T00:00:00Z</updated>
+            <id>https://myjavaacademy.com/file-outbound-endpoint-inline-transformers-refs-write-flow-variables-file/</id>
+            <category term="DataWeave"/>
+            <category term="Endpoints"/>
+            <category term="Mule ESB"/>
+            <content type="html">
+                &lt;p&gt;In this post, we will see how we can use inline transformers for writing flow variable content to file. At the end of this post, you will know how to achieve below things in Mule &amp;#8211;&lt;/p&gt;
 &lt;ol&gt;
   &lt;li&gt;Generate multiple transformation outputs with DataWeave&lt;/li&gt;
   &lt;li&gt;Write flow variable content to file in Mule&lt;/li&gt;
@@ -146,20 +147,20 @@ http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/jso
 &amp;lt;text&amp;gt;This content is for file 3&amp;lt;/text&amp;gt;&lt;/pre&gt;
 &lt;p&gt;&amp;nbsp;&lt;/p&gt;
 &lt;p&gt;Hope This Helps! Let me know your thoughts about this.&lt;/p&gt;
-        </content>
-    </entry>
-    <entry>
-        <title>Create Fixed width file with DataWeave in Mule 3.7</title>
-        <author>
-            <name>Manik Magar</name>
-        </author>
-        <link href="https://myjavaacademy.com/create-fixed-width-file-dataweave-mule-3-7/"/>
-        <updated>2016-04-18T00:00:00Z</updated>
-        <id>https://myjavaacademy.com/create-fixed-width-file-dataweave-mule-3-7/</id>
-        <category term="DataWeave"/>
-        <category term="Mule ESB"/>
-        <content type="html">
-            &lt;p&gt;In &lt;a href=&quot;http://www.myjavaacademy.com/parse-fixed-width-text-file-dataweave-mule-esb/&quot; target=&quot;_blank&quot;&gt;previous post&lt;/a&gt;,&amp;nbsp;we saw how to consume and process fixed width file using&amp;nbsp;DataWeave in Mule ESB 3.7. In this post we will see how we can generate fixed width file using&amp;nbsp;DataWeave in Mule 3.7. As I mentioned in previous post, DataWeave support for fixed width files has been introduced in Mule ESB 3.8 but&amp;nbsp;It may not be always possible to upgrade our ESB version just for this purpose. That is why we will see how to achieve this transformation in 3.7.&lt;/p&gt;
+            </content>
+        </item>
+        <item>
+            <title>Create Fixed width file with DataWeave in Mule 3.7</title>
+            <author>
+                <name>Manik Magar</name>
+            </author>
+            <link href="https://myjavaacademy.com/create-fixed-width-file-dataweave-mule-3-7/"/>
+            <updated>2016-04-18T00:00:00Z</updated>
+            <id>https://myjavaacademy.com/create-fixed-width-file-dataweave-mule-3-7/</id>
+            <category term="DataWeave"/>
+            <category term="Mule ESB"/>
+            <content type="html">
+                &lt;p&gt;In &lt;a href=&quot;http://www.myjavaacademy.com/parse-fixed-width-text-file-dataweave-mule-esb/&quot; target=&quot;_blank&quot;&gt;previous post&lt;/a&gt;,&amp;nbsp;we saw how to consume and process fixed width file using&amp;nbsp;DataWeave in Mule ESB 3.7. In this post we will see how we can generate fixed width file using&amp;nbsp;DataWeave in Mule 3.7. As I mentioned in previous post, DataWeave support for fixed width files has been introduced in Mule ESB 3.8 but&amp;nbsp;It may not be always possible to upgrade our ESB version just for this purpose. That is why we will see how to achieve this transformation in 3.7.&lt;/p&gt;
 &lt;p&gt;There are third party java libraries that can be used with Mule to process fixed width files. But what if we don&amp;#8217;t want to use any other libraries? Well, there is a way to generate fixed width files with just DataWeave.&lt;/p&gt;
 &lt;p&gt;Let&amp;#8217;s refer to our &lt;a href=&quot;http://www.myjavaacademy.com/parse-fixed-width-text-file-dataweave-mule-esb/&quot; target=&quot;_blank&quot;&gt;previous example&lt;/a&gt;&amp;nbsp;and we will use the output of that flow to regenerate our original-like fixed width file.&lt;/p&gt;
 &lt;h6&gt;Input:&lt;/h6&gt;
@@ -288,20 +289,20 @@ Suffix001PrefixSuffixSUN PrefixSuffixGRABABEER           Prefix
 &lt;/pre&gt;
 &lt;p&gt;That&amp;#8217;s all Folks! Here we saw, how we can use DataWeave code in Mule 3.7 to convert any file format into a fixed width text format and also how to apply formatting on each column.&lt;/p&gt;
 &lt;p&gt;Feel free to let me know what you think or any questions, I will be happy to help.&lt;/p&gt;
-        </content>
-    </entry>
-    <entry>
-        <title>Parse Fixed width text file with DataWeave in Mule ESB</title>
-        <author>
-            <name>Manik Magar</name>
-        </author>
-        <link href="https://myjavaacademy.com/parse-fixed-width-text-file-dataweave-mule-esb/"/>
-        <updated>2016-04-15T00:00:00Z</updated>
-        <id>https://myjavaacademy.com/parse-fixed-width-text-file-dataweave-mule-esb/</id>
-        <category term="DataWeave"/>
-        <category term="Mule ESB"/>
-        <content type="html">
-            &lt;p&gt;With Mule 3.7.0, a new modeling and transformation language was introduced, DataWeave. This is more powerful than its predecessor DataMapper which is marked as deprecated in Mule 3.7&lt;/p&gt;
+            </content>
+        </item>
+        <item>
+            <title>Parse Fixed width text file with DataWeave in Mule ESB</title>
+            <author>
+                <name>Manik Magar</name>
+            </author>
+            <link href="https://myjavaacademy.com/parse-fixed-width-text-file-dataweave-mule-esb/"/>
+            <updated>2016-04-15T00:00:00Z</updated>
+            <id>https://myjavaacademy.com/parse-fixed-width-text-file-dataweave-mule-esb/</id>
+            <category term="DataWeave"/>
+            <category term="Mule ESB"/>
+            <content type="html">
+                &lt;p&gt;With Mule 3.7.0, a new modeling and transformation language was introduced, DataWeave. This is more powerful than its predecessor DataMapper which is marked as deprecated in Mule 3.7&lt;/p&gt;
 &lt;p&gt;DataWeave component appears as &amp;#8220;Transform Message&amp;#8221; in Mule Anypoint Studio under Mule Palette. DataWeave in Mule 3.7 supports processing of JSON, Java, CSV, EDI, XML, Pojo etc. One format that was missing in DataWeave support was Fixed Width text format. As per the &lt;a href=&quot;http://blogs.mulesoft.com/biz/mule/new-mule-3-8-studio-6-0-beta-releases/&quot; target=&quot;_blank&quot;&gt;beta release notes of Mule 3.8&lt;/a&gt;, DataWeave in Mule 3.8 is going to support fixed width text files. But for many of us, it may not be possible to upgrade Mule server for this.&lt;/p&gt;
 &lt;h2&gt;So How to Process fixed width text file with DataWeave in Mule 3.7?&lt;/h2&gt;
 &lt;p&gt;So for those who use Mule 3.7 with DataWeave and still want to process fixed width text files, here is the workaround for it.&lt;/p&gt;
@@ -397,19 +398,19 @@ Shout - Start Position:6, length: 13&lt;/pre&gt;
 &lt;p&gt;With this example, we learned how to consume fixed width text file with DataWeave in Mule 3.7.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Next see how to&lt;/strong&gt; &lt;a href=&quot;http://www.myjavaacademy.com/create-fixed-width-file-dataweave-mule-3-7/&quot;&gt;create fixed width flat file using DataWeave in Mule 3.7&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;Feel free to let me know what you think or any questions, I will be happy to help.&lt;/p&gt;
-        </content>
-    </entry>
-    <entry>
-        <title>How to deploy wordpress on tomcat</title>
-        <author>
-            <name>Manik Magar</name>
-        </author>
-        <link href="https://myjavaacademy.com/deploy-wordpress-tomcat/"/>
-        <updated>2016-04-12T00:00:00Z</updated>
-        <id>https://myjavaacademy.com/deploy-wordpress-tomcat/</id>
-        <category term="Wordpress"/>
-        <content type="html">
-            &lt;p&gt;&lt;a href=&quot;http://wordpress.org&quot; target=&quot;_blank&quot;&gt;WordPress&lt;/a&gt; is a very popular content management system to create Blogs and websites.&lt;/p&gt;
+            </content>
+        </item>
+        <item>
+            <title>How to deploy wordpress on tomcat</title>
+            <author>
+                <name>Manik Magar</name>
+            </author>
+            <link href="https://myjavaacademy.com/deploy-wordpress-tomcat/"/>
+            <updated>2016-04-12T00:00:00Z</updated>
+            <id>https://myjavaacademy.com/deploy-wordpress-tomcat/</id>
+            <category term="Wordpress"/>
+            <content type="html">
+                &lt;p&gt;&lt;a href=&quot;http://wordpress.org&quot; target=&quot;_blank&quot;&gt;WordPress&lt;/a&gt; is a very popular content management system to create Blogs and websites.&lt;/p&gt;
 &lt;p&gt;If you have existing java application hosted on tomcat server then adding wordpress to same tomcat might save in terms of memory and resource utilization.&lt;/p&gt;
 &lt;p&gt;Now you can deploy wordpress on any java based application server like tomcat, thanks to &lt;a href=&quot;http://quercus.caucho.com/&quot; target=&quot;_blank&quot;&gt;Quercus&lt;/a&gt;.&lt;/p&gt;
 &lt;blockquote&gt;
@@ -428,19 +429,19 @@ Shout - Start Position:6, length: 13&lt;/pre&gt;
 &lt;p&gt;You can even create this war with Maven as described on &lt;a href=&quot;https://bitbucket.org/bfx/jwordpress&quot; target=&quot;_blank&quot;&gt;JWordpress repository&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;Hope that helps!&lt;/p&gt;
 &lt;p&gt;&amp;nbsp;&lt;/p&gt;
-        </content>
-    </entry>
-    <entry>
-        <title>How to configure Mule SMTP connector using iCloud on Mac?</title>
-        <author>
-            <name>Manik Magar</name>
-        </author>
-        <link href="https://myjavaacademy.com/how-to-configure-mule-smtp-connector-on-mac-os-x/"/>
-        <updated>2015-10-11T00:00:00Z</updated>
-        <id>https://myjavaacademy.com/how-to-configure-mule-smtp-connector-on-mac-os-x/</id>
-        <category term="Mule ESB"/>
-        <content type="html">
-            &lt;p&gt;If you are working on Mule ESB and wondering how to configure SMTP connector in Mule flow to send emails then below are steps that might help you to do it.&lt;/p&gt;
+            </content>
+        </item>
+        <item>
+            <title>How to configure Mule SMTP connector using iCloud on Mac?</title>
+            <author>
+                <name>Manik Magar</name>
+            </author>
+            <link href="https://myjavaacademy.com/how-to-configure-mule-smtp-connector-on-mac-os-x/"/>
+            <updated>2015-10-11T00:00:00Z</updated>
+            <id>https://myjavaacademy.com/how-to-configure-mule-smtp-connector-on-mac-os-x/</id>
+            <category term="Mule ESB"/>
+            <content type="html">
+                &lt;p&gt;If you are working on Mule ESB and wondering how to configure SMTP connector in Mule flow to send emails then below are steps that might help you to do it.&lt;/p&gt;
 &lt;p&gt;Few Points before we start &amp;#8211;&lt;/p&gt;
 &lt;ol&gt;
   &lt;li&gt;I am on MAC OS X El Capitan (Latest version as of 10/10/2015)&lt;/li&gt;
@@ -472,20 +473,20 @@ Shout - Start Position:6, length: 13&lt;/pre&gt;
 &lt;p&gt;After all these settings, If I now start my Mule Server and provide the input file, Flow 1 converts the file to JASON and Flow 2 sends out that data to target recipient using my iCloud account.&lt;/p&gt;
 &lt;p&gt;Hope this helps!&lt;/p&gt;
 &lt;p&gt;Happy Coding!&lt;/p&gt;
-        </content>
-    </entry>
-    <entry>
-        <title>Using HTTP Session information in Spring MVC Testing</title>
-        <author>
-            <name>Manik Magar</name>
-        </author>
-        <link href="https://myjavaacademy.com/using-http-session-information-in-spring-mvc-testing/"/>
-        <updated>2013-01-21T00:00:00Z</updated>
-        <id>https://myjavaacademy.com/using-http-session-information-in-spring-mvc-testing/</id>
-        <category term="JUnit"/>
-        <category term="Spring MVC"/>
-        <content type="html">
-            &lt;p&gt;With Spring 3.2, MVC testing is now integrated in the framework itself as Spring-test project. These are simple and easy ways to test your MVC. A simple introduction can be read &lt;a href=&quot;http://blog.springsource.org/2012/11/12/spring-framework-3-2-rc1-spring-mvc-test-framework/&quot; target=&quot;_blank&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+            </content>
+        </item>
+        <item>
+            <title>Using HTTP Session information in Spring MVC Testing</title>
+            <author>
+                <name>Manik Magar</name>
+            </author>
+            <link href="https://myjavaacademy.com/using-http-session-information-in-spring-mvc-testing/"/>
+            <updated>2013-01-21T00:00:00Z</updated>
+            <id>https://myjavaacademy.com/using-http-session-information-in-spring-mvc-testing/</id>
+            <category term="JUnit"/>
+            <category term="Spring MVC"/>
+            <content type="html">
+                &lt;p&gt;With Spring 3.2, MVC testing is now integrated in the framework itself as Spring-test project. These are simple and easy ways to test your MVC. A simple introduction can be read &lt;a href=&quot;http://blog.springsource.org/2012/11/12/spring-framework-3-2-rc1-spring-mvc-test-framework/&quot; target=&quot;_blank&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;A very common scenario in any web application is dependency on User Authenticated Sessions in-between multiple requests.&lt;/p&gt;
 &lt;p&gt;For a usual MVC testing we can write a test case to test functionality. We will see here how we can use applications Authentication service to authenticate user and use its session across multiple requests.&lt;/p&gt;
 &lt;p&gt;Here is a pom.xml &amp;#8211;&lt;/p&gt;
@@ -809,21 +810,21 @@ MockHttpSession session = (MockHttpSession)result.getRequest().getSession();&lt;
 &lt;p&gt;We are done! See, it’s so easy to use sessions in testing. This also makes sure we are testing our getUser with real sessions created by actual LoginController and not any dummy session created for testing purpose where there is a chance that it may differ from actual sessions created by application via LoginController.&lt;/p&gt;
 &lt;p&gt;&amp;#160;&lt;/p&gt;
 &lt;p&gt;Enjoy!!&lt;/p&gt;
-        </content>
-    </entry>
-    <entry>
-        <title>Spring MyBatis Integration and JUnit Testing using Spring’s embedded database</title>
-        <author>
-            <name>Manik Magar</name>
-        </author>
-        <link href="https://myjavaacademy.com/spring-mybatis-integration-and-junit-testing-using-springs-embedded-database/"/>
-        <updated>2013-01-01T00:00:00Z</updated>
-        <id>https://myjavaacademy.com/spring-mybatis-integration-and-junit-testing-using-springs-embedded-database/</id>
-        <category term="JUnit"/>
-        <category term="MyBatis"/>
-        <category term="Spring Framework"/>
-        <content type="html">
-            &lt;p&gt;Let’s look at a simple example to see how we can integrate MyBatis in Spring Application.&lt;/p&gt;
+            </content>
+        </item>
+        <item>
+            <title>Spring MyBatis Integration and JUnit Testing using Spring’s embedded database</title>
+            <author>
+                <name>Manik Magar</name>
+            </author>
+            <link href="https://myjavaacademy.com/spring-mybatis-integration-and-junit-testing-using-springs-embedded-database/"/>
+            <updated>2013-01-01T00:00:00Z</updated>
+            <id>https://myjavaacademy.com/spring-mybatis-integration-and-junit-testing-using-springs-embedded-database/</id>
+            <category term="JUnit"/>
+            <category term="MyBatis"/>
+            <category term="Spring Framework"/>
+            <content type="html">
+                &lt;p&gt;Let’s look at a simple example to see how we can integrate MyBatis in Spring Application.&lt;/p&gt;
 &lt;p&gt;Maven POM for the demo &amp;#8211;&lt;/p&gt;
 &lt;pre class=&quot;xml&quot;&gt;&amp;lt;project xmlns=&lt;span class=&quot;str&quot;&gt;&quot;http://maven.apache.org/POM/4.0.0&quot;&lt;/span&gt; 
 xmlns:xsi=&lt;span class=&quot;str&quot;&gt;&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&lt;/span&gt; 
@@ -1036,20 +1037,20 @@ import com.mms.blogs.demo.mybatisspring.vo.Employee;
 &lt;p&gt;&amp;nbsp;&lt;/p&gt;
 &lt;p&gt;References&lt;/p&gt;
 &lt;p&gt;&lt;a href=&quot;http://www.mybatis.org/spring/&quot; title=&quot;http://www.mybatis.org/spring/&quot;&gt;http://www.mybatis.org/spring/&lt;/a&gt;&lt;/p&gt;
-        </content>
-    </entry>
-    <entry>
-        <title>How to create a certificate for ios development on windows?</title>
-        <author>
-            <name>Manik Magar</name>
-        </author>
-        <link href="https://myjavaacademy.com/how-to-create-a-certificate-for-ios-development-on-windows/"/>
-        <updated>2012-06-13T00:00:00Z</updated>
-        <id>https://myjavaacademy.com/how-to-create-a-certificate-for-ios-development-on-windows/</id>
-        <category term="Adobe"/>
-        <category term="iOS Development"/>
-        <content type="html">
-            &lt;p&gt;I was browsing through adobe sites and forums to find out how can I create a certificate for iOS development on windows. I tried OpenSSL on widnows but it always failed to find the config file.&lt;/p&gt;
+            </content>
+        </item>
+        <item>
+            <title>How to create a certificate for ios development on windows?</title>
+            <author>
+                <name>Manik Magar</name>
+            </author>
+            <link href="https://myjavaacademy.com/how-to-create-a-certificate-for-ios-development-on-windows/"/>
+            <updated>2012-06-13T00:00:00Z</updated>
+            <id>https://myjavaacademy.com/how-to-create-a-certificate-for-ios-development-on-windows/</id>
+            <category term="Adobe"/>
+            <category term="iOS Development"/>
+            <content type="html">
+                &lt;p&gt;I was browsing through adobe sites and forums to find out how can I create a certificate for iOS development on windows. I tried OpenSSL on widnows but it always failed to find the config file.&lt;/p&gt;
 &lt;p&gt;So here is what I did &amp;#8211;&lt;/p&gt;
 &lt;ol&gt;
   &lt;li&gt;Install Cygwin &amp;#8211; &lt;a href=&quot;http://cygwin.com/install.html&quot;&gt;http://cygwin.com/install.html&lt;/a&gt;&lt;/li&gt;
@@ -1107,35 +1108,35 @@ import com.mms.blogs.demo.mybatisspring.vo.Employee;
   &lt;li&gt;Check your c:/test folder, you should have your certificate ready for use.&lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;&amp;nbsp;&lt;/p&gt;
-        </content>
-    </entry>
-    <entry>
-        <title>Struts2-Spring-WebSphere not working</title>
-        <author>
-            <name>Manik Magar</name>
-        </author>
-        <link href="https://myjavaacademy.com/struts2-spring-websphere-not-working/"/>
-        <updated>2012-04-15T00:00:00Z</updated>
-        <id>https://myjavaacademy.com/struts2-spring-websphere-not-working/</id>
-        <category term="Spring Framework"/>
-        <content type="html">
-            &lt;p&gt;I created an application with Struts2 and Spring. It worked perfectly on tomcat 5.5. But when I deployed it on WebSphere 6, i was not able to call any action except static jsp files. I was getting HTTP 404 for all requests. I found solution on – &lt;/p&gt;
+            </content>
+        </item>
+        <item>
+            <title>Struts2-Spring-WebSphere not working</title>
+            <author>
+                <name>Manik Magar</name>
+            </author>
+            <link href="https://myjavaacademy.com/struts2-spring-websphere-not-working/"/>
+            <updated>2012-04-15T00:00:00Z</updated>
+            <id>https://myjavaacademy.com/struts2-spring-websphere-not-working/</id>
+            <category term="Spring Framework"/>
+            <content type="html">
+                &lt;p&gt;I created an application with Struts2 and Spring. It worked perfectly on tomcat 5.5. But when I deployed it on WebSphere 6, i was not able to call any action except static jsp files. I was getting HTTP 404 for all requests. I found solution on – &lt;/p&gt;
 &lt;p&gt;&lt;a href=&quot;http://www.ibm.com/developerworks/forums/thread.jspa?threadID=158327&quot;&gt;http://www.ibm.com/developerworks/forums/thread.jspa?threadID=158327&lt;/a&gt; &lt;/p&gt;
 &lt;p&gt;&lt;a href=&quot;http://www-01.ibm.com/support/docview.wss?uid=swg24014758&quot;&gt;http://www-01.ibm.com/support/docview.wss?uid=swg24014758&lt;/a&gt; &lt;/p&gt;
 &lt;p&gt;&lt;a href=&quot;http://stackoverflow.com/questions/1337786/struts2-doesnt-find-jsp-files&quot;&gt;http://stackoverflow.com/questions/1337786/struts2-doesnt-find-jsp-files&lt;/a&gt;&lt;/p&gt;
-        </content>
-    </entry>
-    <entry>
-        <title>Flex Tree and GroupingCollection</title>
-        <author>
-            <name>Manik Magar</name>
-        </author>
-        <link href="https://myjavaacademy.com/flex-tree-and-groupingcollection/"/>
-        <updated>2011-08-21T00:00:00Z</updated>
-        <id>https://myjavaacademy.com/flex-tree-and-groupingcollection/</id>
-        <category term="Flex"/>
-        <content type="html">
-            &lt;p&gt;&lt;strong&gt;How to display flat view datacollection in mx:Tree component?&lt;/strong&gt;&lt;/p&gt;
+            </content>
+        </item>
+        <item>
+            <title>Flex Tree and GroupingCollection</title>
+            <author>
+                <name>Manik Magar</name>
+            </author>
+            <link href="https://myjavaacademy.com/flex-tree-and-groupingcollection/"/>
+            <updated>2011-08-21T00:00:00Z</updated>
+            <id>https://myjavaacademy.com/flex-tree-and-groupingcollection/</id>
+            <category term="Flex"/>
+            <content type="html">
+                &lt;p&gt;&lt;strong&gt;How to display flat view datacollection in mx:Tree component?&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;dataProvider for Tree control requires an Object of tree data or ArrayCollection or XMLListCollection. But many times we need to display the GroupingCollection object into Tree. Below example how can we do that using the root object of GroupingCollection.&lt;/p&gt;
 &lt;ol&gt;
   &lt;li&gt;
@@ -1211,19 +1212,19 @@ import com.mms.blogs.demo.mybatisspring.vo.Employee;
   &lt;/p&gt;
 &lt;/div&gt;
 &lt;p&gt;&amp;nbsp;&lt;/p&gt;
-        </content>
-    </entry>
-    <entry>
-        <title>Flex error &#8216;Reference error 1056 :Cannot create property myname on mycustomobject&#8217;.	  &#8216;'</title>
-        <author>
-            <name>Manik Magar</name>
-        </author>
-        <link href="https://myjavaacademy.com/flex-error-reference-error-1056-cannot-create-property-myname-on-mycustomobject/"/>
-        <updated>2011-07-24T00:00:00Z</updated>
-        <id>https://myjavaacademy.com/flex-error-reference-error-1056-cannot-create-property-myname-on-mycustomobject/</id>
-        <category term="Flex"/>
-        <content type="html">
-            &lt;p&gt;Some times we get this error in flex &amp;#8211;&lt;/p&gt;
+            </content>
+        </item>
+        <item>
+            <title>Flex error &#8216;Reference error 1056 :Cannot create property myname on mycustomobject&#8217;.	  &#8216;'</title>
+            <author>
+                <name>Manik Magar</name>
+            </author>
+            <link href="https://myjavaacademy.com/flex-error-reference-error-1056-cannot-create-property-myname-on-mycustomobject/"/>
+            <updated>2011-07-24T00:00:00Z</updated>
+            <id>https://myjavaacademy.com/flex-error-reference-error-1056-cannot-create-property-myname-on-mycustomobject/</id>
+            <category term="Flex"/>
+            <content type="html">
+                &lt;p&gt;Some times we get this error in flex &amp;#8211;&lt;/p&gt;
 &lt;p&gt;Reference error 1056 :Cannot create property myname on mycustomobject.&lt;/p&gt;
 &lt;p&gt;You will get this error if you are setting/accessing any property that dose not exist on any object which is not declared as dynamic.The base class &amp;#8216;Object&amp;#8217; is a dynamic class. &lt;/p&gt;
 &lt;p&gt;What is dynamic class? &amp;#8211; below declaration will make mycustomeobject as dynamic and allows addition/deletion of properties at runtime. &lt;/p&gt;
@@ -1237,23 +1238,23 @@ import com.mms.blogs.demo.mybatisspring.vo.Employee;
 &lt;p&gt;If you are planning to use dynamic objects, its always good you check property existance before you use it &amp;#8211;&lt;/p&gt;
 &lt;p&gt;mycustomobject.hasOwnProperty(&amp;#8216;prop1&amp;#8217;)&lt;/p&gt;
 &lt;p&gt;Hope this helps &amp;#8230; Have fun!&lt;/p&gt;
-        </content>
-    </entry>
-    <entry>
-        <title>Connecting to local database in adobe AIR</title>
-        <author>
-            <name>Manik Magar</name>
-        </author>
-        <link href="https://myjavaacademy.com/connecting-to-local-database-in-adobe-air/"/>
-        <updated>2011-01-02T00:00:00Z</updated>
-        <id>https://myjavaacademy.com/connecting-to-local-database-in-adobe-air/</id>
-        <category term="Adobe AIR"/>
-        <category term=""/>
-        <category term="Database"/>
-        <category term="Flex"/>
-        <category term="Oracle"/>
-        <content type="html">
-            &lt;p&gt;I wanted to create a sample desktop application using Adobe AIR. Application was supposed to get the data from local oracle express edition database. I started working on it but soon i realize that I cannot connect to local database through AIR. I googled a lot but could not find anything. So i decided to create something new and then i started working on &lt;a href=&quot;http://code.google.com/p/air-db-connector/&quot; target=&quot;_blank&quot;&gt;AirDBConnector&lt;/a&gt;.&lt;/p&gt;
+            </content>
+        </item>
+        <item>
+            <title>Connecting to local database in adobe AIR</title>
+            <author>
+                <name>Manik Magar</name>
+            </author>
+            <link href="https://myjavaacademy.com/connecting-to-local-database-in-adobe-air/"/>
+            <updated>2011-01-02T00:00:00Z</updated>
+            <id>https://myjavaacademy.com/connecting-to-local-database-in-adobe-air/</id>
+            <category term="Adobe AIR"/>
+            <category term=""/>
+            <category term="Database"/>
+            <category term="Flex"/>
+            <category term="Oracle"/>
+            <content type="html">
+                &lt;p&gt;I wanted to create a sample desktop application using Adobe AIR. Application was supposed to get the data from local oracle express edition database. I started working on it but soon i realize that I cannot connect to local database through AIR. I googled a lot but could not find anything. So i decided to create something new and then i started working on &lt;a href=&quot;http://code.google.com/p/air-db-connector/&quot; target=&quot;_blank&quot;&gt;AirDBConnector&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;AirDBConnector has three parts &amp;#8211;&lt;/p&gt;
 &lt;ol&gt;
   &lt;li&gt;java4airdb – Local Java Server that sits between air application and database.&lt;/li&gt;
@@ -1590,19 +1591,19 @@ import com.mms.blogs.demo.mybatisspring.vo.Employee;
 &lt;p&gt;Download Release 1.0 &amp;#8211; &lt;a href=&quot;http://code.google.com/p/air-db-connector/downloads/list&quot; title=&quot;http://code.google.com/p/air-db-connector/downloads/list&quot;&gt;http://code.google.com/p/air-db-connector/downloads/list&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&amp;#160;&lt;/p&gt;
 &lt;p&gt;Please let me know your comments/issues/changes.&lt;/p&gt;
-        </content>
-    </entry>
-    <entry>
-        <title>Iterate through ActionScript Object properties – AS Reflection</title>
-        <author>
-            <name>Manik Magar</name>
-        </author>
-        <link href="https://myjavaacademy.com/iterate-through-actionscript-object-properties-as-reflection/"/>
-        <updated>2009-09-20T00:00:00Z</updated>
-        <id>https://myjavaacademy.com/iterate-through-actionscript-object-properties-as-reflection/</id>
-        <category term="Flex"/>
-        <content type="html">
-            &lt;p&gt;I was wondering if reflection is possible in ActionScript or not. After diving into API, i got something which seems like reflection in Flex. &lt;/p&gt;
+            </content>
+        </item>
+        <item>
+            <title>Iterate through ActionScript Object properties – AS Reflection</title>
+            <author>
+                <name>Manik Magar</name>
+            </author>
+            <link href="https://myjavaacademy.com/iterate-through-actionscript-object-properties-as-reflection/"/>
+            <updated>2009-09-20T00:00:00Z</updated>
+            <id>https://myjavaacademy.com/iterate-through-actionscript-object-properties-as-reflection/</id>
+            <category term="Flex"/>
+            <content type="html">
+                &lt;p&gt;I was wondering if reflection is possible in ActionScript or not. After diving into API, i got something which seems like reflection in Flex. &lt;/p&gt;
 &lt;p&gt;ActionScript API provide one class ObjectUtil. It contains some helper methods like compare, dateComapre etc for handling objects.&lt;/p&gt;
 &lt;p&gt;This class also has one very useful method getClassInfo(). Below code shows usage of this method to iterate through properties of an object &amp;#8211;&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt; &amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;utf-8&amp;quot;?&amp;gt;
@@ -1639,19 +1640,19 @@ import com.mms.blogs.demo.mybatisspring.vo.Employee;
 &lt;p&gt;printProperties1() method should print all properties of Application class. Second implementation printProperties2() shows excluding certain properties from search.&lt;/p&gt;
 &lt;p&gt;Even though this introspection is not like java or any other language reflection but still its very useful since flex supports dynamic objects. To iterate through properties of dynamic objects this method can be used.&lt;/p&gt;
 &lt;p&gt;Hope this helps!&lt;/p&gt;
-        </content>
-    </entry>
-    <entry>
-        <title>Move Items between Flex List objects</title>
-        <author>
-            <name>Manik Magar</name>
-        </author>
-        <link href="https://myjavaacademy.com/move-items-between-flex-list-objects/"/>
-        <updated>2009-02-25T00:00:00Z</updated>
-        <id>https://myjavaacademy.com/move-items-between-flex-list-objects/</id>
-        <category term="Flex"/>
-        <content type="html">
-            &lt;p&gt;In this article we will see how to move data in between Lists. Same approach can be implemented to move the items across the other components like datagrid, advancedatagrid etc.&lt;/p&gt;
+            </content>
+        </item>
+        <item>
+            <title>Move Items between Flex List objects</title>
+            <author>
+                <name>Manik Magar</name>
+            </author>
+            <link href="https://myjavaacademy.com/move-items-between-flex-list-objects/"/>
+            <updated>2009-02-25T00:00:00Z</updated>
+            <id>https://myjavaacademy.com/move-items-between-flex-list-objects/</id>
+            <category term="Flex"/>
+            <content type="html">
+                &lt;p&gt;In this article we will see how to move data in between Lists. Same approach can be implemented to move the items across the other components like datagrid, advancedatagrid etc.&lt;/p&gt;
 &lt;p&gt;In the application mxml file, we will add two List components and two buttons.&lt;/p&gt;
 &lt;div style=&quot;border-bottom:silver 1px solid;text-align:left;border-left:silver 1px solid;line-height:12pt;background-color:#f4f4f4;width:97.5%;font-family:&amp;#39;direction:ltr;max-height:200px;font-size:8pt;overflow:auto;border-top:silver 1px solid;cursor:text;border-right:silver 1px solid;margin:20px 0 10px;padding:4px;&quot; id=&quot;codeSnippetWrapper&quot;&gt;
   &lt;div style=&quot;text-align:left;line-height:12pt;background-color:#f4f4f4;width:100%;font-family:&amp;#39;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;&quot; id=&quot;codeSnippet&quot;&gt;
@@ -1960,19 +1961,19 @@ import com.mms.blogs.demo.mybatisspring.vo.Employee;
                             Cool &amp;amp;#8230; we are ready to move!
                           &amp;lt;/p&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;
-        </content>
-    </entry>
-    <entry>
-        <title>What are FavIcons?</title>
-        <author>
-            <name>Manik Magar</name>
-        </author>
-        <link href="https://myjavaacademy.com/what-are-favicons/"/>
-        <updated>2009-02-24T00:00:00Z</updated>
-        <id>https://myjavaacademy.com/what-are-favicons/</id>
-        <category term="Web"/>
-        <content type="html">
-            &lt;p&gt;&lt;span style=&quot;font-size:small;font-family:Calibri;&quot;&gt;You must have seen the “g” icon that appears in browser&amp;#8217;s address bar when you open a google page &lt;/span&gt;&lt;span style=&quot;font-size:small;font-family:Calibri;&quot;&gt;or a “W” icon for Wikipedia page. Have you ever wonder what are they called or How they are embedded there?&lt;/span&gt;&lt;/p&gt;
+            </content>
+        </item>
+        <item>
+            <title>What are FavIcons?</title>
+            <author>
+                <name>Manik Magar</name>
+            </author>
+            <link href="https://myjavaacademy.com/what-are-favicons/"/>
+            <updated>2009-02-24T00:00:00Z</updated>
+            <id>https://myjavaacademy.com/what-are-favicons/</id>
+            <category term="Web"/>
+            <content type="html">
+                &lt;p&gt;&lt;span style=&quot;font-size:small;font-family:Calibri;&quot;&gt;You must have seen the “g” icon that appears in browser&amp;#8217;s address bar when you open a google page &lt;/span&gt;&lt;span style=&quot;font-size:small;font-family:Calibri;&quot;&gt;or a “W” icon for Wikipedia page. Have you ever wonder what are they called or How they are embedded there?&lt;/span&gt;&lt;/p&gt;
 &lt;span style=&quot;font-size:small;font-family:Calibri;&quot;&gt;Google Icon &amp;#8211;&lt;/span&gt;
 &lt;img src=&quot;https://i0.wp.com/ch1blogs/blogs/149732/files/2008/11/FavIcon_Google.JPG?resize=319%2C89&amp;#038;ssl=1&quot; alt=&quot;FavIcon for Google&quot; data-recalc-dims=&quot;1&quot; /&gt;
 &lt;span style=&quot;font-size:small;font-family:Calibri;&quot;&gt;Wikipedia Icon &amp;#8211;&lt;/span&gt;
@@ -1997,7 +1998,8 @@ import com.mms.blogs.demo.mybatisspring.vo.Employee;
 &lt;span style=&quot;font-size:small;font-family:Calibri;&quot;&gt;References:&lt;/span&gt;
 &lt;p&gt;&lt;a href=&quot;http://en.wikipedia.org/wiki/Favicon&quot;&gt;&lt;span style=&quot;font-size:small;color:#141464;font-family:Calibri;&quot;&gt;http://en.wikipedia.org/wiki/Favicon&lt;/span&gt;&lt;/a&gt; &lt;span style=&quot;font-size:small;font-family:Calibri;&quot;&gt;&amp;#8211; Details the concept of FavIcon&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href=&quot;http://www.html-kit.com/favicon/&quot;&gt;&lt;span style=&quot;font-size:small;color:#800080;font-family:Calibri;&quot;&gt;http://www.html-kit.com/favicon/&lt;/span&gt;&lt;/a&gt; &lt;span style=&quot;font-size:small;font-family:Calibri;&quot;&gt;&amp;#8211; provides Utility to create FavIcon from gif and other formats.&lt;/span&gt;&lt;/p&gt;
-        </content>
-    </entry>
-    
-</feed>
+            </content>
+        </item>
+        
+    </channel>
+</rss>

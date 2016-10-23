@@ -1,11 +1,11 @@
 xmlDeclaration()
-feed(xmlns:"http://www.w3.org/2005/Atom"){
-
+rss(xmlns:"http://www.w3.org/2005/Atom", version:"2.0"){
+  channel {
     title("${config.blog_title}")
     newLine()
     link(href:"${config.site_host}${config.site_contextPath}")
     newLine()
-    link(rel:"self", type:"application/atom+xml", href:"${config.site_host}${config.site_contextPath}${config.feed_file}")
+    atom:link(rel:"self", type:"application/rss+xml", href:"${config.site_host}${config.site_contextPath}${config.feed_file}")
     newLine()
     subtitle("${config.blog_subtitle}")
     newLine()
@@ -13,8 +13,9 @@ feed(xmlns:"http://www.w3.org/2005/Atom"){
     newLine()
     id("tag:${config.feed_id},${published_date.format('yyyy:MM')}")
     newLine()
+
     published_posts.each {post ->
-        entry{
+        item{
           title("${post.title}")
           newLine()
           author{
@@ -37,4 +38,5 @@ feed(xmlns:"http://www.w3.org/2005/Atom"){
         }
         newLine()
     }
+  }
 }
