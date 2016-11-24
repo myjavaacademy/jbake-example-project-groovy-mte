@@ -5,7 +5,7 @@
         <link href="https://myjavaacademy.com/"/>
         <link rel="self" type="application/rss+xml" href="https://myjavaacademy.com/feed.xml"/>
         <subtitle>Learn java and related technologies</subtitle>
-        <updated>2016-11-24T13:22:43Z</updated>
+        <updated>2016-11-24T13:46:14Z</updated>
         <id>tag:MyJavaAcademy,2016:11</id>
         <item>
             <title>File outbound endpoint and inline transformers-refs to write flow variables to file</title>
