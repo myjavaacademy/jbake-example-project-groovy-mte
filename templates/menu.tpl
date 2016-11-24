@@ -1,4 +1,6 @@
 div(class:"row"){
+    
+    include template: 'ads.tpl'
 
     div(class:"small-12 large-12 middle-12 small-text-center large-text-center middle-text-center columns"){
         div(class:"title-box"){
