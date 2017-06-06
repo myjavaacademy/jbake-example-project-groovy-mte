@@ -119,13 +119,13 @@
 <p>Starting server is very simple just define the connector port in properties file, specify the sql-config file path and run the java4airdb.bat file.</p>
 <p><strong>*This requires Java5+. Set JAVA_HOME property.</strong>&#160;</p>
 <h2>sql-gen:</h2>
-<p>Its a very simple utility air application to generate sql-config file in proper syntax. </p>
-<p><a href="https://i1.wp.com/www.myjavaacademy.com/wp-content/uploads/2011/01/sqlgen1.png"><img style="display:inline;border-width:0;" title="SqlGen1" border="0" alt="SqlGen1" src="https://i0.wp.com/www.myjavaacademy.com/wp-content/uploads/2011/01/sqlgen1_thumb.png?resize=505%2C319" data-recalc-dims="1" /></a> </p>
+<p>Its a very simple utility air application to generate sql-config file in proper syntax.</p>
+<p><a href="/img/2011/01/sqlgen1.png"><img style="display:inline;border-width:0;" title="SqlGen1" border="0" alt="SqlGen1" src="/img/2011/01/sqlgen1_thumb.png?resize=505%2C319" data-recalc-dims="1" /></a> </p>
 <p>&#160;</p>
 <ol>
   <li>Run AirDbConfigGenerator. Click on ‘New Config’. Enter DSN Name. If required username and password.</li>
 </ol>
-<p><a href="https://i2.wp.com/www.myjavaacademy.com/wp-content/uploads/2011/01/image.png"><img style="display:inline;border-width:0;" title="image" border="0" alt="image" src="https://i1.wp.com/www.myjavaacademy.com/wp-content/uploads/2011/01/image_thumb.png?resize=513%2C324" data-recalc-dims="1" /></a> </p>
+<p><a href="/img/2011/01/image.png"><img style="display:inline;border-width:0;" title="image" border="0" alt="image" src="/img/2011/01/image_thumb.png?resize=513%2C324" data-recalc-dims="1" /></a></p>
 <ol>
   <li>To add SQL queries, click on ‘+’ button in SQL queries. Add below fields and Save Query.</li>
 </ol>
@@ -136,7 +136,7 @@
   <li>Parameters</li>
 </ul>
 <p>You can have any number of queries in config file.</p>
-<p><a href="https://i1.wp.com/www.myjavaacademy.com/wp-content/uploads/2011/01/image1.png"><img style="display:inline;border-width:0;" title="image" border="0" alt="image" src="https://i1.wp.com/www.myjavaacademy.com/wp-content/uploads/2011/01/image_thumb1.png?resize=524%2C331" data-recalc-dims="1" /></a></p>
+<p><a href="/img/2011/01/image1.png"><img style="display:inline;border-width:0;" title="image" border="0" alt="image" src="/img/2011/01/image_thumb1.png?resize=524%2C331" data-recalc-dims="1" /></a></p>
 <p>&#160;</p>
 <ol>
   <li>Once you are done with adding all queries. Click on ‘Generate XML’ button on top to generate sql-config.xml file.</li>
@@ -147,37 +147,37 @@
 <p>Sample XML file &#8211;</p>
 <div class="csharpcode">
   <pre class="alt"><span class="kwrd">&lt;</span><span class="html">sql-config</span><span class="kwrd">&gt;</span></pre>
-  
+
   <pre>  <span class="kwrd">&lt;</span><span class="html">connection</span><span class="kwrd">&gt;</span></pre>
-  
+
   <pre class="alt">    <span class="kwrd">&lt;</span><span class="html">dsn</span> <span class="attr">password</span><span class="kwrd">="password"</span> <span class="attr">name</span><span class="kwrd">="MyDSN"</span> <span class="attr">username</span><span class="kwrd">="user1"</span><span class="kwrd">/&gt;</span></pre>
-  
+
   <pre>  <span class="kwrd">&lt;/</span><span class="html">connection</span><span class="kwrd">&gt;</span></pre>
-  
+
   <pre class="alt">  <span class="kwrd">&lt;</span><span class="html">queries</span><span class="kwrd">&gt;</span></pre>
-  
+
   <pre>    <span class="kwrd">&lt;</span><span class="html">select</span> <span class="attr">id</span><span class="kwrd">="Query1"</span><span class="kwrd">&gt;</span></pre>
-  
+
   <pre class="alt">      <span class="kwrd">&lt;</span><span class="html">sql</span><span class="kwrd">&gt;</span>Select * from test_table1 where id=?<span class="kwrd">&lt;/</span><span class="html">sql</span><span class="kwrd">&gt;</span></pre>
-  
+
   <pre>      <span class="kwrd">&lt;</span><span class="html">parameters</span><span class="kwrd">&gt;</span></pre>
-  
+
   <pre class="alt">        <span class="kwrd">&lt;</span><span class="html">parameter</span><span class="kwrd">&gt;</span></pre>
-  
+
   <pre>          <span class="kwrd">&lt;</span><span class="html">name</span><span class="kwrd">&gt;</span>param1<span class="kwrd">&lt;/</span><span class="html">name</span><span class="kwrd">&gt;</span></pre>
-  
+
   <pre class="alt">          <span class="kwrd">&lt;</span><span class="html">type</span><span class="kwrd">&gt;</span>BIGINT<span class="kwrd">&lt;/</span><span class="html">type</span><span class="kwrd">&gt;</span></pre>
-  
+
   <pre>          <span class="kwrd">&lt;</span><span class="html">typeVal</span><span class="kwrd">&gt;</span>-5<span class="kwrd">&lt;/</span><span class="html">typeVal</span><span class="kwrd">&gt;</span></pre>
-  
+
   <pre class="alt">        <span class="kwrd">&lt;/</span><span class="html">parameter</span><span class="kwrd">&gt;</span></pre>
-  
+
   <pre>      <span class="kwrd">&lt;/</span><span class="html">parameters</span><span class="kwrd">&gt;</span></pre>
-  
+
   <pre class="alt">    <span class="kwrd">&lt;/</span><span class="html">select</span><span class="kwrd">&gt;</span></pre>
-  
+
   <pre>  <span class="kwrd">&lt;/</span><span class="html">queries</span><span class="kwrd">&gt;</span></pre>
-  
+
   <pre class="alt"><span class="kwrd">&lt;/</span><span class="html">sql-config</span><span class="kwrd">&gt;</span></pre>
 </div>
 <p>.csharpcode, .csharpcode pre</p>
@@ -212,65 +212,65 @@
 </div>
 <div class="csharpcode">
   <pre class="alt"><span class="lnum">   1:  </span><span class="kwrd">&lt;?</span><span class="html">xml</span> <span class="attr">version</span><span class="kwrd">="1.0"</span> <span class="attr">encoding</span><span class="kwrd">="utf-8"</span>?<span class="kwrd">&gt;</span></pre>
-  
+
   <pre><span class="lnum">   2:  </span><span class="kwrd">&lt;</span><span class="html">mx:WindowedApplication</span> <span class="attr">xmlns:mx</span><span class="kwrd">="http://www.adobe.com/2006/mxml"</span> </pre>
-  
+
   <pre class="alt"><span class="lnum">   3:  </span>    <span class="attr">layout</span><span class="kwrd">="vertical"</span> <span class="attr">xmlns:airdb</span><span class="kwrd">="com.mm.apps.airdb.*"</span></pre>
-  
+
   <pre><span class="lnum">   4:  </span>    <span class="attr">creationComplete</span><span class="kwrd">="airDB.init();"</span><span class="kwrd">&gt;</span></pre>
-  
+
   <pre class="alt"><span class="lnum">   5:  </span>    </pre>
-  
+
   <pre><span class="lnum">   6:  </span>    <span class="kwrd">&lt;</span><span class="html">mx:Script</span><span class="kwrd">&gt;</span></pre>
-  
+
   <pre class="alt"><span class="lnum">   7:  </span>        <span class="kwrd">&lt;!</span>[CDATA[</pre>
-  
+
   <pre><span class="lnum">   8:  </span>            import com.mm.apps.airdb.AirConnectorEvent;</pre>
-  
+
   <pre class="alt"><span class="lnum">   9:  </span>            private function onIncomingData(event:AirConnectorEvent):void{</pre>
-  
+
   <pre><span class="lnum">  10:  </span>               dg.dataProvider = event.resultRows;</pre>
-  
+
   <pre class="alt"><span class="lnum">  11:  </span>            } </pre>
-  
+
   <pre><span class="lnum">  12:  </span>        ]]<span class="kwrd">&gt;</span></pre>
-  
+
   <pre class="alt"><span class="lnum">  13:  </span>    <span class="kwrd">&lt;/</span><span class="html">mx:Script</span><span class="kwrd">&gt;</span></pre>
-  
+
   <pre><span class="lnum">  14:  </span>    </pre>
-  
+
   <pre class="alt"><span class="lnum">  15:  </span>    <span class="kwrd">&lt;</span><span class="html">airdb:AirDBConnector</span> <span class="attr">id</span><span class="kwrd">="airDB"</span> <span class="attr">serverPort</span><span class="kwrd">="9000"</span> </pre>
-  
+
   <pre><span class="lnum">  16:  </span>        <span class="attr">serverAddress</span><span class="kwrd">="localhost"</span> </pre>
-  
+
   <pre class="alt"><span class="lnum">  17:  </span>        <span class="attr">dataReceived</span><span class="kwrd">="onIncomingData(event)"</span><span class="kwrd">/&gt;</span></pre>
-  
+
   <pre><span class="lnum">  18:  </span>    </pre>
-  
+
   <pre class="alt"><span class="lnum">  19:  </span>    <span class="kwrd">&lt;</span><span class="html">mx:Button</span> <span class="attr">label</span><span class="kwrd">="Get Data"</span> <span class="attr">click</span><span class="kwrd">="{airDB.executeQuery('get_frameworks');}"</span><span class="kwrd">/&gt;</span></pre>
-  
+
   <pre><span class="lnum">  20:  </span>    </pre>
-  
+
   <pre class="alt"><span class="lnum">  21:  </span>    <span class="kwrd">&lt;</span><span class="html">mx:DataGrid</span> <span class="attr">id</span><span class="kwrd">="dg"</span> <span class="attr">x</span><span class="kwrd">="10"</span> <span class="attr">y</span><span class="kwrd">="423"</span> <span class="attr">height</span><span class="kwrd">="250"</span> <span class="attr">width</span><span class="kwrd">="100%"</span><span class="kwrd">&gt;</span></pre>
-  
+
   <pre><span class="lnum">  22:  </span>        <span class="kwrd">&lt;</span><span class="html">mx:columns</span><span class="kwrd">&gt;</span></pre>
-  
+
   <pre class="alt"><span class="lnum">  23:  </span>            <span class="kwrd">&lt;</span><span class="html">mx:DataGridColumn</span> <span class="attr">dataField</span><span class="kwrd">="framework_id"</span><span class="kwrd">/&gt;</span></pre>
-  
+
   <pre><span class="lnum">  24:  </span>            <span class="kwrd">&lt;</span><span class="html">mx:DataGridColumn</span> <span class="attr">dataField</span><span class="kwrd">="name"</span><span class="kwrd">/&gt;</span></pre>
-  
+
   <pre class="alt"><span class="lnum">  25:  </span>            <span class="kwrd">&lt;</span><span class="html">mx:DataGridColumn</span> <span class="attr">dataField</span><span class="kwrd">="version"</span><span class="kwrd">/&gt;</span></pre>
-  
+
   <pre><span class="lnum">  26:  </span>            <span class="kwrd">&lt;</span><span class="html">mx:DataGridColumn</span> <span class="attr">dataField</span><span class="kwrd">="description"</span><span class="kwrd">/&gt;</span></pre>
-  
+
   <pre class="alt"><span class="lnum">  27:  </span>            <span class="kwrd">&lt;</span><span class="html">mx:DataGridColumn</span> <span class="attr">dataField</span><span class="kwrd">="source_url"</span><span class="kwrd">/&gt;</span></pre>
-  
+
   <pre><span class="lnum">  28:  </span>        <span class="kwrd">&lt;/</span><span class="html">mx:columns</span><span class="kwrd">&gt;</span></pre>
-  
+
   <pre class="alt"><span class="lnum">  29:  </span>    <span class="kwrd">&lt;/</span><span class="html">mx:DataGrid</span><span class="kwrd">&gt;</span>        </pre>
-  
+
   <pre><span class="lnum">  30:  </span>    </pre>
-  
+
   <pre class="alt"><span class="lnum">  31:  </span><span class="kwrd">&lt;/</span><span class="html">mx:WindowedApplication</span><span class="kwrd">&gt;</span></pre>
 </div>
 <p>.csharpcode, .csharpcode pre</p>
@@ -326,9 +326,9 @@
 <p><strong><u>Line 19:</u></strong> on button click, query with id ‘get_frameworks’ is executed by calling executeQuery method on airDB. Optionally you can also pass parameters and callback function to executeQuery method. Below are two flavours of execute query method. These two methods returns an unique string id for each method call. If required you can use this id to match with the result id in event object.</p>
 <div class="csharpcode">
   <pre class="alt"><span class="lnum">   1:  </span>executeQuery(queryId:String, callback:Function = <span class="kwrd">null</span>):String</pre>
-  
+
   <pre><span class="lnum">   2:  </span>&#160;</pre>
-  
+
   <pre class="alt"><span class="lnum">   3:  </span>executeQueryParams(queryId:String, <span class="kwrd">params</span>:Array, callback:Function = <span class="kwrd">null</span>):String</pre>
 </div>
 <p>&#160;</p>
@@ -429,11 +429,11 @@
   <li>resultRowCount: Number of row return by select query</li>
   <li>resultRow: XMLList containing <row> elements from response. You can use this property for assignment to dataProviders.</li>
 </ul>
-<p><a href="https://i1.wp.com/www.myjavaacademy.com/wp-content/uploads/2011/01/image2.png"><img style="display:inline;border-width:0;" title="image" border="0" alt="image" src="https://i2.wp.com/www.myjavaacademy.com/wp-content/uploads/2011/01/image_thumb2.png?resize=559%2C448" data-recalc-dims="1" /></a> </p>
+<p><a href="/img/2011/01/image2.png"><img style="display:inline;border-width:0;" title="image" border="0" alt="image" src="/img/2011/01/image_thumb2.png?resize=559%2C448" data-recalc-dims="1" /></a></p>
 <p>&#160;</p>
 <p>&#160;</p>
 <p>&#160;</p>
-<p>So that’s all. I hope this is easy to interact with local database. </p>
+<p>So that’s all. I hope this is easy to interact with local database.</p>
 <p>Project home &#8211; <a href="http://code.google.com/p/air-db-connector/" title="http://code.google.com/p/air-db-connector/">http://code.google.com/p/air-db-connector/</a></p>
 <p>Download Release 1.0 &#8211; <a href="http://code.google.com/p/air-db-connector/downloads/list" title="http://code.google.com/p/air-db-connector/downloads/list">http://code.google.com/p/air-db-connector/downloads/list</a></p>
 <p>&#160;</p>
