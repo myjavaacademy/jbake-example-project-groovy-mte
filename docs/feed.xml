@@ -5,8 +5,8 @@
         <link href="https://myjavaacademy.com/"/>
         <link rel="self" type="application/rss+xml" href="https://myjavaacademy.com/feed.xml"/>
         <subtitle>Learn java and related technologies</subtitle>
-        <updated>2017-05-10T03:25:56Z</updated>
-        <id>tag:MyJavaAcademy,2017:05</id>
+        <updated>2017-06-06T22:18:51Z</updated>
+        <id>tag:MyJavaAcademy,2017:06</id>
         <item>
             <title>File outbound endpoint and inline transformers-refs to write flow variables to file</title>
             <author>
@@ -321,7 +321,7 @@ Day - Start Position: 3, length: 3
 Shout - Start Position:6, length: 13&lt;/pre&gt;
 &lt;p&gt;Here is our sample flow that reads the file from input directory, applies dataweave transformation and writes the generated file to output directory.&lt;/p&gt;
 &lt;div id=&quot;attachment_135&quot; style=&quot;width: 322px&quot; class=&quot;wp-caption aligncenter&quot;&gt;
-  &lt;img class=&quot;wp-image-135 size-full&quot; src=&quot;https://i2.wp.com/www.myjavaacademy.com/wp-content/uploads/2016/04/Mule_DW_FixedWidth_Flow-1.png?resize=312%2C130&quot; alt=&quot;Mule_DW_FixedWidth_Flow&quot; srcset=&quot;https://i1.wp.com/myjavaacademy.com/wp-content/uploads/2016/04/Mule_DW_FixedWidth_Flow-1.png?w=312&amp;ssl=1 312w, https://i1.wp.com/myjavaacademy.com/wp-content/uploads/2016/04/Mule_DW_FixedWidth_Flow-1.png?resize=300%2C125&amp;ssl=1 300w&quot; sizes=&quot;(max-width: 312px) 100vw, 312px&quot; data-recalc-dims=&quot;1&quot; /&gt;
+  &lt;img class=&quot;wp-image-135 size-full&quot; src=&quot;/img/2016/04/Mule_DW_FixedWidth_Flow-1.png?resize=312%2C130&quot; alt=&quot;Mule_DW_FixedWidth_Flow&quot; srcset=&quot;/img/2016/04/Mule_DW_FixedWidth_Flow-1.png?w=312&amp;ssl=1 312w, /img/2016/04/Mule_DW_FixedWidth_Flow-1.png?resize=300%2C125&amp;ssl=1 300w&quot; sizes=&quot;(max-width: 312px) 100vw, 312px&quot; data-recalc-dims=&quot;1&quot; /&gt;
   
   &lt;p class=&quot;wp-caption-text&quot;&gt;
     Mule flow to convert fixed width text file to JSON
@@ -455,14 +455,14 @@ Shout - Start Position:6, length: 13&lt;/pre&gt;
   &lt;li&gt;Write JASON file to file system using File Outbound connector.&lt;/li&gt;
   &lt;li&gt;Write converted JASON string to VM endpoint&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;&lt;a href=&quot;https://i2.wp.com/www.myjavaacademy.com/wp-content/uploads/2015/10/mule-demo-flow1.png&quot;&gt;&lt;img class=&quot;alignnone size-medium wp-image-103&quot; src=&quot;https://i2.wp.com/www.myjavaacademy.com/wp-content/uploads/2015/10/mule-demo-flow1.png?resize=300%2C100&quot; alt=&quot;mule-demo-flow1&quot; data-recalc-dims=&quot;1&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;/img/2015/10/mule-demo-flow1.png&quot;&gt;&lt;img class=&quot;alignnone size-medium wp-image-103&quot; src=&quot;/img/2015/10/mule-demo-flow1.png?resize=300%2C100&quot; alt=&quot;mule-demo-flow1&quot; data-recalc-dims=&quot;1&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Flow 2: Send content via email&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;https://i0.wp.com/www.myjavaacademy.com/wp-content/uploads/2015/10/mule-demo-flow2.png&quot;&gt;&lt;img class=&quot;alignnone size-medium wp-image-104&quot; src=&quot;https://i0.wp.com/www.myjavaacademy.com/wp-content/uploads/2015/10/mule-demo-flow2.png?resize=300%2C133&quot; alt=&quot;mule-demo-flow2&quot; data-recalc-dims=&quot;1&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;/img/2015/10/mule-demo-flow2.png&quot;&gt;&lt;img class=&quot;alignnone size-medium wp-image-104&quot; src=&quot;/img/2015/10/mule-demo-flow2.png?resize=300%2C133&quot; alt=&quot;mule-demo-flow2&quot; data-recalc-dims=&quot;1&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;ol&gt;
   &lt;li&gt;Listen to the content on same VM endpoint where it is being written in Flow 1&lt;/li&gt;
   &lt;li&gt;Configure SMTP to send out email using iCloud SMTP server. Below are the configuration properties&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;&lt;a href=&quot;https://i1.wp.com/www.myjavaacademy.com/wp-content/uploads/2015/10/smtp_properties.png&quot;&gt;&lt;img class=&quot;alignnone size-medium wp-image-105&quot; src=&quot;https://i1.wp.com/www.myjavaacademy.com/wp-content/uploads/2015/10/smtp_properties.png?resize=300%2C134&quot; alt=&quot;SMTP_Properties&quot; data-recalc-dims=&quot;1&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;/img/2015/10/smtp_properties.png&quot;&gt;&lt;img class=&quot;alignnone size-medium wp-image-105&quot; src=&quot;/img/2015/10/smtp_properties.png?resize=300%2C134&quot; alt=&quot;SMTP_Properties&quot; data-recalc-dims=&quot;1&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;iCloud SMTP servers as per &amp;#8211; https://support.apple.com/en-us/HT202304&lt;/p&gt;
 &lt;p&gt;Host: smtp.mail.me.com&lt;/p&gt;
 &lt;p&gt;Port:587&lt;/p&gt;
@@ -1205,7 +1205,7 @@ import com.mms.blogs.demo.mybatisspring.vo.Employee;
 &lt;p&gt;Hope this helps.&lt;/p&gt;
 &lt;p&gt;&amp;nbsp;&lt;/p&gt;
 &lt;div id=&quot;attachment_64&quot; style=&quot;width: 336px&quot; class=&quot;wp-caption alignnone&quot;&gt;
-  &lt;a href=&quot;https://i2.wp.com/www.myjavaacademy.com/wp-content/uploads/2011/08/testgc.jpg&quot;&gt;&lt;img class=&quot;size-full wp-image-64&quot; title=&quot;TestGC&quot; src=&quot;https://i2.wp.com/www.myjavaacademy.com/wp-content/uploads/2011/08/testgc.jpg?resize=326%2C434&quot; alt=&quot;Flex Tree and GroupingCollection2&quot; data-recalc-dims=&quot;1&quot; /&gt;&lt;/a&gt;
+  &lt;a href=&quot;/img/2011/08/testgc.jpg&quot;&gt;&lt;img class=&quot;size-full wp-image-64&quot; title=&quot;TestGC&quot; src=&quot;/img/2011/08/testgc.jpg?resize=326%2C434&quot; alt=&quot;Flex Tree and GroupingCollection2&quot; data-recalc-dims=&quot;1&quot; /&gt;&lt;/a&gt;
   
   &lt;p class=&quot;wp-caption-text&quot;&gt;
     Flex Tree and GroupingCollection2
@@ -1272,13 +1272,13 @@ import com.mms.blogs.demo.mybatisspring.vo.Employee;
 &lt;p&gt;Starting server is very simple just define the connector port in properties file, specify the sql-config file path and run the java4airdb.bat file.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;*This requires Java5+. Set JAVA_HOME property.&lt;/strong&gt;&amp;#160;&lt;/p&gt;
 &lt;h2&gt;sql-gen:&lt;/h2&gt;
-&lt;p&gt;Its a very simple utility air application to generate sql-config file in proper syntax. &lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;https://i1.wp.com/www.myjavaacademy.com/wp-content/uploads/2011/01/sqlgen1.png&quot;&gt;&lt;img style=&quot;display:inline;border-width:0;&quot; title=&quot;SqlGen1&quot; border=&quot;0&quot; alt=&quot;SqlGen1&quot; src=&quot;https://i0.wp.com/www.myjavaacademy.com/wp-content/uploads/2011/01/sqlgen1_thumb.png?resize=505%2C319&quot; data-recalc-dims=&quot;1&quot; /&gt;&lt;/a&gt; &lt;/p&gt;
+&lt;p&gt;Its a very simple utility air application to generate sql-config file in proper syntax.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;/img/2011/01/sqlgen1.png&quot;&gt;&lt;img style=&quot;display:inline;border-width:0;&quot; title=&quot;SqlGen1&quot; border=&quot;0&quot; alt=&quot;SqlGen1&quot; src=&quot;/img/2011/01/sqlgen1_thumb.png?resize=505%2C319&quot; data-recalc-dims=&quot;1&quot; /&gt;&lt;/a&gt; &lt;/p&gt;
 &lt;p&gt;&amp;#160;&lt;/p&gt;
 &lt;ol&gt;
   &lt;li&gt;Run AirDbConfigGenerator. Click on ‘New Config’. Enter DSN Name. If required username and password.&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;&lt;a href=&quot;https://i2.wp.com/www.myjavaacademy.com/wp-content/uploads/2011/01/image.png&quot;&gt;&lt;img style=&quot;display:inline;border-width:0;&quot; title=&quot;image&quot; border=&quot;0&quot; alt=&quot;image&quot; src=&quot;https://i1.wp.com/www.myjavaacademy.com/wp-content/uploads/2011/01/image_thumb.png?resize=513%2C324&quot; data-recalc-dims=&quot;1&quot; /&gt;&lt;/a&gt; &lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;/img/2011/01/image.png&quot;&gt;&lt;img style=&quot;display:inline;border-width:0;&quot; title=&quot;image&quot; border=&quot;0&quot; alt=&quot;image&quot; src=&quot;/img/2011/01/image_thumb.png?resize=513%2C324&quot; data-recalc-dims=&quot;1&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;ol&gt;
   &lt;li&gt;To add SQL queries, click on ‘+’ button in SQL queries. Add below fields and Save Query.&lt;/li&gt;
 &lt;/ol&gt;
@@ -1289,7 +1289,7 @@ import com.mms.blogs.demo.mybatisspring.vo.Employee;
   &lt;li&gt;Parameters&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;You can have any number of queries in config file.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;https://i1.wp.com/www.myjavaacademy.com/wp-content/uploads/2011/01/image1.png&quot;&gt;&lt;img style=&quot;display:inline;border-width:0;&quot; title=&quot;image&quot; border=&quot;0&quot; alt=&quot;image&quot; src=&quot;https://i1.wp.com/www.myjavaacademy.com/wp-content/uploads/2011/01/image_thumb1.png?resize=524%2C331&quot; data-recalc-dims=&quot;1&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;/img/2011/01/image1.png&quot;&gt;&lt;img style=&quot;display:inline;border-width:0;&quot; title=&quot;image&quot; border=&quot;0&quot; alt=&quot;image&quot; src=&quot;/img/2011/01/image_thumb1.png?resize=524%2C331&quot; data-recalc-dims=&quot;1&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&amp;#160;&lt;/p&gt;
 &lt;ol&gt;
   &lt;li&gt;Once you are done with adding all queries. Click on ‘Generate XML’ button on top to generate sql-config.xml file.&lt;/li&gt;
@@ -1300,37 +1300,37 @@ import com.mms.blogs.demo.mybatisspring.vo.Employee;
 &lt;p&gt;Sample XML file &amp;#8211;&lt;/p&gt;
 &lt;div class=&quot;csharpcode&quot;&gt;
   &lt;pre class=&quot;alt&quot;&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;sql-config&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/pre&gt;
-  
+
   &lt;pre&gt;  &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;connection&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/pre&gt;
-  
+
   &lt;pre class=&quot;alt&quot;&gt;    &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;dsn&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;password&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;password&quot;&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;MyDSN&quot;&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;username&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;user1&quot;&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;/&amp;gt;&lt;/span&gt;&lt;/pre&gt;
-  
+
   &lt;pre&gt;  &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;connection&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/pre&gt;
-  
+
   &lt;pre class=&quot;alt&quot;&gt;  &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;queries&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/pre&gt;
-  
+
   &lt;pre&gt;    &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;select&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;Query1&quot;&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/pre&gt;
-  
+
   &lt;pre class=&quot;alt&quot;&gt;      &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;sql&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;Select * from test_table1 where id=?&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;sql&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/pre&gt;
-  
+
   &lt;pre&gt;      &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;parameters&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/pre&gt;
-  
+
   &lt;pre class=&quot;alt&quot;&gt;        &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;parameter&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/pre&gt;
-  
+
   &lt;pre&gt;          &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;param1&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/pre&gt;
-  
+
   &lt;pre class=&quot;alt&quot;&gt;          &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;BIGINT&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/pre&gt;
-  
+
   &lt;pre&gt;          &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;typeVal&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;-5&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;typeVal&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/pre&gt;
-  
+
   &lt;pre class=&quot;alt&quot;&gt;        &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;parameter&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/pre&gt;
-  
+
   &lt;pre&gt;      &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;parameters&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/pre&gt;
-  
+
   &lt;pre class=&quot;alt&quot;&gt;    &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;select&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/pre&gt;
-  
+
   &lt;pre&gt;  &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;queries&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/pre&gt;
-  
+
   &lt;pre class=&quot;alt&quot;&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;sql-config&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;p&gt;.csharpcode, .csharpcode pre&lt;/p&gt;
@@ -1365,65 +1365,65 @@ import com.mms.blogs.demo.mybatisspring.vo.Employee;
 &lt;/div&gt;
 &lt;div class=&quot;csharpcode&quot;&gt;
   &lt;pre class=&quot;alt&quot;&gt;&lt;span class=&quot;lnum&quot;&gt;   1:  &lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;?&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;xml&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;1.0&quot;&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;encoding&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;utf-8&quot;&lt;/span&gt;?&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/pre&gt;
-  
+
   &lt;pre&gt;&lt;span class=&quot;lnum&quot;&gt;   2:  &lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;mx:WindowedApplication&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;xmlns:mx&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;http://www.adobe.com/2006/mxml&quot;&lt;/span&gt; &lt;/pre&gt;
-  
+
   &lt;pre class=&quot;alt&quot;&gt;&lt;span class=&quot;lnum&quot;&gt;   3:  &lt;/span&gt;    &lt;span class=&quot;attr&quot;&gt;layout&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;vertical&quot;&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;xmlns:airdb&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;com.mm.apps.airdb.*&quot;&lt;/span&gt;&lt;/pre&gt;
-  
+
   &lt;pre&gt;&lt;span class=&quot;lnum&quot;&gt;   4:  &lt;/span&gt;    &lt;span class=&quot;attr&quot;&gt;creationComplete&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;airDB.init();&quot;&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/pre&gt;
-  
+
   &lt;pre class=&quot;alt&quot;&gt;&lt;span class=&quot;lnum&quot;&gt;   5:  &lt;/span&gt;    &lt;/pre&gt;
-  
+
   &lt;pre&gt;&lt;span class=&quot;lnum&quot;&gt;   6:  &lt;/span&gt;    &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;mx:Script&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/pre&gt;
-  
+
   &lt;pre class=&quot;alt&quot;&gt;&lt;span class=&quot;lnum&quot;&gt;   7:  &lt;/span&gt;        &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;!&lt;/span&gt;[CDATA[&lt;/pre&gt;
-  
+
   &lt;pre&gt;&lt;span class=&quot;lnum&quot;&gt;   8:  &lt;/span&gt;            import com.mm.apps.airdb.AirConnectorEvent;&lt;/pre&gt;
-  
+
   &lt;pre class=&quot;alt&quot;&gt;&lt;span class=&quot;lnum&quot;&gt;   9:  &lt;/span&gt;            private function onIncomingData(event:AirConnectorEvent):void{&lt;/pre&gt;
-  
+
   &lt;pre&gt;&lt;span class=&quot;lnum&quot;&gt;  10:  &lt;/span&gt;               dg.dataProvider = event.resultRows;&lt;/pre&gt;
-  
+
   &lt;pre class=&quot;alt&quot;&gt;&lt;span class=&quot;lnum&quot;&gt;  11:  &lt;/span&gt;            } &lt;/pre&gt;
-  
+
   &lt;pre&gt;&lt;span class=&quot;lnum&quot;&gt;  12:  &lt;/span&gt;        ]]&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/pre&gt;
-  
+
   &lt;pre class=&quot;alt&quot;&gt;&lt;span class=&quot;lnum&quot;&gt;  13:  &lt;/span&gt;    &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;mx:Script&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/pre&gt;
-  
+
   &lt;pre&gt;&lt;span class=&quot;lnum&quot;&gt;  14:  &lt;/span&gt;    &lt;/pre&gt;
-  
+
   &lt;pre class=&quot;alt&quot;&gt;&lt;span class=&quot;lnum&quot;&gt;  15:  &lt;/span&gt;    &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;airdb:AirDBConnector&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;airDB&quot;&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;serverPort&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;9000&quot;&lt;/span&gt; &lt;/pre&gt;
-  
+
   &lt;pre&gt;&lt;span class=&quot;lnum&quot;&gt;  16:  &lt;/span&gt;        &lt;span class=&quot;attr&quot;&gt;serverAddress&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;localhost&quot;&lt;/span&gt; &lt;/pre&gt;
-  
+
   &lt;pre class=&quot;alt&quot;&gt;&lt;span class=&quot;lnum&quot;&gt;  17:  &lt;/span&gt;        &lt;span class=&quot;attr&quot;&gt;dataReceived&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;onIncomingData(event)&quot;&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;/&amp;gt;&lt;/span&gt;&lt;/pre&gt;
-  
+
   &lt;pre&gt;&lt;span class=&quot;lnum&quot;&gt;  18:  &lt;/span&gt;    &lt;/pre&gt;
-  
+
   &lt;pre class=&quot;alt&quot;&gt;&lt;span class=&quot;lnum&quot;&gt;  19:  &lt;/span&gt;    &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;mx:Button&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;label&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;Get Data&quot;&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;click&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;{airDB.executeQuery(&apos;get_frameworks&apos;);}&quot;&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;/&amp;gt;&lt;/span&gt;&lt;/pre&gt;
-  
+
   &lt;pre&gt;&lt;span class=&quot;lnum&quot;&gt;  20:  &lt;/span&gt;    &lt;/pre&gt;
-  
+
   &lt;pre class=&quot;alt&quot;&gt;&lt;span class=&quot;lnum&quot;&gt;  21:  &lt;/span&gt;    &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;mx:DataGrid&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;dg&quot;&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;10&quot;&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;423&quot;&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;height&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;250&quot;&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;width&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;100%&quot;&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/pre&gt;
-  
+
   &lt;pre&gt;&lt;span class=&quot;lnum&quot;&gt;  22:  &lt;/span&gt;        &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;mx:columns&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/pre&gt;
-  
+
   &lt;pre class=&quot;alt&quot;&gt;&lt;span class=&quot;lnum&quot;&gt;  23:  &lt;/span&gt;            &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;mx:DataGridColumn&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;dataField&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;framework_id&quot;&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;/&amp;gt;&lt;/span&gt;&lt;/pre&gt;
-  
+
   &lt;pre&gt;&lt;span class=&quot;lnum&quot;&gt;  24:  &lt;/span&gt;            &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;mx:DataGridColumn&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;dataField&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;name&quot;&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;/&amp;gt;&lt;/span&gt;&lt;/pre&gt;
-  
+
   &lt;pre class=&quot;alt&quot;&gt;&lt;span class=&quot;lnum&quot;&gt;  25:  &lt;/span&gt;            &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;mx:DataGridColumn&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;dataField&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;version&quot;&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;/&amp;gt;&lt;/span&gt;&lt;/pre&gt;
-  
+
   &lt;pre&gt;&lt;span class=&quot;lnum&quot;&gt;  26:  &lt;/span&gt;            &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;mx:DataGridColumn&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;dataField&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;description&quot;&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;/&amp;gt;&lt;/span&gt;&lt;/pre&gt;
-  
+
   &lt;pre class=&quot;alt&quot;&gt;&lt;span class=&quot;lnum&quot;&gt;  27:  &lt;/span&gt;            &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;mx:DataGridColumn&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;dataField&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;=&quot;source_url&quot;&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;/&amp;gt;&lt;/span&gt;&lt;/pre&gt;
-  
+
   &lt;pre&gt;&lt;span class=&quot;lnum&quot;&gt;  28:  &lt;/span&gt;        &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;mx:columns&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/pre&gt;
-  
+
   &lt;pre class=&quot;alt&quot;&gt;&lt;span class=&quot;lnum&quot;&gt;  29:  &lt;/span&gt;    &lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;mx:DataGrid&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;        &lt;/pre&gt;
-  
+
   &lt;pre&gt;&lt;span class=&quot;lnum&quot;&gt;  30:  &lt;/span&gt;    &lt;/pre&gt;
-  
+
   &lt;pre class=&quot;alt&quot;&gt;&lt;span class=&quot;lnum&quot;&gt;  31:  &lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;html&quot;&gt;mx:WindowedApplication&lt;/span&gt;&lt;span class=&quot;kwrd&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;p&gt;.csharpcode, .csharpcode pre&lt;/p&gt;
@@ -1479,9 +1479,9 @@ import com.mms.blogs.demo.mybatisspring.vo.Employee;
 &lt;p&gt;&lt;strong&gt;&lt;u&gt;Line 19:&lt;/u&gt;&lt;/strong&gt; on button click, query with id ‘get_frameworks’ is executed by calling executeQuery method on airDB. Optionally you can also pass parameters and callback function to executeQuery method. Below are two flavours of execute query method. These two methods returns an unique string id for each method call. If required you can use this id to match with the result id in event object.&lt;/p&gt;
 &lt;div class=&quot;csharpcode&quot;&gt;
   &lt;pre class=&quot;alt&quot;&gt;&lt;span class=&quot;lnum&quot;&gt;   1:  &lt;/span&gt;executeQuery(queryId:String, callback:Function = &lt;span class=&quot;kwrd&quot;&gt;null&lt;/span&gt;):String&lt;/pre&gt;
-  
+
   &lt;pre&gt;&lt;span class=&quot;lnum&quot;&gt;   2:  &lt;/span&gt;&amp;#160;&lt;/pre&gt;
-  
+
   &lt;pre class=&quot;alt&quot;&gt;&lt;span class=&quot;lnum&quot;&gt;   3:  &lt;/span&gt;executeQueryParams(queryId:String, &lt;span class=&quot;kwrd&quot;&gt;params&lt;/span&gt;:Array, callback:Function = &lt;span class=&quot;kwrd&quot;&gt;null&lt;/span&gt;):String&lt;/pre&gt;
 &lt;/div&gt;
 &lt;p&gt;&amp;#160;&lt;/p&gt;
@@ -1582,11 +1582,11 @@ import com.mms.blogs.demo.mybatisspring.vo.Employee;
   &lt;li&gt;resultRowCount: Number of row return by select query&lt;/li&gt;
   &lt;li&gt;resultRow: XMLList containing &lt;row&gt; elements from response. You can use this property for assignment to dataProviders.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;a href=&quot;https://i1.wp.com/www.myjavaacademy.com/wp-content/uploads/2011/01/image2.png&quot;&gt;&lt;img style=&quot;display:inline;border-width:0;&quot; title=&quot;image&quot; border=&quot;0&quot; alt=&quot;image&quot; src=&quot;https://i2.wp.com/www.myjavaacademy.com/wp-content/uploads/2011/01/image_thumb2.png?resize=559%2C448&quot; data-recalc-dims=&quot;1&quot; /&gt;&lt;/a&gt; &lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;/img/2011/01/image2.png&quot;&gt;&lt;img style=&quot;display:inline;border-width:0;&quot; title=&quot;image&quot; border=&quot;0&quot; alt=&quot;image&quot; src=&quot;/img/2011/01/image_thumb2.png?resize=559%2C448&quot; data-recalc-dims=&quot;1&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&amp;#160;&lt;/p&gt;
 &lt;p&gt;&amp;#160;&lt;/p&gt;
 &lt;p&gt;&amp;#160;&lt;/p&gt;
-&lt;p&gt;So that’s all. I hope this is easy to interact with local database. &lt;/p&gt;
+&lt;p&gt;So that’s all. I hope this is easy to interact with local database.&lt;/p&gt;
 &lt;p&gt;Project home &amp;#8211; &lt;a href=&quot;http://code.google.com/p/air-db-connector/&quot; title=&quot;http://code.google.com/p/air-db-connector/&quot;&gt;http://code.google.com/p/air-db-connector/&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;Download Release 1.0 &amp;#8211; &lt;a href=&quot;http://code.google.com/p/air-db-connector/downloads/list&quot; title=&quot;http://code.google.com/p/air-db-connector/downloads/list&quot;&gt;http://code.google.com/p/air-db-connector/downloads/list&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&amp;#160;&lt;/p&gt;
@@ -1994,7 +1994,7 @@ import com.mms.blogs.demo.mybatisspring.vo.Employee;
 &lt;p&gt;&lt;strong&gt;&lt;span style=&quot;font-size:small;&quot;&gt;·&lt;/span&gt;         &lt;span style=&quot;font-size:small;font-family:Calibri;&quot;&gt;Putting FavIcon in predefined url:&lt;/span&gt;&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;&lt;span style=&quot;font-size:small;font-family:Calibri;&quot;&gt;A second method for specifying a FavIcon relies on using a predefined URI to identify the image: &amp;#8220;/favicon&amp;#8221;, which is relative to the server root. This method works because some browsers have been programmed to look for favicons using that URI. This approach is inconsistent with some principles of Web architecture and is being discussed by W3C&amp;#8217;s &lt;/span&gt;&lt;a href=&quot;http://www.w3.org/2001/tag/&quot;&gt;&lt;span style=&quot;font-size:small;color:#141464;font-family:Calibri;&quot;&gt;Technical Architecture Group (TAG)&lt;/span&gt;&lt;/a&gt; &lt;span style=&quot;font-size:small;font-family:Calibri;&quot;&gt;as their issue &lt;/span&gt;&lt;a href=&quot;http://www.w3.org/2001/tag/issues.html?type=1#siteData-36&quot;&gt;&lt;span style=&quot;font-size:small;color:#141464;font-family:Calibri;&quot;&gt;siteData-36&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot;font-size:small;font-family:Calibri;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;&lt;span style=&quot;font-size:small;font-family:Calibri;&quot;&gt; &lt;/span&gt;&lt;span style=&quot;font-size:small;font-family:Calibri;&quot;&gt;Here is a FavIcon that i put to my site &amp;#8211; &lt;/span&gt;&lt;/p&gt;
-&lt;img class=&quot;alignnone size-full wp-image-12&quot; title=&quot;favicon&quot; src=&quot;https://i0.wp.com/www.myjavaacademy.com/wp-content/uploads/2009/02/favicon.jpg?resize=470%2C182&quot; alt=&quot;favicon&quot; data-recalc-dims=&quot;1&quot; /&gt;
+&lt;img class=&quot;alignnone size-full wp-image-12&quot; title=&quot;favicon&quot; src=&quot;/img/2009/02/favicon.jpg?resize=470%2C182&quot; alt=&quot;favicon&quot; data-recalc-dims=&quot;1&quot; /&gt;
 &lt;span style=&quot;font-size:small;font-family:Calibri;&quot;&gt;References:&lt;/span&gt;
 &lt;p&gt;&lt;a href=&quot;http://en.wikipedia.org/wiki/Favicon&quot;&gt;&lt;span style=&quot;font-size:small;color:#141464;font-family:Calibri;&quot;&gt;http://en.wikipedia.org/wiki/Favicon&lt;/span&gt;&lt;/a&gt; &lt;span style=&quot;font-size:small;font-family:Calibri;&quot;&gt;&amp;#8211; Details the concept of FavIcon&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href=&quot;http://www.html-kit.com/favicon/&quot;&gt;&lt;span style=&quot;font-size:small;color:#800080;font-family:Calibri;&quot;&gt;http://www.html-kit.com/favicon/&lt;/span&gt;&lt;/a&gt; &lt;span style=&quot;font-size:small;font-family:Calibri;&quot;&gt;&amp;#8211; provides Utility to create FavIcon from gif and other formats.&lt;/span&gt;&lt;/p&gt;
