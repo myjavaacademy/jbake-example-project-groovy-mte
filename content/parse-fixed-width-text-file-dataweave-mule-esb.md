@@ -35,7 +35,7 @@ Shout - Start Position:6, length: 13</pre>
 Here is our sample flow that reads the file from input directory, applies dataweave transformation and writes the generated file to output directory.
 
 <div id="attachment_135" style="width: 322px" class="wp-caption aligncenter">
-  <img class="wp-image-135 size-full" src="https://i2.wp.com/www.myjavaacademy.com/wp-content/uploads/2016/04/Mule_DW_FixedWidth_Flow-1.png?resize=312%2C130" alt="Mule_DW_FixedWidth_Flow" srcset="https://i1.wp.com/myjavaacademy.com/wp-content/uploads/2016/04/Mule_DW_FixedWidth_Flow-1.png?w=312&ssl=1 312w, https://i1.wp.com/myjavaacademy.com/wp-content/uploads/2016/04/Mule_DW_FixedWidth_Flow-1.png?resize=300%2C125&ssl=1 300w" sizes="(max-width: 312px) 100vw, 312px" data-recalc-dims="1" />
+  <img class="wp-image-135 size-full" src="/img/2016/04/Mule_DW_FixedWidth_Flow-1.png?resize=312%2C130" alt="Mule_DW_FixedWidth_Flow" srcset="/img/2016/04/Mule_DW_FixedWidth_Flow-1.png?w=312&ssl=1 312w, /img/2016/04/Mule_DW_FixedWidth_Flow-1.png?resize=300%2C125&ssl=1 300w" sizes="(max-width: 312px) 100vw, 312px" data-recalc-dims="1" />
   
   <p class="wp-caption-text">
     Mule flow to convert fixed width text file to JSON

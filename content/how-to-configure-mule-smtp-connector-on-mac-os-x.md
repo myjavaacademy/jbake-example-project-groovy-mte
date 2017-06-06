@@ -24,16 +24,16 @@ In my demo application, I have one flow which uses DataWeave to convert XML file
   3. Write JASON file to file system using File Outbound connector.
   4. Write converted JASON string to VM endpoint
 
-[<img class="alignnone size-medium wp-image-103" src="https://i2.wp.com/www.myjavaacademy.com/wp-content/uploads/2015/10/mule-demo-flow1.png?resize=300%2C100" alt="mule-demo-flow1" data-recalc-dims="1" />](https://i2.wp.com/www.myjavaacademy.com/wp-content/uploads/2015/10/mule-demo-flow1.png)
+[<img class="alignnone size-medium wp-image-103" src="/img/2015/10/mule-demo-flow1.png?resize=300%2C100" alt="mule-demo-flow1" data-recalc-dims="1" />](/img/2015/10/mule-demo-flow1.png)
 
 **Flow 2: Send content via email**
 
-[<img class="alignnone size-medium wp-image-104" src="https://i0.wp.com/www.myjavaacademy.com/wp-content/uploads/2015/10/mule-demo-flow2.png?resize=300%2C133" alt="mule-demo-flow2" data-recalc-dims="1" />](https://i0.wp.com/www.myjavaacademy.com/wp-content/uploads/2015/10/mule-demo-flow2.png)
+[<img class="alignnone size-medium wp-image-104" src="/img/2015/10/mule-demo-flow2.png?resize=300%2C133" alt="mule-demo-flow2" data-recalc-dims="1" />](/img/2015/10/mule-demo-flow2.png)
 
   1. Listen to the content on same VM endpoint where it is being written in Flow 1
   2. Configure SMTP to send out email using iCloud SMTP server. Below are the configuration properties
 
-[<img class="alignnone size-medium wp-image-105" src="https://i1.wp.com/www.myjavaacademy.com/wp-content/uploads/2015/10/smtp_properties.png?resize=300%2C134" alt="SMTP_Properties" data-recalc-dims="1" />](https://i1.wp.com/www.myjavaacademy.com/wp-content/uploads/2015/10/smtp_properties.png)
+[<img class="alignnone size-medium wp-image-105" src="/img/2015/10/smtp_properties.png?resize=300%2C134" alt="SMTP_Properties" data-recalc-dims="1" />](/img/2015/10/smtp_properties.png)
 
 iCloud SMTP servers as per &#8211; https://support.apple.com/en-us/HT202304
 

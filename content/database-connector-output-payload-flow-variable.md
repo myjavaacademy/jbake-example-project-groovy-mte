@@ -33,7 +33,7 @@ Consider below flow which gets contact details over HTTP inbound connector, then
 So, Let&#8217;s send an HTTP request using Postman and look at the output.
 
 <p id="lGfbseH">
-  <a href="https://i1.wp.com/www.myjavaacademy.com/wp-content/uploads/2016/04/img_571c189eea19d.png"><img class="alignnone size-full wp-image-308 " src="https://i1.wp.com/www.myjavaacademy.com/wp-content/uploads/2016/04/img_571c189eea19d.png" alt="Database Connector output with target to flow variable" data-recalc-dims="1" /></a>
+  <a href="/img/2016/04/img_571c189eea19d.png"><img class="alignnone size-full wp-image-308 " src="/img/2016/04/img_571c189eea19d.png" alt="Database Connector output with target to flow variable" data-recalc-dims="1" /></a>
 </p>
 
 When Mule received this request, it processed the database connector insert operation. Result of Insert/Update/Delete SQL is always the number of rows affected by that statement. So in our case, as we inserted one row, output was 1 and same got set as a payload for subsequent processors.
@@ -54,20 +54,20 @@ There is one scope in mule, called &#8216;Message Enricher&#8217; which can set 
         &lt;/enricher&gt;
 </pre>
 
-**Wait, there is another easier way to do it.** Database Connector exposes an advanced property called _&#8216;target&#8217;_ **which adds enricher functionality to connector itself. &nbsp;Default value of &#8216;target&#8217; is &#8216;#[payload]&#8217; and so the output always gets set as payload. You can set target to any expression. Let&#8217;s set it to &#8216;#[flowVars.rowsInserted]&#8217; in our original flow.</p> 
+**Wait, there is another easier way to do it.** Database Connector exposes an advanced property called _&#8216;target&#8217;_ **which adds enricher functionality to connector itself. &nbsp;Default value of &#8216;target&#8217; is &#8216;#[payload]&#8217; and so the output always gets set as payload. You can set target to any expression. Let&#8217;s set it to &#8216;#[flowVars.rowsInserted]&#8217; in our original flow.</p>
 
 <p id="UuWxoJm">
-  <a href="https://i1.wp.com/www.myjavaacademy.com/wp-content/uploads/2016/04/img_571c1df803feb.png"><img class="alignnone size-full wp-image-311 " src="https://i1.wp.com/www.myjavaacademy.com/wp-content/uploads/2016/04/img_571c1df803feb.png" alt="" srcset="https://i0.wp.com/myjavaacademy.com/wp-content/uploads/2016/04/img_571c1df803feb.png?w=557&ssl=1 557w, https://i0.wp.com/myjavaacademy.com/wp-content/uploads/2016/04/img_571c1df803feb.png?resize=300%2C130&ssl=1 300w" sizes="(max-width: 557px) 100vw, 557px" data-recalc-dims="1" /></a>
+  <a href="/img/2016/04/img_571c1df803feb.png"><img class="alignnone size-full wp-image-311 " src="/img/2016/04/img_571c1df803feb.png" alt="" srcset="/img/2016/04/img_571c1df803feb.png?w=557&ssl=1 557w, /img/2016/04/img_571c1df803feb.png?resize=300%2C130&ssl=1 300w" sizes="(max-width: 557px) 100vw, 557px" data-recalc-dims="1" /></a>
 </p>
 
 Now, if we submit the request again, then we can see a new variable &#8216;rowInserted&#8217; with value &#8216;1&#8217; after database call and our payload is still same map with contact details. Also, the output on postman should is&nbsp;&#8211; &#8216;All data saved &#8211; ParameterMap{[firstName=[Manik3], lastName=[M3], emailid=[mm3@test.com], zip=[123455]]}&#8217;
-  
-[<img class="alignnone size-full wp-image-310 " src="https://i0.wp.com/www.myjavaacademy.com/wp-content/uploads/2016/04/img_571c1dc10bf92.png" alt="" srcset="https://i1.wp.com/myjavaacademy.com/wp-content/uploads/2016/04/img_571c1dc10bf92.png?w=1418&ssl=1 1418w, https://i1.wp.com/myjavaacademy.com/wp-content/uploads/2016/04/img_571c1dc10bf92.png?resize=300%2C122&ssl=1 300w, https://i1.wp.com/myjavaacademy.com/wp-content/uploads/2016/04/img_571c1dc10bf92.png?resize=768%2C313&ssl=1 768w, https://i1.wp.com/myjavaacademy.com/wp-content/uploads/2016/04/img_571c1dc10bf92.png?resize=1024%2C417&ssl=1 1024w, https://i1.wp.com/myjavaacademy.com/wp-content/uploads/2016/04/img_571c1dc10bf92.png?resize=1200%2C488&ssl=1 1200w" sizes="(max-width: 1418px) 100vw, 1418px" data-recalc-dims="1" />](https://i0.wp.com/www.myjavaacademy.com/wp-content/uploads/2016/04/img_571c1dc10bf92.png)
+
+[<img class="alignnone size-full wp-image-310 " src="/img/2016/04/img_571c1dc10bf92.png" alt="" srcset="/img/2016/04/img_571c1dc10bf92.png?w=1418&ssl=1 1418w, /img/2016/04/img_571c1dc10bf92.png?resize=300%2C122&ssl=1 300w, /img/2016/04/img_571c1dc10bf92.png?resize=768%2C313&ssl=1 768w, /img/2016/04/img_571c1dc10bf92.png?resize=1024%2C417&ssl=1 1024w, /img/2016/04/img_571c1dc10bf92.png?resize=1200%2C488&ssl=1 1200w" sizes="(max-width: 1418px) 100vw, 1418px" data-recalc-dims="1" />](/img/2016/04/img_571c1dc10bf92.png)
 
 &nbsp;
-  
+
 **
-  
+
 Target property could be very useful&nbsp;when we want to do different select queries in our flow and hold the results in flow variables for later use.**
 
 Feel free to let me know your thoughts!

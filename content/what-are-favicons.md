@@ -48,7 +48,7 @@ status=published
 
 <span style="font-size:small;font-family:Calibri;"> </span><span style="font-size:small;font-family:Calibri;">Here is a FavIcon that i put to my site &#8211; </span>
 
-<img class="alignnone size-full wp-image-12" title="favicon" src="https://i0.wp.com/www.myjavaacademy.com/wp-content/uploads/2009/02/favicon.jpg?resize=470%2C182" alt="favicon" data-recalc-dims="1" />
+<img class="alignnone size-full wp-image-12" title="favicon" src="/img/2009/02/favicon.jpg?resize=470%2C182" alt="favicon" data-recalc-dims="1" />
 
 <span style="font-size:small;font-family:Calibri;">References:</span>
 
