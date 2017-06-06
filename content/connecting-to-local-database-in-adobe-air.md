@@ -33,7 +33,7 @@ Starting server is very simple just define the connector port in properties file
 
 Its a very simple utility air application to generate sql-config file in proper syntax.
 
-[<img style="display:inline;border-width:0;" title="SqlGen1" border="0" alt="SqlGen1" src="/img/2011/01/sqlgen1_thumb.png?resize=505%2C319" data-recalc-dims="1" />](/img/2011/01/sqlgen1.png) 
+[<img style="display:inline;border-width:0;" title="SqlGen1" border="0" alt="SqlGen1" src="/img/2011/01/sqlgen1_thumb.png?resize=505%2C319" data-recalc-dims="1" />](/img/2011/01/sqlgen1.png)
 
 &#160;
 
@@ -99,54 +99,6 @@ Sample XML file &#8211;
 
   <pre class="alt"><span class="kwrd">&lt;/</span><span class="html">sql-config</span><span class="kwrd">&gt;</span></pre>
 </div>
-
-.csharpcode, .csharpcode pre
-
-{
-
-font-size: small;
-
-color: black;
-
-font-family: consolas, &#8220;Courier New&#8221;, courier, monospace;
-
-background-color: #ffffff;
-
-/\*white-space: pre;\*/
-
-}
-
-.csharpcode pre { margin: 0em; }
-
-.csharpcode .rem { color: #008000; }
-
-.csharpcode .kwrd { color: #0000ff; }
-
-.csharpcode .str { color: #006080; }
-
-.csharpcode .op { color: #0000c0; }
-
-.csharpcode .preproc { color: #cc6633; }
-
-.csharpcode .asp { background-color: #ffff00; }
-
-.csharpcode .html { color: #800000; }
-
-.csharpcode .attr { color: #ff0000; }
-
-.csharpcode .alt
-
-{
-
-background-color: #f4f4f4;
-
-width: 100%;
-
-margin: 0em;
-
-}
-
-.csharpcode .lnum { color: #606060; }
 
 ## air-lib:
 
@@ -222,102 +174,6 @@ Below code shows the sample usage of library API &#8211;
   <pre class="alt"><span class="lnum">  31:  </span><span class="kwrd">&lt;/</span><span class="html">mx:WindowedApplication</span><span class="kwrd">&gt;</span></pre>
 </div>
 
-.csharpcode, .csharpcode pre
-
-{
-
-font-size: small;
-
-color: black;
-
-font-family: consolas, &#8220;Courier New&#8221;, courier, monospace;
-
-background-color: #ffffff;
-
-/\*white-space: pre;\*/
-
-}
-
-.csharpcode pre { margin: 0em; }
-
-.csharpcode .rem { color: #008000; }
-
-.csharpcode .kwrd { color: #0000ff; }
-
-.csharpcode .str { color: #006080; }
-
-.csharpcode .op { color: #0000c0; }
-
-.csharpcode .preproc { color: #cc6633; }
-
-.csharpcode .asp { background-color: #ffff00; }
-
-.csharpcode .html { color: #800000; }
-
-.csharpcode .attr { color: #ff0000; }
-
-.csharpcode .alt
-
-{
-
-background-color: #f4f4f4;
-
-width: 100%;
-
-margin: 0em;
-
-}
-
-.csharpcode .lnum { color: #606060; }
-
-.csharpcode, .csharpcode pre
-
-{
-
-font-size: small;
-
-color: black;
-
-font-family: consolas, &#8220;Courier New&#8221;, courier, monospace;
-
-background-color: #ffffff;
-
-/\*white-space: pre;\*/
-
-}
-
-.csharpcode pre { margin: 0em; }
-
-.csharpcode .rem { color: #008000; }
-
-.csharpcode .kwrd { color: #0000ff; }
-
-.csharpcode .str { color: #006080; }
-
-.csharpcode .op { color: #0000c0; }
-
-.csharpcode .preproc { color: #cc6633; }
-
-.csharpcode .asp { background-color: #ffff00; }
-
-.csharpcode .html { color: #800000; }
-
-.csharpcode .attr { color: #ff0000; }
-
-.csharpcode .alt
-
-{
-
-background-color: #f4f4f4;
-
-width: 100%;
-
-margin: 0em;
-
-}
-
-.csharpcode .lnum { color: #606060; }
-
 **<u>Line 15:</u>** Create an instance of AirDBConnector. Specify serverPort, serverAddress and event handling method for dataReceived event.
 
 **<u>_<font color="#0000ff">Line 4: THE MOST IMPORTANT, CALL airDB.init()</font>_</u>**
@@ -338,53 +194,6 @@ callback function must have below signature-
 
 <pre class="csharpcode">function (<span class="kwrd">event</span>:AirConnectorEvent) void</pre>
 
-.csharpcode, .csharpcode pre
-
-{
-
-font-size: small;
-
-color: black;
-
-font-family: consolas, &#8220;Courier New&#8221;, courier, monospace;
-
-background-color: #ffffff;
-
-/\*white-space: pre;\*/
-
-}
-
-.csharpcode pre { margin: 0em; }
-
-.csharpcode .rem { color: #008000; }
-
-.csharpcode .kwrd { color: #0000ff; }
-
-.csharpcode .str { color: #006080; }
-
-.csharpcode .op { color: #0000c0; }
-
-.csharpcode .preproc { color: #cc6633; }
-
-.csharpcode .asp { background-color: #ffff00; }
-
-.csharpcode .html { color: #800000; }
-
-.csharpcode .attr { color: #ff0000; }
-
-.csharpcode .alt
-
-{
-
-background-color: #f4f4f4;
-
-width: 100%;
-
-margin: 0em;
-
-}
-
-.csharpcode .lnum { color: #606060; }
 
 AirConnectorEvent has below set of properties &#8211;
 
@@ -429,53 +238,6 @@ AirConnectorEvent has below set of properties &#8211;
 <span class="kwrd">&lt;</span><span class="html">requestId</span><span class="kwrd">&gt;</span>B540B76E-4433-46F5-64DF-459F46715E16<span class="kwrd">&lt;/</span><span class="html">requestId</span><span class="kwrd">&gt;</span>
 <span class="kwrd">&lt;/</span><span class="html">transporter</span><span class="kwrd">&gt;</span></pre>
 
-.csharpcode, .csharpcode pre
-
-{
-
-font-size: small;
-
-color: black;
-
-font-family: consolas, &#8220;Courier New&#8221;, courier, monospace;
-
-background-color: #ffffff;
-
-/\*white-space: pre;\*/
-
-}
-
-.csharpcode pre { margin: 0em; }
-
-.csharpcode .rem { color: #008000; }
-
-.csharpcode .kwrd { color: #0000ff; }
-
-.csharpcode .str { color: #006080; }
-
-.csharpcode .op { color: #0000c0; }
-
-.csharpcode .preproc { color: #cc6633; }
-
-.csharpcode .asp { background-color: #ffff00; }
-
-.csharpcode .html { color: #800000; }
-
-.csharpcode .attr { color: #ff0000; }
-
-.csharpcode .alt
-
-{
-
-background-color: #f4f4f4;
-
-width: 100%;
-
-margin: 0em;
-
-}
-
-.csharpcode .lnum { color: #606060; }
 
   * resultId : Unique id for each db request
   * resultRowCount: Number of row return by select query
